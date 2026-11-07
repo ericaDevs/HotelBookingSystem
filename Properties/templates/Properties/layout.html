@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block hero %}
+<section class="inner-hero">
+  <div class="inner-hero-image" role="img" aria-label="A welcoming hotel in Kigali"></div>
+  <div class="inner-hero-content">
+    <p class="hero-eyebrow">{% block hero_eyebrow %}INTERCOUNTY HOTELS &amp; RESORTS{% endblock %}</p>
+    <h1>{% block hero_title %}Discover your East African escape{% endblock %}</h1>
+    <p class="mx-auto mt-4 max-w-2xl text-sm leading-6 text-white/85 sm:text-base">{% block hero_description %}Find your place to stay, gather and explore in the heart of Kigali.{% endblock %}</p>
+    <div class="mt-6 flex items-center justify-center gap-2 text-xs text-white/80">
+      <a href="{% url 'home' %}" class="hover:text-white">Home</a><span aria-hidden="true">/</span><span>{% block breadcrumb %}Explore{% endblock %}</span>
+    </div>
+  </div>
+</section>
+{% endblock %}

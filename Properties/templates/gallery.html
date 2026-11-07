@@ -1,0 +1,1092 @@
+{% extends "layout.html" %}
+
+{% block title %}Gallery | Intercounty Hotels{% endblock %}
+{% block body_class %}bg-surface font-body-md text-on-surface antialiased min-h-screen{% endblock %}
+{% block head %}
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @layer base {
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+        }
+        body {
+          overscroll-behavior: none;
+        }
+        main > :first-child {
+          margin-top: 0 !important;
+        }
+        main > :last-child {
+          margin-bottom: 0 !important;
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              secondary: "#b2273d",
+              "secondary-fixed": "#ffdada",
+              outline: "#7f737f",
+              surface: "#f9f9ff",
+              "surface-dim": "#cfdaf2",
+              "on-primary-fixed-variant": "#672f76",
+              "on-error-container": "#93000a",
+              "tertiary-container": "#3c725b",
+              "outline-variant": "#d1c2cf",
+              "surface-container-lowest": "#ffffff",
+              "secondary-fixed-dim": "#ffb3b6",
+              "surface-bright": "#f9f9ff",
+              primary: "#713980",
+              tertiary: "#215944",
+              "surface-container": "#e7eeff",
+              "on-tertiary-fixed-variant": "#16503b",
+              "on-surface": "#111c2d",
+              "on-error": "#ffffff",
+              "on-primary-fixed": "#340043",
+              "primary-fixed": "#fcd7ff",
+              "on-primary": "#ffffff",
+              "on-surface-variant": "#4e444e",
+              "on-tertiary-fixed": "#002115",
+              "primary-container": "#8c519a",
+              "on-secondary-fixed-variant": "#900628",
+              "surface-variant": "#d8e3fb",
+              "surface-container-high": "#dee8ff",
+              "on-primary-container": "#fedeff",
+              "inverse-on-surface": "#ecf1ff",
+              "surface-container-highest": "#d8e3fb",
+              "on-secondary-container": "#640018",
+              error: "#ba1a1a",
+              "surface-tint": "#814790",
+              "on-tertiary-container": "#baf4d8",
+              "error-container": "#ffdad6",
+              "tertiary-fixed-dim": "#9ad3b7",
+              "tertiary-fixed": "#b5efd3",
+              "primary-fixed-dim": "#f2afff",
+              background: "#f9f9ff",
+              "inverse-primary": "#f2afff",
+              "secondary-container": "#fe5f70",
+              "on-secondary": "#ffffff",
+              "surface-container-low": "#f0f3ff",
+              "on-background": "#111c2d",
+              "inverse-surface": "#263143",
+              "on-tertiary": "#ffffff",
+              "on-secondary-fixed": "#40000c",
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+            spacing: {
+              "space-xs": "0.25rem",
+              gutter: "1.5rem",
+              margin: "3rem",
+              "gutter-mobile": "1rem",
+              "space-sm": "0.5rem",
+              "space-md": "1rem",
+              "space-lg": "1.5rem",
+              "margin-mobile": "1.25rem",
+              "space-xl": "2.5rem",
+            },
+            fontFamily: {
+              "headline-xl-mobile": ["Figtree"],
+              "headline-xl": ["Figtree"],
+              "headline-md": ["Figtree"],
+              "headline-sm": ["Figtree"],
+              "label-md": ["Figtree"],
+              "headline-lg": ["Figtree"],
+              "body-md": ["Figtree"],
+              "label-lg": ["Figtree"],
+              "display-lg-mobile": ["Figtree"],
+              "body-lg": ["Figtree"],
+              "body-sm": ["Figtree"],
+              "label-sm": ["Figtree"],
+              "display-lg": ["Figtree"],
+            },
+            fontSize: {
+              "headline-xl-mobile": [
+                "28px",
+                {
+                  lineHeight: "36px",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "700",
+                },
+              ],
+              "headline-xl": [
+                "40px",
+                {
+                  lineHeight: "48px",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "700",
+                },
+              ],
+              "headline-md": [
+                "24px",
+                { lineHeight: "32px", fontWeight: "600" },
+              ],
+              "headline-sm": [
+                "20px",
+                { lineHeight: "28px", fontWeight: "600" },
+              ],
+              "label-md": [
+                "14px",
+                {
+                  lineHeight: "18px",
+                  letterSpacing: "0.02em",
+                  fontWeight: "600",
+                },
+              ],
+              "headline-lg": [
+                "32px",
+                {
+                  lineHeight: "40px",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "600",
+                },
+              ],
+              "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+              "label-lg": [
+                "16px",
+                {
+                  lineHeight: "20px",
+                  letterSpacing: "0.01em",
+                  fontWeight: "600",
+                },
+              ],
+              "display-lg-mobile": [
+                "36px",
+                {
+                  lineHeight: "44px",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "700",
+                },
+              ],
+              "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+              "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+              "label-sm": [
+                "12px",
+                {
+                  lineHeight: "16px",
+                  letterSpacing: "0.03em",
+                  fontWeight: "500",
+                },
+              ],
+              "display-lg": [
+                "56px",
+                {
+                  lineHeight: "64px",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "700",
+                },
+              ],
+            },
+          },
+        },
+      };
+    </script>
+  
+{% endblock %}
+
+{% block main %}
+<main class="w-full pt-20 bg-surface">
+      <div class="flex flex-col w-full">
+        <!-- Subtle ambient glow background decoration -->
+        <div class="relative w-full overflow-hidden">
+          <div
+            class="absolute -top-32 right-1/4 w-96 h-96 bg-primary-fixed/20 rounded-full blur-3xl pointer-events-none"
+          ></div>
+          <div
+            class="absolute top-96 -left-20 w-80 h-80 bg-secondary-fixed/20 rounded-full blur-3xl pointer-events-none"
+          ></div>
+          <!-- Gallery Introduction Section -->
+          <section
+            class="max-w-[1280px] mx-auto w-full px-margin-mobile lg:px-margin pt-space-lg pb-space-md"
+          >
+            <div
+              class="flex flex-col md:flex-row md:items-end justify-between gap-space-md"
+            >
+              <div class="max-w-2xl">
+                <div
+                  class="inline-flex items-center gap-2 px-space-sm py-space-xs rounded-full bg-secondary/10 text-secondary mb-space-sm"
+                >
+                  <span
+                    class="material-symbols-outlined text-sm"
+                    style="font-variation-settings: &quot;FILL&quot; 1"
+                    >photo_library</span
+                  >
+                  <span
+                    class="font-label-sm text-label-sm font-semibold tracking-wider uppercase"
+                    >Curated Visual Showcase</span
+                  >
+                </div>
+                <h1
+                  class="font-headline-xl text-headline-xl text-on-surface tracking-tight"
+                >
+                  Visual Tour & Hotel Gallery
+                </h1>
+                <p
+                  class="font-body-lg text-body-lg text-on-surface-variant mt-space-xs"
+                >
+                  Immerse yourself in our serene architecture, sparkling pool,
+                  and lavish event spaces designed for tranquil retreats and
+                  memorable gatherings in Kitui.
+                </p>
+              </div>
+              <!-- Quick Gallery Stats Badge -->
+              <div
+                class="flex items-center gap-space-md bg-surface-container-lowest p-space-sm rounded-xl shadow-sm self-start md:self-auto"
+              >
+                <div
+                  class="flex items-center gap-space-xs px-space-sm py-space-xs rounded-lg bg-surface-container-low text-primary"
+                >
+                  <span class="material-symbols-outlined text-lg"
+                    >camera_enhance</span
+                  >
+                  <span class="font-label-md text-label-md font-bold"
+                    >48 High-Res Photos</span
+                  >
+                </div>
+                <div
+                  class="flex items-center gap-1 font-label-sm text-label-sm text-tertiary"
+                >
+                  <span class="material-symbols-outlined text-base"
+                    >verified</span
+                  >
+                  <span>Verified Resort Grounds</span>
+                </div>
+              </div>
+            </div>
+            <!-- Category Filter Pills -->
+            <div
+              class="mt-space-lg flex items-center gap-space-xs overflow-x-auto pb-space-xs no-scrollbar"
+              id="filter-container"
+            >
+              <button
+                class="filter-pill whitespace-nowrap px-space-md py-space-xs rounded-full font-label-md text-label-md bg-secondary text-on-secondary shadow-sm transition-all duration-200"
+                data-filter="all"
+                type="button"
+              >
+                All Photos
+              </button>
+              <button
+                class="filter-pill whitespace-nowrap px-space-md py-space-xs rounded-full font-label-md text-label-md bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all duration-200"
+                data-filter="pool"
+                type="button"
+              >
+                Swimming Pool & Arched Bridge
+              </button>
+              <button
+                class="filter-pill whitespace-nowrap px-space-md py-space-xs rounded-full font-label-md text-label-md bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all duration-200"
+                data-filter="rooms"
+                type="button"
+              >
+                Luxury Rooms & Suites
+              </button>
+              <button
+                class="filter-pill whitespace-nowrap px-space-md py-space-xs rounded-full font-label-md text-label-md bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all duration-200"
+                data-filter="dining"
+                type="button"
+              >
+                Dining & Bar
+              </button>
+              <button
+                class="filter-pill whitespace-nowrap px-space-md py-space-xs rounded-full font-label-md text-label-md bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all duration-200"
+                data-filter="gardens"
+                type="button"
+              >
+                Landscaped Gardens
+              </button>
+              <button
+                class="filter-pill whitespace-nowrap px-space-md py-space-xs rounded-full font-label-md text-label-md bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all duration-200"
+                data-filter="events"
+                type="button"
+              >
+                Events & Conferences
+              </button>
+            </div>
+          </section>
+          <!-- Multi-Column Masonry Photo Showcase -->
+          <section
+            class="max-w-[1280px] mx-auto w-full px-margin-mobile lg:px-margin pb-space-xl"
+          >
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter"
+              id="gallery-grid"
+            >
+              <!-- Item 1: Iconic Pool & Bridge (Large/Featured) -->
+              <div
+                class="gallery-item group relative rounded-xl overflow-hidden bg-surface-container-lowest shadow-sm hover:shadow-xl transition-all duration-300 md:col-span-2 cursor-pointer"
+                data-category="pool"
+                data-desc="Our signature resort pool featuring the scenic emerald arched bridge, sunlit loungers, and private purple canopies nestled under Kitui acacia trees."
+                data-index="0"
+                data-tag="Pool & Outdoors"
+                data-title="Iconic Turquoise Swimming Pool & Arched Bridge"
+              >
+                <div
+                  class="relative w-full h-80 sm:h-96 md:h-[460px] overflow-hidden"
+                >
+                  <img
+                    alt="Resort pool and arched bridge"
+                    class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    data-alt="Glistening turquoise resort swimming pool traversed by an elegant arched bridge with green railings. Guests relax on polished sun loungers under deep purple umbrellas while golden equatorial sunlight glints over palm fronds and modern hotel facades in Kitui Kenya."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMZuC7RRQVWMN4KJStlWL7gAwMshXU7B1rS1bG6xpV2R9CooOWM3yJIihf-HErb6wjkD9-mG430I2wbhf9ZpUdlVVtPRE2KkoHr2GwFuMbRWFlGV_i3g3p7uXkgK_rktHTNqUR2gj7-bkvSwDjwDCVmrpbBXb1SaOJ-b7f5OmF8uSUGzx9aj4Upbx2F3M_MAj0VimJYwCKWRsDNvCK39AzMkLWPQQM9BhAPSXlIcc"
+                  />
+                  <!-- Scrim and Overlay info -->
+                  <div
+                    class="absolute inset-0 bg-gradient-to-t from-on-surface/90 via-on-surface/20 to-transparent opacity-80 sm:opacity-60 group-hover:opacity-90 transition-opacity duration-300"
+                  ></div>
+                  <!-- Category Tag Top Left -->
+                  <div class="absolute top-space-md left-space-md">
+                    <span
+                      class="inline-flex items-center gap-1.5 px-space-md py-space-xs rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-primary font-label-sm text-label-sm shadow-sm"
+                    >
+                      <span
+                        class="material-symbols-outlined text-xs text-secondary"
+                        style="font-variation-settings: &quot;FILL&quot; 1"
+                        >water_lux</span
+                      >
+                      Signature Feature
+                    </span>
+                  </div>
+                  <!-- Expand icon top right -->
+                  <div
+                    class="absolute top-space-md right-space-md opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0"
+                  >
+                    <span
+                      class="w-10 h-10 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md"
+                    >
+                      <span class="material-symbols-outlined text-lg"
+                        >fullscreen</span
+                      >
+                    </span>
+                  </div>
+                  <!-- Content text at bottom -->
+                  <div
+                    class="absolute bottom-0 left-0 right-0 p-space-lg text-on-primary"
+                  >
+                    <div
+                      class="inline-block px-space-sm py-0.5 rounded bg-secondary/80 text-on-secondary font-label-sm text-label-sm mb-space-xs"
+                    >
+                      Swimming Pool
+                    </div>
+                    <h3
+                      class="font-headline-md text-headline-md font-bold text-on-primary"
+                    >
+                      The Iconic Oasis & Arched Bridge
+                    </h3>
+                    <p
+                      class="font-body-sm text-body-sm text-surface-container-high line-clamp-2 max-w-xl mt-space-xs"
+                    >
+                      Cool off in our crystal-clear resort waters, stroll across
+                      the emblematic bridge, or sip signature mocktails beneath
+                      vibrant sun parasols.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- Item 2: Hotel Architecture Twilight -->
+              <div
+                class="gallery-item group relative rounded-xl overflow-hidden bg-surface-container-lowest shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer"
+                data-category="events"
+                data-desc="Modern multi-story hotel buildings enhanced with rich purple and maroon architectural contours and warm golden illumination during Kitui evenings."
+                data-index="1"
+                data-tag="Architecture"
+                data-title="Hotel Façade & Architectural Wings"
+              >
+                <div
+                  class="relative w-full h-80 sm:h-96 md:h-[460px] overflow-hidden"
+                >
+                  <img
+                    alt="Hotel architecture at twilight"
+                    class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    data-alt="Architectural exterior photograph of Intercounty Hotel Kitui at twilight. Multi-story modern building with tasteful purple accent panels, warm illuminated guest balconies, grand illuminated driveway entrance, and dusk Kenyan sky."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuA45TRnVCqt2DPObWFVbW-U6ft8tsO5MFwsu1BF3Ml_FAXaCR3WV5C1h2mx4Gq2PMMPV_MrhhzmKr0ZIfKfQxEK4wSKX0I2sU5kfxs1_yiuPpFFcDwtHMkSMOG0c3aB0-c2ltttDLpDergeyJ6gq7T8dxSlKoPmNGWo7IUXqKEkwL3YUAzQ6kC5VOENs8EEGnuxTtwzZC8A37S_2JBK4F5mmrrirmvLCyS6yPgK-Vk"
+                  />
+                  <div
+                    class="absolute inset-0 bg-gradient-to-t from-on-surface/90 via-on-surface/20 to-transparent opacity-80 sm:opacity-50 group-hover:opacity-90 transition-opacity duration-300"
+                  ></div>
+                  <div class="absolute top-space-md left-space-md">
+                    <span
+                      class="inline-flex items-center gap-1.5 px-space-md py-space-xs rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface font-label-sm text-label-sm shadow-sm"
+                    >
+                      <span
+                        class="material-symbols-outlined text-xs text-primary"
+                        >apartment</span
+                      >
+                      Grand Exterior
+                    </span>
+                  </div>
+                  <div
+                    class="absolute top-space-md right-space-md opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0"
+                  >
+                    <span
+                      class="w-10 h-10 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md"
+                    >
+                      <span class="material-symbols-outlined text-lg"
+                        >fullscreen</span
+                      >
+                    </span>
+                  </div>
+                  <div
+                    class="absolute bottom-0 left-0 right-0 p-space-md text-on-primary"
+                  >
+                    <div
+                      class="inline-block px-space-sm py-0.5 rounded bg-primary text-on-primary font-label-sm text-label-sm mb-space-xs"
+                    >
+                      Resort Grounds
+                    </div>
+                    <h3
+                      class="font-headline-sm text-headline-sm font-bold text-on-primary"
+                    >
+                      Evening Grandeur
+                    </h3>
+                    <p
+                      class="font-body-sm text-body-sm text-surface-container-high line-clamp-2 mt-1"
+                    >
+                      Warm ambient illumination illuminating modern design
+                      accents across our multistory wings.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- Item 3: Executive Suite (Rooms) -->
+              <div
+                class="gallery-item group relative rounded-xl overflow-hidden bg-surface-container-lowest shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer"
+                data-category="rooms"
+                data-desc="Spacious sanctuary dressed with natural hardwood flooring, plush king bedding, custom mahogany writing bureau, and sunlit balcony sheer drapes."
+                data-index="2"
+                data-tag="Rooms & Suites"
+                data-title="Executive King Bedroom Suite"
+              >
+                <div class="relative w-full h-80 overflow-hidden">
+                  <img
+                    alt="Executive King Suite"
+                    class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    data-alt="Opulent hotel executive bedroom suite featuring an expansive king bed with crisp white luxury linens and plush maroon accent pillows. Sunlight pours through full height glass doors draped in sheer curtains, illuminating rich hardwood flooring and a stylish sitting area."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPj1sOUWtibztcZ-nyGH_8HujR3azyUWG7_XCAkNLhAKkjpaaAydC2fdSIDvusb1xsgWK5ELDr7n-0kxcrjb2kSs31HQgR78GvAi7JR63D6H1fpo2PRR0D_CXGu_yJFblRkLit86Mv4HsGTQQXGqCEjNTkrsgwqIHw5G9ZcOqYgrERTzS-XTDK_aWb9mf673GlvzNX84ZnmszRNuWE35XT88LaaLSwWYrgSt8jE6I"
+                  />
+                  <div
+                    class="absolute inset-0 bg-gradient-to-t from-on-surface/90 via-on-surface/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-300"
+                  ></div>
+                  <div class="absolute top-space-md left-space-md">
+                    <span
+                      class="inline-flex items-center gap-1.5 px-space-md py-space-xs rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface font-label-sm text-label-sm shadow-sm"
+                    >
+                      <span
+                        class="material-symbols-outlined text-xs text-primary"
+                        >bed</span
+                      >
+                      Executive Suite
+                    </span>
+                  </div>
+                  <div
+                    class="absolute top-space-md right-space-md opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0"
+                  >
+                    <span
+                      class="w-10 h-10 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md"
+                    >
+                      <span class="material-symbols-outlined text-lg"
+                        >fullscreen</span
+                      >
+                    </span>
+                  </div>
+                  <div
+                    class="absolute bottom-0 left-0 right-0 p-space-md text-on-primary"
+                  >
+                    <h3
+                      class="font-headline-sm text-headline-sm font-bold text-on-primary"
+                    >
+                      Executive Bedroom Suite
+                    </h3>
+                    <p
+                      class="font-body-sm text-body-sm text-surface-container-high line-clamp-1 mt-1"
+                    >
+                      Crisp bespoke bedding, private patio panoramas, and quiet
+                      retreat.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- Item 4: Acacia Restaurant Delicacies (Dining) -->
+              <div
+                class="gallery-item group relative rounded-xl overflow-hidden bg-surface-container-lowest shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer"
+                data-category="dining"
+                data-desc="Artfully prepared prime cuts of grilled nyama choma, crispy lake tilapia with fresh kachumbari, and local tropical fruit assortments."
+                data-index="3"
+                data-tag="Culinary Journey"
+                data-title="Acacia Restaurant & Kenyan Culinary Specialities"
+              >
+                <div class="relative w-full h-80 overflow-hidden">
+                  <img
+                    alt="Acacia Restaurant gourmet cuisine"
+                    class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    data-alt="Gourmet dining presentation at Acacia Restaurant with expertly prepared tender roasted meats, fresh whole tilapia with herb garnishes, savory traditional sides, and a colorful sliced tropical fruit platter placed on a fine dining table set with gleaming stemware."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFTrzT1dmcUGv6vxTbmy8shA6xXpal5klAIDBsPYEXLXEiVcZJ9ztnG5kRiWALHUfmo09_nJ_i-7GOCADhp63gZzErF_3edVwmFzHoJteXMQNw7EYCV_P_UzzuN9rS6uHFSqWjnl2gzHrOSiVN_-XmYvADJ8luh0WPcrptV6qI11CAIQkGtuQZnjlcT4rd0-4dMYWbSy0l4FdtnbQ72NLytuyv_uK4Lv_-cPwn4XM"
+                  />
+                  <div
+                    class="absolute inset-0 bg-gradient-to-t from-on-surface/90 via-on-surface/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-300"
+                  ></div>
+                  <div class="absolute top-space-md left-space-md">
+                    <span
+                      class="inline-flex items-center gap-1.5 px-space-md py-space-xs rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface font-label-sm text-label-sm shadow-sm"
+                    >
+                      <span
+                        class="material-symbols-outlined text-xs text-secondary"
+                        >restaurant</span
+                      >
+                      Acacia Cuisine
+                    </span>
+                  </div>
+                  <div
+                    class="absolute top-space-md right-space-md opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0"
+                  >
+                    <span
+                      class="w-10 h-10 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md"
+                    >
+                      <span class="material-symbols-outlined text-lg"
+                        >fullscreen</span
+                      >
+                    </span>
+                  </div>
+                  <div
+                    class="absolute bottom-0 left-0 right-0 p-space-md text-on-primary"
+                  >
+                    <h3
+                      class="font-headline-sm text-headline-sm font-bold text-on-primary"
+                    >
+                      The Acacia Dining Experience
+                    </h3>
+                    <p
+                      class="font-body-sm text-body-sm text-surface-container-high line-clamp-1 mt-1"
+                    >
+                      Traditional Kenyan roasts alongside international fine
+                      dining delicacies.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- Item 5: Sunken Poolside Lounge & Cocktail Bar (Dining/Pool) -->
+              <div
+                class="gallery-item group relative rounded-xl overflow-hidden bg-surface-container-lowest shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer"
+                data-category="dining"
+                data-desc="Intimate sunken seating beside the illuminated pool where mixologists craft signature herbal infusions beneath candlelit copper lanterns."
+                data-index="4"
+                data-tag="Lounges & Bar"
+                data-title="Sunken Poolside Lounge & Twilight Cocktail Bar"
+              >
+                <div class="relative w-full h-80 overflow-hidden">
+                  <img
+                    alt="Sunken poolside lounge and cocktail bar"
+                    class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    data-alt="Sunken lounge and open-air resort bar beside a tranquil pool at dusk. Ambient hanging copper lantern lights cast gentle warm glows over cushioned sectional sofas, glowing cocktails on polished wooden low tables, and illuminated foliage."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZosH2ivYmFtI0FTSwFbYmYeHFmPtqXAz4hNU2rs9_bUVJJXK8pLkrmIC11keqdglta3jTmvDg2hOSiAWSc3hseA7gvRtqxpHe8tChmcc7uWObG4D1budqauof9mY1lkfVkXsz4buySlcA5FStUTrZ2zOEbBoauZMYmrhsLvlro-zhEhfJ65D1chMuIm3RKuXWwmE_NY8R6B35V_MG52l7Y65tgcAYR79PJsRo2AU"
+                  />
+                  <div
+                    class="absolute inset-0 bg-gradient-to-t from-on-surface/90 via-on-surface/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-300"
+                  ></div>
+                  <div class="absolute top-space-md left-space-md">
+                    <span
+                      class="inline-flex items-center gap-1.5 px-space-md py-space-xs rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface font-label-sm text-label-sm shadow-sm"
+                    >
+                      <span
+                        class="material-symbols-outlined text-xs text-primary"
+                        >local_bar</span
+                      >
+                      Cocktails & Spirits
+                    </span>
+                  </div>
+                  <div
+                    class="absolute top-space-md right-space-md opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0"
+                  >
+                    <span
+                      class="w-10 h-10 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md"
+                    >
+                      <span class="material-symbols-outlined text-lg"
+                        >fullscreen</span
+                      >
+                    </span>
+                  </div>
+                  <div
+                    class="absolute bottom-0 left-0 right-0 p-space-md text-on-primary"
+                  >
+                    <h3
+                      class="font-headline-sm text-headline-sm font-bold text-on-primary"
+                    >
+                      Poolside Twilight Lounge
+                    </h3>
+                    <p
+                      class="font-body-sm text-body-sm text-surface-container-high line-clamp-1 mt-1"
+                    >
+                      Chilled ambiance, handcrafted beverages, and starlit
+                      gatherings.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- Item 6: Manicured Tropical Garden Lawns (Gardens) -->
+              <div
+                class="gallery-item group relative rounded-xl overflow-hidden bg-surface-container-lowest shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer"
+                data-category="gardens"
+                data-desc="Lush emerald lawns flanked by flourishing bougainvillea, indigenous palms, and garden pergolas suitable for grand celebrations and private garden tea."
+                data-index="5"
+                data-tag="Gardens & Celebrations"
+                data-title="Manicured Tropical Wedding Lawns & Gardens"
+              >
+                <div
+                  class="relative w-full h-80 sm:h-96 md:h-[420px] overflow-hidden"
+                >
+                  <img
+                    alt="Manicured tropical garden lawns"
+                    class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    data-alt="Exquisitely manicured resort garden lawns in full sunshine. Vibrant magenta bougainvillea bushes border expansive green grass with a decorative white wooden gazebo, shaded floral stone paths, and graceful acacia shade trees."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCs6GFKrPxY_fDQpIwRi-EqiAampY2ajvBFxg7yuceil594tqhoLmwRBKkPmf95q2QZ73fBPklOmnVyx9VZv_qqwNHnZT_3Ex85SUryhabqAoAK872OVc6ARkRyvvpZ0mr4hVnreUPyC4Oz2Xmf5tqhtweMscqa3Bkcsr1-knCSnYiy5Jx9tHuxRMD9M2KgKgpYzoVIwTbTOwjX8MSXoDda49f0yUAC_s5MW3f3g-0"
+                  />
+                  <div
+                    class="absolute inset-0 bg-gradient-to-t from-on-surface/90 via-on-surface/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-300"
+                  ></div>
+                  <div class="absolute top-space-md left-space-md">
+                    <span
+                      class="inline-flex items-center gap-1.5 px-space-md py-space-xs rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface font-label-sm text-label-sm shadow-sm"
+                    >
+                      <span
+                        class="material-symbols-outlined text-xs text-tertiary"
+                        >park</span
+                      >
+                      Botanical Grounds
+                    </span>
+                  </div>
+                  <div
+                    class="absolute top-space-md right-space-md opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0"
+                  >
+                    <span
+                      class="w-10 h-10 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md"
+                    >
+                      <span class="material-symbols-outlined text-lg"
+                        >fullscreen</span
+                      >
+                    </span>
+                  </div>
+                  <div
+                    class="absolute bottom-0 left-0 right-0 p-space-md text-on-primary"
+                  >
+                    <h3
+                      class="font-headline-sm text-headline-sm font-bold text-on-primary"
+                    >
+                      Lush Event Gardens
+                    </h3>
+                    <p
+                      class="font-body-sm text-body-sm text-surface-container-high line-clamp-1 mt-1"
+                    >
+                      The premier venue for Kitui garden weddings, banquets, and
+                      evening strolls.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- Item 7: Modern Glass-fronted Executive Boardroom (Events) -->
+              <div
+                class="gallery-item group relative rounded-xl overflow-hidden bg-surface-container-lowest shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer"
+                data-category="events"
+                data-desc="Fully climate-controlled conference facilities equipped with ergonomic leather seating, high-speed fiber internet, and HD audiovisual presentations."
+                data-index="6"
+                data-tag="Corporate & MICE"
+                data-title="Executive Conference Center & Boardrooms"
+              >
+                <div
+                  class="relative w-full h-80 sm:h-96 md:h-[420px] overflow-hidden"
+                >
+                  <img
+                    alt="Executive conference boardroom"
+                    class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    data-alt="Modern high-tech executive boardroom with large glass windows overlooking resort palms. Polished dark wood conference table lined with ergonomic leather executive chairs, integrated presentation screens, microphone units, and professional stationery."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDO1plYUuiDulFupQ62r_H5atJxLk-F-b4c6JDJENGunc3a50FexqxjTvJqzbVmC66pVT8bpTvTVmG4zqwrjmDZP3E2J4eEExBE__zVcCK2PrOjQFV02CFbbJHBYH5hky_iKk-tLRCrno9DmKPvsIf_1ZsCGWZXt9s2NtBROjt5NAUSfR3uvvI3P5HlDlX-jcxwu8vXroYxOCrmOaNq9GZxmOuvu3MznIziaYC_GBA"
+                  />
+                  <div
+                    class="absolute inset-0 bg-gradient-to-t from-on-surface/90 via-on-surface/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-300"
+                  ></div>
+                  <div class="absolute top-space-md left-space-md">
+                    <span
+                      class="inline-flex items-center gap-1.5 px-space-md py-space-xs rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface font-label-sm text-label-sm shadow-sm"
+                    >
+                      <span
+                        class="material-symbols-outlined text-xs text-primary"
+                        >groups</span
+                      >
+                      Conferences
+                    </span>
+                  </div>
+                  <div
+                    class="absolute top-space-md right-space-md opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0"
+                  >
+                    <span
+                      class="w-10 h-10 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md"
+                    >
+                      <span class="material-symbols-outlined text-lg"
+                        >fullscreen</span
+                      >
+                    </span>
+                  </div>
+                  <div
+                    class="absolute bottom-0 left-0 right-0 p-space-md text-on-primary"
+                  >
+                    <h3
+                      class="font-headline-sm text-headline-sm font-bold text-on-primary"
+                    >
+                      Summit Conference Halls
+                    </h3>
+                    <p
+                      class="font-body-sm text-body-sm text-surface-container-high line-clamp-1 mt-1"
+                    >
+                      Host state-of-the-art seminars, executive summits, and
+                      corporate workshops.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- Item 8: Marble Bathroom Sanctuary (Rooms) -->
+              <div
+                class="gallery-item group relative rounded-xl overflow-hidden bg-surface-container-lowest shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer"
+                data-category="rooms"
+                data-desc="Pristine en-suite retreat appointed with Italian marble vanities, rain shower stalls, deep freestanding soaking tub, and organic botanical toiletries."
+                data-index="7"
+                data-tag="Luxury Amenities"
+                data-title="Marble Bathroom & Deep Soaking Sanctuary"
+              >
+                <div
+                  class="relative w-full h-80 sm:h-96 md:h-[420px] overflow-hidden"
+                >
+                  <img
+                    alt="Marble bathroom and soaking tub"
+                    class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    data-alt="Luxury resort bathroom featuring a deep freestanding white soaking bathtub next to a floor-to-ceiling glass rainfall shower. Polished grey-veined marble countertop with double vessel sinks, warm backlit mirrors, and plush folded white cotton towels."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1_JHr5JNGJWsLnQRa7U-JYFhZXp1Yy3uMBIeelD6teGrWK3i7Tz_ihNxNmDSoSLYqDFUstE4QRqR70PRswjWLvN-SE8rGCoTfnzZ7vO0K8fzLBD6dPXL9Bo1Kr0zLyN9uS4wNKOkTfpMg8x5qCBLvKDXEhtxHbZECLHXj86_O3gGi44Yg4FkI348vSvWWBk6z4Sw3KyYPag4NzNr5xoRKD_QABuRFaKAX-c9JdtM"
+                  />
+                  <div
+                    class="absolute inset-0 bg-gradient-to-t from-on-surface/90 via-on-surface/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-300"
+                  ></div>
+                  <div class="absolute top-space-md left-space-md">
+                    <span
+                      class="inline-flex items-center gap-1.5 px-space-md py-space-xs rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface font-label-sm text-label-sm shadow-sm"
+                    >
+                      <span
+                        class="material-symbols-outlined text-xs text-primary"
+                        >bathtub</span
+                      >
+                      Spa En-Suite
+                    </span>
+                  </div>
+                  <div
+                    class="absolute top-space-md right-space-md opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0"
+                  >
+                    <span
+                      class="w-10 h-10 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface flex items-center justify-center shadow-md"
+                    >
+                      <span class="material-symbols-outlined text-lg"
+                        >fullscreen</span
+                      >
+                    </span>
+                  </div>
+                  <div
+                    class="absolute bottom-0 left-0 right-0 p-space-md text-on-primary"
+                  >
+                    <h3
+                      class="font-headline-sm text-headline-sm font-bold text-on-primary"
+                    >
+                      En-Suite Wellness Bath
+                    </h3>
+                    <p
+                      class="font-body-sm text-body-sm text-surface-container-high line-clamp-1 mt-1"
+                    >
+                      Soak in pure quietude with rain showers and premium resort
+                      bath amenities.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Experience Highlight Banner / Callout -->
+            <div
+              class="mt-space-xl p-space-lg rounded-2xl bg-surface-container-low flex flex-col lg:flex-row items-center justify-between gap-space-lg"
+            >
+              <div class="flex items-center gap-space-md">
+                <div
+                  class="w-14 h-14 rounded-full bg-primary-container text-on-primary flex items-center justify-center shrink-0"
+                >
+                  <span class="material-symbols-outlined text-2xl"
+                    >diamond</span
+                  >
+                </div>
+                <div>
+                  <h4
+                    class="font-headline-sm text-headline-sm font-bold text-on-surface"
+                  >
+                    Experience Intercounty Hotel in Person
+                  </h4>
+                  <p
+                    class="font-body-sm text-body-sm text-on-surface-variant mt-0.5"
+                  >
+                    Explore our suites, sample authentic Kitui culinary
+                    delicacies, and host unforgettable occasions.
+                  </p>
+                </div>
+              </div>
+              <div
+                class="flex flex-wrap items-center gap-space-sm w-full lg:w-auto justify-start lg:justify-end"
+              >
+                <a
+                  class="px-space-lg py-space-sm rounded-full bg-surface-container-lowest text-primary font-label-md text-label-md hover:bg-surface-container transition-all"
+                  data-path="contact"
+                  href="#"
+                >
+                  Plan an Event
+                </a>
+                <a
+                  class="px-space-lg py-space-sm rounded-full bg-secondary text-on-secondary font-label-md text-label-md hover:bg-secondary-container transition-all shadow-md"
+                  data-path="booking"
+                  href="#"
+                >
+                  Reserve a Suite
+                </a>
+              </div>
+            </div>
+          </section>
+        </div>
+        <!-- Interactive Modal Lightbox -->
+        <div
+          class="fixed inset-0 z-50 hidden flex-col items-center justify-center bg-on-surface/95 backdrop-blur-md p-space-sm md:p-space-lg transition-opacity duration-300"
+          id="lightbox-modal"
+        >
+          <!-- Top Action Bar -->
+          <div
+            class="w-full max-w-6xl flex items-center justify-between py-space-xs text-on-primary shrink-0"
+          >
+            <div class="flex items-center gap-space-sm">
+              <span
+                class="px-space-sm py-0.5 rounded-full bg-secondary text-on-secondary font-label-sm text-label-sm"
+                id="lb-badge"
+              >
+                Category
+              </span>
+              <span
+                class="font-label-sm text-label-sm text-surface-container-high"
+                id="lb-counter"
+              >
+                1 of 8
+              </span>
+            </div>
+            <button
+              class="w-10 h-10 rounded-full bg-surface-container-lowest/15 hover:bg-surface-container-lowest/30 flex items-center justify-center text-on-primary transition-all"
+              id="lb-close"
+              type="button"
+            >
+              <span class="material-symbols-outlined text-2xl">close</span>
+            </button>
+          </div>
+          <!-- Media Area with Navigation Arrows -->
+          <div
+            class="relative w-full max-w-6xl flex-1 flex items-center justify-center overflow-hidden my-space-xs min-h-[300px]"
+          >
+            <!-- Left Prev Button -->
+            <button
+              class="absolute left-2 md:left-4 z-10 w-12 h-12 rounded-full bg-on-surface/60 hover:bg-on-surface/90 text-on-primary flex items-center justify-center transition-transform hover:scale-105"
+              id="lb-prev"
+              type="button"
+            >
+              <span class="material-symbols-outlined text-2xl"
+                >arrow_back_ios_new</span
+              >
+            </button>
+            <!-- Main Display Image Container -->
+            <div
+              class="w-full h-full max-h-[716px] flex items-center justify-center px-space-lg"
+            >
+              <img
+                alt="Enlarged view"
+                class="max-w-full max-h-[716px] object-contain rounded-lg shadow-2xl transition-all duration-300"
+                data-alt="Enlarged resort photo"
+                id="lb-img"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAl6NN7JffRytDanHaKp-l4eoUjHY4AS6cnhV5jle_yi4JnK58eNbftg3pxbidmhUQyvXRF3HFLeshNzlHonEO1psC3ym1xBGFUtlIvxltzpP4SlTITO2Oa7mJL-6IzzZGPU3Km2bhuu3Q8VAvrjWJAVPh6ff6G4We6YyNt2xl8KRQdD7bMJKvkyvrVh4n8vWIZAut4CxW3WTisDvDdwBulOWLc2kYiiMQsKyLkYno"
+              />
+            </div>
+            <!-- Right Next Button -->
+            <button
+              class="absolute right-2 md:right-4 z-10 w-12 h-12 rounded-full bg-on-surface/60 hover:bg-on-surface/90 text-on-primary flex items-center justify-center transition-transform hover:scale-105"
+              id="lb-next"
+              type="button"
+            >
+              <span class="material-symbols-outlined text-2xl"
+                >arrow_forward_ios</span
+              >
+            </button>
+          </div>
+          <!-- Bottom Caption Information -->
+          <div
+            class="w-full max-w-4xl text-center py-space-sm text-on-primary shrink-0"
+          >
+            <h2
+              class="font-headline-sm text-headline-sm text-on-primary font-bold"
+              id="lb-title"
+            >
+              Photo Title
+            </h2>
+            <p
+              class="font-body-sm text-body-sm text-surface-container-high mt-1 max-w-2xl mx-auto"
+              id="lb-desc"
+            >
+              Photo description and architectural features.
+            </p>
+          </div>
+        </div>
+        <!-- Client-side Interactive Behavior -->
+        <script>
+          (function () {
+            // Gallery state & data
+            const items = Array.from(
+              document.querySelectorAll(".gallery-item"),
+            );
+            let visibleItems = [...items];
+            let currentIndex = 0;
+
+            const modal = document.getElementById("lightbox-modal");
+            const lbImg = document.getElementById("lb-img");
+            const lbTitle = document.getElementById("lb-title");
+            const lbDesc = document.getElementById("lb-desc");
+            const lbBadge = document.getElementById("lb-badge");
+            const lbCounter = document.getElementById("lb-counter");
+            const lbClose = document.getElementById("lb-close");
+            const lbPrev = document.getElementById("lb-prev");
+            const lbNext = document.getElementById("lb-next");
+
+            // Filter handling
+            const filterButtons = document.querySelectorAll(".filter-pill");
+            filterButtons.forEach((btn) => {
+              btn.addEventListener("click", () => {
+                const filter = btn.getAttribute("data-filter");
+
+                // Update active state colors
+                filterButtons.forEach((b) => {
+                  b.classList.remove("bg-secondary", "text-on-secondary");
+                  b.classList.add(
+                    "bg-surface-container",
+                    "text-on-surface-variant",
+                  );
+                });
+                btn.classList.remove(
+                  "bg-surface-container",
+                  "text-on-surface-variant",
+                );
+                btn.classList.add("bg-secondary", "text-on-secondary");
+
+                // Filter DOM elements
+                visibleItems = [];
+                items.forEach((item) => {
+                  const cat = item.getAttribute("data-category");
+                  if (filter === "all" || cat === filter) {
+                    item.style.display = "";
+                    visibleItems.push(item);
+                  } else {
+                    item.style.display = "none";
+                  }
+                });
+              });
+            });
+
+            // Lightbox update
+            function updateLightbox(index) {
+              if (visibleItems.length === 0) return;
+              currentIndex =
+                (index + visibleItems.length) % visibleItems.length;
+              const currentEl = visibleItems[currentIndex];
+
+              const title = currentEl.getAttribute("data-title") || "";
+              const desc = currentEl.getAttribute("data-desc") || "";
+              const tag = currentEl.getAttribute("data-tag") || "Gallery";
+              const imgEl = currentEl.querySelector("img");
+
+              if (imgEl) {
+                lbImg.src = imgEl.src;
+                lbImg.alt = title;
+                if (imgEl.hasAttribute("data-alt")) {
+                  lbImg.setAttribute(
+                    "data-alt",
+                    imgEl.getAttribute("data-alt"),
+                  );
+                }
+              }
+
+              lbTitle.textContent = title;
+              lbDesc.textContent = desc;
+              lbBadge.textContent = tag;
+              lbCounter.textContent = `${currentIndex + 1} of ${visibleItems.length}`;
+            }
+
+            function openLightbox(index) {
+              modal.classList.remove("hidden");
+              modal.classList.add("flex");
+              document.body.style.overflow = "hidden";
+              updateLightbox(index);
+            }
+
+            function closeLightbox() {
+              modal.classList.add("hidden");
+              modal.classList.remove("flex");
+              document.body.style.overflow = "";
+            }
+
+            // Attach clicks to thumbnails
+            items.forEach((item) => {
+              item.addEventListener("click", () => {
+                const activeIndex = visibleItems.indexOf(item);
+                if (activeIndex !== -1) {
+                  openLightbox(activeIndex);
+                }
+              });
+            });
+
+            // Navigation controls
+            lbClose.addEventListener("click", closeLightbox);
+            lbPrev.addEventListener("click", (e) => {
+              e.stopPropagation();
+              updateLightbox(currentIndex - 1);
+            });
+            lbNext.addEventListener("click", (e) => {
+              e.stopPropagation();
+              updateLightbox(currentIndex + 1);
+            });
+
+            // Keyboard access
+            window.addEventListener("keydown", (e) => {
+              if (!modal.classList.contains("hidden")) {
+                if (e.key === "Escape") closeLightbox();
+                if (e.key === "ArrowLeft") updateLightbox(currentIndex - 1);
+                if (e.key === "ArrowRight") updateLightbox(currentIndex + 1);
+              }
+            });
+
+            // Background click close
+            modal.addEventListener("click", (e) => {
+              if (e.target === modal) {
+                closeLightbox();
+              }
+            });
+          })();
+        </script>
+      </div>
+    </main>
+{% endblock %}

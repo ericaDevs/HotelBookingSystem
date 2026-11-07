@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block hero %}
+<section class="inner-hero inner-hero-booking">
+  <div class="inner-hero-image" role="img" aria-label="A comfortable hotel room"></div>
+  <div class="inner-hero-content">
+    <p class="hero-eyebrow">{% block hero_eyebrow %}PLAN YOUR STAY{% endblock %}</p>
+    <h1>{% block hero_title %}Booking &amp; Reservation{% endblock %}</h1>
+    <p class="mx-auto mt-4 max-w-2xl text-sm leading-6 text-white/85 sm:text-base">{% block hero_description %}A few details are all that stand between you and a memorable stay.{% endblock %}</p>
+    <div class="mt-6 flex items-center justify-center gap-2 text-xs text-white/80">
+      <a href="{% url 'home' %}" class="hover:text-white">Home</a><span aria-hidden="true">/</span><span>Booking</span>
+    </div>
+  </div>
+</section>
+{% endblock %}

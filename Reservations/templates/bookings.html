@@ -1,0 +1,1384 @@
+{% extends "layout.html" %}
+
+{% block title %}Booking & Reservation | Intercounty Hotels{% endblock %}
+{% block body_class %}bg-surface font-body-md text-on-surface antialiased min-h-screen{% endblock %}
+{% block head %}
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @layer base {
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+        }
+        body {
+          overscroll-behavior: none;
+        }
+        main > :first-child {
+          margin-top: 0 !important;
+        }
+        main > :last-child {
+          margin-bottom: 0 !important;
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              secondary: "#b2273d",
+              "secondary-fixed": "#ffdada",
+              outline: "#7f737f",
+              surface: "#f9f9ff",
+              "surface-dim": "#cfdaf2",
+              "on-primary-fixed-variant": "#672f76",
+              "on-error-container": "#93000a",
+              "tertiary-container": "#3c725b",
+              "outline-variant": "#d1c2cf",
+              "surface-container-lowest": "#ffffff",
+              "secondary-fixed-dim": "#ffb3b6",
+              "surface-bright": "#f9f9ff",
+              primary: "#713980",
+              tertiary: "#215944",
+              "surface-container": "#e7eeff",
+              "on-tertiary-fixed-variant": "#16503b",
+              "on-surface": "#111c2d",
+              "on-error": "#ffffff",
+              "on-primary-fixed": "#340043",
+              "primary-fixed": "#fcd7ff",
+              "on-primary": "#ffffff",
+              "on-surface-variant": "#4e444e",
+              "on-tertiary-fixed": "#002115",
+              "primary-container": "#8c519a",
+              "on-secondary-fixed-variant": "#900628",
+              "surface-variant": "#d8e3fb",
+              "surface-container-high": "#dee8ff",
+              "on-primary-container": "#fedeff",
+              "inverse-on-surface": "#ecf1ff",
+              "surface-container-highest": "#d8e3fb",
+              "on-secondary-container": "#640018",
+              error: "#ba1a1a",
+              "surface-tint": "#814790",
+              "on-tertiary-container": "#baf4d8",
+              "error-container": "#ffdad6",
+              "tertiary-fixed-dim": "#9ad3b7",
+              "tertiary-fixed": "#b5efd3",
+              "primary-fixed-dim": "#f2afff",
+              background: "#f9f9ff",
+              "inverse-primary": "#f2afff",
+              "secondary-container": "#fe5f70",
+              "on-secondary": "#ffffff",
+              "surface-container-low": "#f0f3ff",
+              "on-background": "#111c2d",
+              "inverse-surface": "#263143",
+              "on-tertiary": "#ffffff",
+              "on-secondary-fixed": "#40000c",
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+            spacing: {
+              "space-xs": "0.25rem",
+              gutter: "1.5rem",
+              margin: "3rem",
+              "gutter-mobile": "1rem",
+              "space-sm": "0.5rem",
+              "space-md": "1rem",
+              "space-lg": "1.5rem",
+              "margin-mobile": "1.25rem",
+              "space-xl": "2.5rem",
+            },
+            fontFamily: {
+              "headline-xl-mobile": ["Figtree"],
+              "headline-xl": ["Figtree"],
+              "headline-md": ["Figtree"],
+              "headline-sm": ["Figtree"],
+              "label-md": ["Figtree"],
+              "headline-lg": ["Figtree"],
+              "body-md": ["Figtree"],
+              "label-lg": ["Figtree"],
+              "display-lg-mobile": ["Figtree"],
+              "body-lg": ["Figtree"],
+              "body-sm": ["Figtree"],
+              "label-sm": ["Figtree"],
+              "display-lg": ["Figtree"],
+            },
+            fontSize: {
+              "headline-xl-mobile": [
+                "28px",
+                {
+                  lineHeight: "36px",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "700",
+                },
+              ],
+              "headline-xl": [
+                "40px",
+                {
+                  lineHeight: "48px",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "700",
+                },
+              ],
+              "headline-md": [
+                "24px",
+                { lineHeight: "32px", fontWeight: "600" },
+              ],
+              "headline-sm": [
+                "20px",
+                { lineHeight: "28px", fontWeight: "600" },
+              ],
+              "label-md": [
+                "14px",
+                {
+                  lineHeight: "18px",
+                  letterSpacing: "0.02em",
+                  fontWeight: "600",
+                },
+              ],
+              "headline-lg": [
+                "32px",
+                {
+                  lineHeight: "40px",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "600",
+                },
+              ],
+              "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+              "label-lg": [
+                "16px",
+                {
+                  lineHeight: "20px",
+                  letterSpacing: "0.01em",
+                  fontWeight: "600",
+                },
+              ],
+              "display-lg-mobile": [
+                "36px",
+                {
+                  lineHeight: "44px",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "700",
+                },
+              ],
+              "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+              "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+              "label-sm": [
+                "12px",
+                {
+                  lineHeight: "16px",
+                  letterSpacing: "0.03em",
+                  fontWeight: "500",
+                },
+              ],
+              "display-lg": [
+                "56px",
+                {
+                  lineHeight: "64px",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "700",
+                },
+              ],
+            },
+          },
+        },
+      };
+    </script>
+  
+{% endblock %}
+
+{% block main %}
+<main class="w-full pt-20 bg-surface">
+      <div class="flex flex-col w-full">
+        <!-- Progress Header Section -->
+        <section
+          class="w-full bg-surface-container-low py-space-lg px-margin-mobile lg:px-margin"
+        >
+          <div
+            class="max-w-[1280px] mx-auto flex flex-col md:flex-row md:items-center justify-between gap-space-md"
+          >
+            <div>
+              <span
+                class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-bold"
+                >Secure Reservation Portal</span
+              >
+              <h1
+                class="font-headline-lg text-headline-lg text-on-surface mt-space-xs font-bold"
+              >
+                Complete Your Stay Details
+              </h1>
+            </div>
+            <!-- Step Indicator -->
+            <div
+              class="flex items-center gap-space-sm sm:gap-space-md bg-surface-container-lowest p-space-sm rounded-full shadow-sm"
+            >
+              <!-- Step 1: Completed -->
+              <div class="flex items-center gap-2 px-space-sm py-1">
+                <div
+                  class="w-7 h-7 rounded-full bg-tertiary-container text-on-tertiary flex items-center justify-center font-label-sm text-label-sm"
+                >
+                  <span class="material-symbols-outlined text-base">check</span>
+                </div>
+                <span
+                  class="hidden sm:inline font-label-md text-label-md text-on-surface-variant font-medium"
+                  >Room Selection</span
+                >
+              </div>
+              <div class="w-6 h-0.5 bg-tertiary-container/40"></div>
+              <!-- Step 2: Active -->
+              <div
+                class="flex items-center gap-2 px-space-sm py-1 bg-primary/10 rounded-full"
+              >
+                <div
+                  class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-sm text-label-sm font-bold"
+                >
+                  2
+                </div>
+                <span class="font-label-md text-label-md text-primary font-bold"
+                  >Details & Payment</span
+                >
+              </div>
+              <div class="w-6 h-0.5 bg-outline-variant/60"></div>
+              <!-- Step 3: Upcoming -->
+              <div class="flex items-center gap-2 px-space-sm py-1 opacity-60">
+                <div
+                  class="w-7 h-7 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-label-sm text-label-sm font-semibold"
+                >
+                  3
+                </div>
+                <span
+                  class="hidden sm:inline font-label-md text-label-md text-on-surface-variant"
+                  >Confirmation</span
+                >
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- Main Booking Flow Content -->
+        <section class="w-full py-space-xl px-margin-mobile lg:px-margin">
+          <div
+            class="max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start"
+          >
+            <!-- LEFT COLUMN: Guest Details & Payment (8 Cols) -->
+            <div class="lg:col-span-7 xl:col-span-8 flex flex-col gap-space-lg">
+              <!-- Banner Alert: Room Reserved Timer -->
+              <div
+                class="flex items-center justify-between p-space-md rounded-xl bg-primary-fixed/40 text-on-primary-fixed shadow-sm"
+              >
+                <div class="flex items-center gap-space-sm">
+                  <span class="material-symbols-outlined text-primary text-xl"
+                    >lock_clock</span
+                  >
+                  <p class="font-body-sm text-body-sm">
+                    We are holding your selected suite at guaranteed rate for:
+                  </p>
+                </div>
+                <span
+                  class="font-label-lg text-label-lg font-bold text-secondary bg-surface-container-lowest px-space-sm py-1 rounded-full shadow-sm"
+                  id="countdown-timer"
+                >
+                  14:38
+                </span>
+              </div>
+              <!-- Card: Primary Guest Information -->
+              <div
+                class="bg-surface-container-lowest p-space-lg lg:p-space-xl rounded-xl shadow-sm flex flex-col gap-space-md"
+              >
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-space-sm">
+                    <span
+                      class="material-symbols-outlined text-primary text-2xl"
+                      >person_outline</span
+                    >
+                    <h2
+                      class="font-headline-sm text-headline-sm text-on-surface"
+                    >
+                      1. Primary Guest Details
+                    </h2>
+                  </div>
+                  <span
+                    class="font-label-sm text-label-sm text-tertiary-container font-medium bg-tertiary-fixed/30 px-space-sm py-0.5 rounded-full"
+                    >Primary Contact</span
+                  >
+                </div>
+                <div
+                  class="grid grid-cols-1 md:grid-cols-2 gap-space-md mt-space-xs"
+                >
+                  <!-- Full Name -->
+                  <div class="flex flex-col gap-1.5">
+                    <label
+                      class="font-label-sm text-label-sm text-on-surface-variant font-medium"
+                      >Full Name (as per National ID / Passport) *</label
+                    >
+                    <input
+                      class="h-12 px-space-md rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
+                      placeholder="e.g. Grace Wambui"
+                      type="text"
+                      value="Dr. Evans Musyoka"
+                    />
+                  </div>
+                  <!-- Email Address -->
+                  <div class="flex flex-col gap-1.5">
+                    <label
+                      class="font-label-sm text-label-sm text-on-surface-variant font-medium"
+                      >Email Address (for Instant Voucher) *</label
+                    >
+                    <input
+                      class="h-12 px-space-md rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
+                      placeholder="you@domain.com"
+                      type="email"
+                      value="evans.musyoka@kenyahospitality.co.ke"
+                    />
+                  </div>
+                  <!-- Kenyan Phone Number -->
+                  <div class="flex flex-col gap-1.5">
+                    <label
+                      class="font-label-sm text-label-sm text-on-surface-variant font-medium"
+                      >Mobile Number (M-Pesa Connected) *</label
+                    >
+                    <div
+                      class="flex h-12 rounded-lg bg-surface-container-low overflow-hidden focus-within:ring-2 focus-within:ring-primary/40"
+                    >
+                      <span
+                        class="px-space-md bg-surface-container flex items-center font-label-md text-label-md text-on-surface font-semibold shrink-0"
+                      >
+                        +254
+                      </span>
+                      <input
+                        class="w-full px-space-md bg-transparent text-on-surface font-body-md text-body-md focus:outline-none"
+                        id="guest-phone"
+                        placeholder="7XX XXX XXX"
+                        type="tel"
+                        value="722 458 912"
+                      />
+                    </div>
+                  </div>
+                  <!-- National ID / Passport Number -->
+                  <div class="flex flex-col gap-1.5">
+                    <label
+                      class="font-label-sm text-label-sm text-on-surface-variant font-medium"
+                      >National ID / Passport Number *</label
+                    >
+                    <input
+                      class="h-12 px-space-md rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
+                      placeholder="e.g. 29401822 or Passport No."
+                      type="text"
+                      value="A28904712"
+                    />
+                  </div>
+                  <!-- Country & City -->
+                  <div class="flex flex-col gap-1.5 md:col-span-2">
+                    <label
+                      class="font-label-sm text-label-sm text-on-surface-variant font-medium"
+                      >Residential City / Country of Origin</label
+                    >
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
+                      <input
+                        class="h-12 px-space-md rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
+                        placeholder="City of Residence"
+                        type="text"
+                        value="Nairobi / Kitui Resident"
+                      />
+                      <select
+                        class="h-12 px-space-md rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
+                      >
+                        <option selected="">Kenya (East Africa)</option>
+                        <option>Uganda</option>
+                        <option>Tanzania</option>
+                        <option>United Kingdom</option>
+                        <option>United States</option>
+                        <option>Germany</option>
+                        <option>Other International</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Card: Special Requests & Arrival Details -->
+              <div
+                class="bg-surface-container-lowest p-space-lg lg:p-space-xl rounded-xl shadow-sm flex flex-col gap-space-md"
+              >
+                <div class="flex items-center gap-space-sm">
+                  <span class="material-symbols-outlined text-primary text-2xl"
+                    >schedule</span
+                  >
+                  <h2 class="font-headline-sm text-headline-sm text-on-surface">
+                    2. Arrival Preferences & Requests
+                  </h2>
+                </div>
+                <div
+                  class="grid grid-cols-1 md:grid-cols-3 gap-space-md mt-space-xs"
+                >
+                  <div class="flex flex-col gap-1.5">
+                    <label
+                      class="font-label-sm text-label-sm text-on-surface-variant font-medium"
+                      >Estimated Arrival Time</label
+                    >
+                    <select
+                      class="h-12 px-space-md rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary/40"
+                    >
+                      <option>
+                        12:00 PM – 2:00 PM (Early Check-in request)
+                      </option>
+                      <option selected="">
+                        2:00 PM – 4:00 PM (Standard Check-in)
+                      </option>
+                      <option>4:00 PM – 6:00 PM (Afternoon Arrival)</option>
+                      <option>6:00 PM – 9:00 PM (Evening Arrival)</option>
+                      <option>Late Night (After 9:00 PM)</option>
+                    </select>
+                  </div>
+                  <div class="flex flex-col gap-1.5 md:col-span-2">
+                    <label
+                      class="font-label-sm text-label-sm text-on-surface-variant font-medium"
+                      >Complimentary Pick-up or Transfer Service</label
+                    >
+                    <select
+                      class="h-12 px-space-md rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary/40"
+                    >
+                      <option>
+                        No transfer needed (Self-drive / Local taxi)
+                      </option>
+                      <option selected="">
+                        Complimentary Kitui Airstrip Shuttle (10 Mins)
+                      </option>
+                      <option>
+                        Private Nairobi (JKIA) Executive Chauffeur (Extra KES
+                        9,500)
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <!-- Special Preferences Pills -->
+                <div class="flex flex-col gap-1.5 mt-space-xs">
+                  <label
+                    class="font-label-sm text-label-sm text-on-surface-variant font-medium"
+                    >Add-on In-room Amenities (Free on Request)</label
+                  >
+                  <div class="flex flex-wrap gap-space-sm">
+                    <button
+                      class="px-space-md py-2 rounded-full font-label-sm text-label-sm bg-primary text-on-primary flex items-center gap-1.5 transition-all"
+                      onclick="
+                        this.classList.toggle('bg-primary');
+                        this.classList.toggle('text-on-primary');
+                        this.classList.toggle('bg-surface-container');
+                      "
+                      type="button"
+                    >
+                      <span class="material-symbols-outlined text-sm">bed</span>
+                      High Floor Quiet Wing
+                    </button>
+                    <button
+                      class="px-space-md py-2 rounded-full font-label-sm text-label-sm bg-surface-container text-on-surface flex items-center gap-1.5 transition-all"
+                      onclick="
+                        this.classList.toggle('bg-primary');
+                        this.classList.toggle('text-on-primary');
+                        this.classList.toggle('bg-surface-container');
+                      "
+                      type="button"
+                    >
+                      <span class="material-symbols-outlined text-sm"
+                        >cake</span
+                      >
+                      Honeymoon / Anniversary Fruit Basket
+                    </button>
+                    <button
+                      class="px-space-md py-2 rounded-full font-label-sm text-label-sm bg-surface-container text-on-surface flex items-center gap-1.5 transition-all"
+                      onclick="
+                        this.classList.toggle('bg-primary');
+                        this.classList.toggle('text-on-primary');
+                        this.classList.toggle('bg-surface-container');
+                      "
+                      type="button"
+                    >
+                      <span class="material-symbols-outlined text-sm"
+                        >restaurant</span
+                      >
+                      Halal / Vegan Breakfast Note
+                    </button>
+                    <button
+                      class="px-space-md py-2 rounded-full font-label-sm text-label-sm bg-surface-container text-on-surface flex items-center gap-1.5 transition-all"
+                      onclick="
+                        this.classList.toggle('bg-primary');
+                        this.classList.toggle('text-on-primary');
+                        this.classList.toggle('bg-surface-container');
+                      "
+                      type="button"
+                    >
+                      <span class="material-symbols-outlined text-sm"
+                        >desk</span
+                      >
+                      Extra Executive Workstation Desk
+                    </button>
+                  </div>
+                </div>
+                <div class="flex flex-col gap-1.5 mt-space-xs">
+                  <label
+                    class="font-label-sm text-label-sm text-on-surface-variant font-medium"
+                    >Special Instructions / Dietary Restrictions</label
+                  >
+                  <textarea
+                    class="p-space-md rounded-lg bg-surface-container-low text-on-surface font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
+                    placeholder="Let us know if you require cribs, late meal service, or specific dietary preparations..."
+                    rows="2"
+                  ></textarea>
+                </div>
+              </div>
+              <!-- Card: Payment Method Selection -->
+              <div
+                class="bg-surface-container-lowest p-space-lg lg:p-space-xl rounded-xl shadow-sm flex flex-col gap-space-lg"
+              >
+                <div
+                  class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs"
+                >
+                  <div class="flex items-center gap-space-sm">
+                    <span
+                      class="material-symbols-outlined text-secondary text-2xl"
+                      >payments</span
+                    >
+                    <h2
+                      class="font-headline-sm text-headline-sm text-on-surface"
+                    >
+                      3. Payment Method
+                    </h2>
+                  </div>
+                  <div
+                    class="flex items-center gap-2 text-tertiary-container font-label-sm text-label-sm"
+                  >
+                    <span class="material-symbols-outlined text-base"
+                      >verified_user</span
+                    >
+                    <span>256-Bit SSL Encrypted Gateway</span>
+                  </div>
+                </div>
+                <!-- Method Selection Tabs -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-space-sm">
+                  <!-- Option 1: M-Pesa (Active Default) -->
+                  <button
+                    class="p-space-md rounded-xl text-left transition-all flex flex-col justify-between gap-space-sm bg-tertiary-fixed/30 text-on-tertiary-fixed shadow-sm"
+                    id="tab-mpesa"
+                    onclick="selectPaymentMethod('mpesa')"
+                    type="button"
+                  >
+                    <div class="flex items-center justify-between">
+                      <div
+                        class="w-8 h-8 rounded-full bg-tertiary text-on-tertiary flex items-center justify-center font-bold text-xs"
+                      >
+                        KES
+                      </div>
+                      <span
+                        class="material-symbols-outlined text-tertiary text-xl"
+                        >radio_button_checked</span
+                      >
+                    </div>
+                    <div>
+                      <p
+                        class="font-label-lg text-label-lg font-bold text-on-surface"
+                      >
+                        Lipa na M-Pesa
+                      </p>
+                      <p
+                        class="font-body-sm text-body-sm text-on-surface-variant"
+                      >
+                        Instant STK Push to Phone
+                      </p>
+                    </div>
+                  </button>
+                  <!-- Option 2: Card -->
+                  <button
+                    class="p-space-md rounded-xl text-left transition-all flex flex-col justify-between gap-space-sm bg-surface-container-low text-on-surface hover:bg-surface-container shadow-sm"
+                    id="tab-card"
+                    onclick="selectPaymentMethod('card')"
+                    type="button"
+                  >
+                    <div class="flex items-center justify-between">
+                      <div
+                        class="w-8 h-8 rounded-full bg-surface-variant text-on-surface flex items-center justify-center font-bold text-xs"
+                      >
+                        <span class="material-symbols-outlined text-base"
+                          >credit_card</span
+                        >
+                      </div>
+                      <span
+                        class="material-symbols-outlined text-outline text-xl"
+                        >radio_button_unchecked</span
+                      >
+                    </div>
+                    <div>
+                      <p
+                        class="font-label-lg text-label-lg font-bold text-on-surface"
+                      >
+                        Credit / Debit Card
+                      </p>
+                      <p
+                        class="font-body-sm text-body-sm text-on-surface-variant"
+                      >
+                        Visa, Mastercard, Amex
+                      </p>
+                    </div>
+                  </button>
+                  <!-- Option 3: Pay on Arrival -->
+                  <button
+                    class="p-space-md rounded-xl text-left transition-all flex flex-col justify-between gap-space-sm bg-surface-container-low text-on-surface hover:bg-surface-container shadow-sm"
+                    id="tab-arrival"
+                    onclick="selectPaymentMethod('arrival')"
+                    type="button"
+                  >
+                    <div class="flex items-center justify-between">
+                      <div
+                        class="w-8 h-8 rounded-full bg-surface-variant text-on-surface flex items-center justify-center font-bold text-xs"
+                      >
+                        <span class="material-symbols-outlined text-base"
+                          >domain</span
+                        >
+                      </div>
+                      <span
+                        class="material-symbols-outlined text-outline text-xl"
+                        >radio_button_unchecked</span
+                      >
+                    </div>
+                    <div>
+                      <p
+                        class="font-label-lg text-label-lg font-bold text-on-surface"
+                      >
+                        Pay on Arrival / LPO
+                      </p>
+                      <p
+                        class="font-body-sm text-body-sm text-on-surface-variant"
+                      >
+                        Guaranteed by Company
+                      </p>
+                    </div>
+                  </button>
+                </div>
+                <!-- Dynamic Panel: M-Pesa Form (Default Visible) -->
+                <div
+                  class="flex flex-col gap-space-md p-space-lg rounded-xl bg-tertiary-fixed/15"
+                  id="panel-mpesa"
+                >
+                  <div
+                    class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm"
+                  >
+                    <div class="flex items-center gap-space-sm">
+                      <div class="p-2 rounded-lg bg-tertiary text-on-tertiary">
+                        <span class="material-symbols-outlined text-xl"
+                          >smartphone</span
+                        >
+                      </div>
+                      <div>
+                        <h3
+                          class="font-headline-sm text-headline-sm text-on-surface"
+                        >
+                          M-Pesa Express (STK Prompt)
+                        </h3>
+                        <p
+                          class="font-body-sm text-body-sm text-on-surface-variant"
+                        >
+                          Paybill:
+                          <strong class="text-tertiary font-semibold"
+                            >522522</strong
+                          >
+                          • Acc:
+                          <strong class="text-on-surface font-semibold"
+                            >ICHK-RES781</strong
+                          >
+                        </p>
+                      </div>
+                    </div>
+                    <span
+                      class="px-space-md py-1 rounded-full bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm font-semibold shrink-0"
+                    >
+                      10% Online Saver Applied
+                    </span>
+                  </div>
+                  <div
+                    class="grid grid-cols-1 md:grid-cols-2 gap-space-md mt-space-xs"
+                  >
+                    <div class="flex flex-col gap-1.5">
+                      <label
+                        class="font-label-sm text-label-sm text-on-surface-variant font-medium"
+                        >M-Pesa Mobile Number for PIN Prompt</label
+                      >
+                      <div
+                        class="flex h-12 rounded-lg bg-surface-container-lowest overflow-hidden shadow-sm"
+                      >
+                        <span
+                          class="px-space-md bg-surface-container flex items-center font-label-md text-label-md text-on-surface font-semibold shrink-0"
+                        >
+                          +254
+                        </span>
+                        <input
+                          class="w-full px-space-md bg-transparent text-on-surface font-body-md text-body-md focus:outline-none"
+                          placeholder="7XXXXXXXX"
+                          type="tel"
+                          value="722 458 912"
+                        />
+                      </div>
+                      <p class="font-label-sm text-label-sm text-tertiary">
+                        A secure PIN prompt of KES 22,080 will appear instantly
+                        on this phone.
+                      </p>
+                    </div>
+                    <!-- Simulation Graphic / Status -->
+                    <div
+                      class="p-space-md bg-surface-container-lowest rounded-lg shadow-sm flex flex-col justify-center"
+                    >
+                      <div
+                        class="flex items-center gap-space-sm text-tertiary mb-1"
+                      >
+                        <span class="material-symbols-outlined text-lg"
+                          >check_circle</span
+                        >
+                        <span class="font-label-md text-label-md font-bold"
+                          >Automatic Verification</span
+                        >
+                      </div>
+                      <p
+                        class="font-body-sm text-body-sm text-on-surface-variant"
+                      >
+                        Receipt and instant SMS with Kitui hotel confirmation
+                        voucher will follow in under 15 seconds.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <!-- Dynamic Panel: Card Form (Hidden) -->
+                <div
+                  class="hidden flex-col gap-space-md p-space-lg rounded-xl bg-surface-container-low"
+                  id="panel-card"
+                >
+                  <div class="flex items-center justify-between">
+                    <h3
+                      class="font-headline-sm text-headline-sm text-on-surface"
+                    >
+                      Card Details
+                    </h3>
+                    <div
+                      class="flex items-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm"
+                    >
+                      <span
+                        class="px-2 py-0.5 rounded bg-surface-container-lowest font-bold"
+                        >VISA</span
+                      >
+                      <span
+                        class="px-2 py-0.5 rounded bg-surface-container-lowest font-bold"
+                        >Mastercard</span
+                      >
+                      <span
+                        class="px-2 py-0.5 rounded bg-surface-container-lowest font-bold"
+                        >AMEX</span
+                      >
+                    </div>
+                  </div>
+                  <div
+                    class="grid grid-cols-1 md:grid-cols-2 gap-space-md mt-space-xs"
+                  >
+                    <div class="flex flex-col gap-1.5 md:col-span-2">
+                      <label
+                        class="font-label-sm text-label-sm text-on-surface-variant font-medium"
+                        >Cardholder Full Name</label
+                      >
+                      <input
+                        class="h-12 px-space-md rounded-lg bg-surface-container-lowest text-on-surface font-body-md text-body-md focus:outline-none shadow-sm"
+                        placeholder="Dr Evans Musyoka"
+                        type="text"
+                      />
+                    </div>
+                    <div class="flex flex-col gap-1.5 md:col-span-2">
+                      <label
+                        class="font-label-sm text-label-sm text-on-surface-variant font-medium"
+                        >16-Digit Card Number</label
+                      >
+                      <div class="relative">
+                        <input
+                          class="h-12 w-full px-space-md rounded-lg bg-surface-container-lowest text-on-surface font-body-md text-body-md focus:outline-none shadow-sm"
+                          placeholder="4242 •••• •••• 1024"
+                          type="text"
+                        />
+                        <span
+                          class="material-symbols-outlined absolute right-3 top-3 text-outline"
+                          >credit_card</span
+                        >
+                      </div>
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                      <label
+                        class="font-label-sm text-label-sm text-on-surface-variant font-medium"
+                        >Expiration Date</label
+                      >
+                      <input
+                        class="h-12 px-space-md rounded-lg bg-surface-container-lowest text-on-surface font-body-md text-body-md focus:outline-none shadow-sm"
+                        placeholder="MM / YY"
+                        type="text"
+                      />
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                      <label
+                        class="font-label-sm text-label-sm text-on-surface-variant font-medium"
+                        >CVV / Security Code</label
+                      >
+                      <input
+                        class="h-12 px-space-md rounded-lg bg-surface-container-lowest text-on-surface font-body-md text-body-md focus:outline-none shadow-sm"
+                        maxlength="4"
+                        placeholder="3 or 4 digits"
+                        type="password"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- Dynamic Panel: Pay on Arrival (Hidden) -->
+                <div
+                  class="hidden flex-col gap-space-md p-space-lg rounded-xl bg-surface-container-low"
+                  id="panel-arrival"
+                >
+                  <div class="flex items-center gap-space-sm text-primary">
+                    <span class="material-symbols-outlined text-2xl"
+                      >account_balance</span
+                    >
+                    <h3
+                      class="font-headline-sm text-headline-sm text-on-surface"
+                    >
+                      Guaranteed Check-in Hold
+                    </h3>
+                  </div>
+                  <p class="font-body-md text-body-md text-on-surface-variant">
+                    Pay upon physical check-in at the Intercounty Hotel
+                    reception via Cash, Card, or Corporate LPO. A holding
+                    authorization or employer identification badge must be
+                    presented at the desk.
+                  </p>
+                  <div class="flex flex-col gap-1.5">
+                    <label
+                      class="font-label-sm text-label-sm text-on-surface-variant font-medium"
+                      >Company Name / Organization (For corporate
+                      billing)</label
+                    >
+                    <input
+                      class="h-12 px-space-md rounded-lg bg-surface-container-lowest text-on-surface font-body-md text-body-md focus:outline-none shadow-sm"
+                      placeholder="e.g. County Government of Kitui, NGO, or Self-sponsored"
+                      type="text"
+                    />
+                  </div>
+                </div>
+                <!-- Security and Reassurance Badges -->
+                <div
+                  class="grid grid-cols-1 sm:grid-cols-3 gap-space-md pt-space-sm"
+                >
+                  <div class="flex items-center gap-space-sm">
+                    <span
+                      class="material-symbols-outlined text-tertiary text-xl"
+                      >shield</span
+                    >
+                    <div class="flex flex-col">
+                      <span
+                        class="font-label-sm text-label-sm font-bold text-on-surface"
+                        >PCI-DSS Certified</span
+                      >
+                      <span
+                        class="font-body-sm text-body-sm text-on-surface-variant"
+                        >Full tokenized privacy</span
+                      >
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-space-sm">
+                    <span
+                      class="material-symbols-outlined text-secondary text-xl"
+                      >event_available</span
+                    >
+                    <div class="flex flex-col">
+                      <span
+                        class="font-label-sm text-label-sm font-bold text-on-surface"
+                        >Flexible Free Cancel</span
+                      >
+                      <span
+                        class="font-body-sm text-body-sm text-on-surface-variant"
+                        >Up to 48 hrs before stay</span
+                      >
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-space-sm">
+                    <span class="material-symbols-outlined text-primary text-xl"
+                      >sms</span
+                    >
+                    <div class="flex flex-col">
+                      <span
+                        class="font-label-sm text-label-sm font-bold text-on-surface"
+                        >Instant SMS Alert</span
+                      >
+                      <span
+                        class="font-body-sm text-body-sm text-on-surface-variant"
+                        >Direct confirmation code</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- RIGHT COLUMN: Sticky Reservation Summary Card (4-5 Cols) -->
+            <div
+              class="lg:col-span-5 xl:col-span-4 sticky top-24 flex flex-col gap-space-md"
+            >
+              <!-- Selected Suite Summary Card -->
+              <div
+                class="bg-surface-container-lowest rounded-xl shadow-lg overflow-hidden flex flex-col"
+              >
+                <!-- Room Image with Badge -->
+                <div class="relative h-48 w-full">
+                  <img
+                    class="w-full h-full object-cover"
+                    data-alt="Luxurious executive hotel bedroom suite at Intercounty Hotel Kitui featuring warm golden sunlight, plush king bed with plum purple throws, private balcony view of palm gardens, modern African wall tapestry, and a marble writing desk."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4_YHBpJo8uOqabojpF0XTHL_3lTq-SA3kX2y1SApHKwmlO7HG1-jgcYUWIhTTLnjpbthlZeIkbTftPgmAnn2BZxVTeIOgTT-DFE8luwvpf4yjcAgYudCzFoYt_g5iEr3J7yKSj8wzL6L7iOTjtQ-xsLcKUGcJePTrud5DLK7qoD_abvBorXT28T18gkMv7A3eGBtXhYngMYbEku09S6mUxbAw0XznPQ1j1AZ-PZA"
+                  />
+                  <div
+                    class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"
+                  ></div>
+                  <span
+                    class="absolute top-space-md left-space-md px-space-md py-1 rounded-full bg-tertiary text-on-tertiary font-label-sm text-label-sm font-semibold shadow-md"
+                  >
+                    Pool & Garden View
+                  </span>
+                  <div
+                    class="absolute bottom-space-md left-space-md right-space-md text-white"
+                  >
+                    <h3
+                      class="font-headline-sm text-headline-sm font-bold text-white drop-shadow"
+                    >
+                      Executive Garden Suite
+                    </h3>
+                    <p class="font-label-sm text-label-sm opacity-90">
+                      1 King Bed • 2 Adults • Private Balcony
+                    </p>
+                  </div>
+                </div>
+                <!-- Stay Dates & Time breakdown -->
+                <div
+                  class="p-space-md lg:p-space-lg flex flex-col gap-space-md"
+                >
+                  <div
+                    class="grid grid-cols-2 gap-space-sm p-space-sm bg-surface-container-low rounded-lg"
+                  >
+                    <div class="flex flex-col gap-0.5">
+                      <span
+                        class="font-label-sm text-label-sm uppercase tracking-wider text-outline"
+                        >Check-In</span
+                      >
+                      <span
+                        class="font-label-md text-label-md font-bold text-on-surface"
+                        >Fri, Oct 24, 2025</span
+                      >
+                      <span
+                        class="font-body-sm text-body-sm text-on-surface-variant"
+                        >From 2:00 PM</span
+                      >
+                    </div>
+                    <div class="flex flex-col gap-0.5">
+                      <span
+                        class="font-label-sm text-label-sm uppercase tracking-wider text-outline"
+                        >Check-Out</span
+                      >
+                      <span
+                        class="font-label-md text-label-md font-bold text-on-surface"
+                        >Sun, Oct 26, 2025</span
+                      >
+                      <span
+                        class="font-body-sm text-body-sm text-on-surface-variant"
+                        >Until 11:00 AM</span
+                      >
+                    </div>
+                  </div>
+                  <!-- Nights Pill and Guests -->
+                  <div
+                    class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant px-1"
+                  >
+                    <span class="flex items-center gap-1">
+                      <span
+                        class="material-symbols-outlined text-base text-primary"
+                        >nights_stay</span
+                      >
+                      Total Duration:
+                      <strong class="text-on-surface">2 Nights</strong>
+                    </span>
+                    <span class="flex items-center gap-1">
+                      <span
+                        class="material-symbols-outlined text-base text-primary"
+                        >group</span
+                      >
+                      Guests: <strong class="text-on-surface">2 Adults</strong>
+                    </span>
+                  </div>
+                  <!-- Inclusive Amenities List -->
+                  <div
+                    class="p-space-sm rounded-lg bg-surface-container/60 flex flex-col gap-1.5 font-label-sm text-label-sm text-on-surface"
+                  >
+                    <div class="flex items-center gap-2">
+                      <span
+                        class="material-symbols-outlined text-tertiary text-base"
+                        >check</span
+                      >
+                      <span>Sumptuous Buffet Breakfast included daily</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span
+                        class="material-symbols-outlined text-tertiary text-base"
+                        >check</span
+                      >
+                      <span>Olympic Swimming Pool & Sunken Lounger access</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span
+                        class="material-symbols-outlined text-tertiary text-base"
+                        >check</span
+                      >
+                      <span>High-speed Resort Fiber Wi-Fi throughout</span>
+                    </div>
+                  </div>
+                  <!-- Detailed Price Breakdown -->
+                  <div class="flex flex-col gap-2 pt-space-xs">
+                    <div
+                      class="flex justify-between font-body-sm text-body-sm text-on-surface-variant"
+                    >
+                      <span>2 Nights × KES 12,000</span>
+                      <span class="font-medium text-on-surface"
+                        >KES 24,000</span
+                      >
+                    </div>
+                    <div
+                      class="flex justify-between font-body-sm text-body-sm text-on-surface-variant"
+                    >
+                      <span>Kitui Tourism Regulatory Levy (2%)</span>
+                      <span class="font-medium text-on-surface">KES 480</span>
+                    </div>
+                    <div
+                      class="flex justify-between font-body-sm text-body-sm text-on-surface-variant"
+                    >
+                      <span>VAT (16% Included in room rates)</span>
+                      <span class="font-medium text-on-surface">KES 3,840</span>
+                    </div>
+                    <div
+                      class="flex justify-between font-body-sm text-body-sm text-on-surface-variant"
+                    >
+                      <span>Resort Amenities & Pool Access</span>
+                      <span class="font-bold text-tertiary">FREE</span>
+                    </div>
+                    <div
+                      class="flex justify-between font-body-sm text-body-sm text-tertiary"
+                    >
+                      <span class="flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm"
+                          >high_res</span
+                        >
+                        Online M-Pesa Saver (-10%)
+                      </span>
+                      <span class="font-bold">-KES 2,400</span>
+                    </div>
+                    <!-- Total Row -->
+                    <div
+                      class="flex items-baseline justify-between pt-space-sm mt-space-xs bg-surface-container-low p-space-sm rounded-lg"
+                    >
+                      <div>
+                        <span
+                          class="font-headline-sm text-headline-sm font-bold text-on-surface"
+                          >Final Total</span
+                        >
+                        <p
+                          class="font-body-sm text-body-sm text-on-surface-variant"
+                        >
+                          Taxes & Levies included
+                        </p>
+                      </div>
+                      <div class="text-right">
+                        <span
+                          class="font-headline-lg text-headline-lg font-bold text-secondary"
+                          >KES 22,080</span
+                        >
+                        <p class="font-label-sm text-label-sm text-outline">
+                          Approx. $168 USD
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Prominent Maroon CTA Button -->
+                  <button
+                    class="w-full py-space-md px-space-lg rounded-full bg-secondary hover:bg-secondary-container text-on-secondary font-label-lg text-label-lg font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-space-sm"
+                    onclick="triggerPaymentSimulation()"
+                    type="button"
+                  >
+                    <span class="material-symbols-outlined">lock</span>
+                    <span>Confirm Booking & Pay KES 22,080</span>
+                  </button>
+                  <!-- Reassurance Note -->
+                  <div
+                    class="flex items-center justify-center gap-1.5 font-label-sm text-label-sm text-tertiary"
+                  >
+                    <span class="material-symbols-outlined text-base"
+                      >check_circle</span
+                    >
+                    <span
+                      >Free cancellation until 48 hours before check-in</span
+                    >
+                  </div>
+                </div>
+                <!-- Direct Assistance Card Footer -->
+                <div
+                  class="bg-surface-container-low p-space-md flex items-center justify-between gap-space-sm"
+                >
+                  <div class="flex items-center gap-space-sm">
+                    <div
+                      class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary"
+                    >
+                      <span class="material-symbols-outlined">headset_mic</span>
+                    </div>
+                    <div>
+                      <p
+                        class="font-label-sm text-label-sm text-on-surface font-bold"
+                      >
+                        Need Help Reserving?
+                      </p>
+                      <p
+                        class="font-body-sm text-body-sm text-on-surface-variant"
+                      >
+                        Dedicated 24/7 Front Desk
+                      </p>
+                    </div>
+                  </div>
+                  <a
+                    class="px-space-md py-1.5 rounded-full bg-surface-container-lowest text-primary font-label-sm text-label-sm font-semibold hover:bg-primary hover:text-on-primary transition-all shadow-sm"
+                    href="tel:+254700123456"
+                  >
+                    +254 700 123 456
+                  </a>
+                </div>
+              </div>
+              <!-- Trust & Safety Miniature Callout -->
+              <div
+                class="p-space-md rounded-xl bg-surface-container-low flex items-start gap-space-sm"
+              >
+                <span
+                  class="material-symbols-outlined text-primary text-xl shrink-0 mt-0.5"
+                  >verified</span
+                >
+                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                  <strong>Official Website Direct Rate:</strong> Guaranteed
+                  lowest price, priority room allocation overlooking Kitui
+                  bridge gardens, and zero booking commissions.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- Guest Reviews & Peace of Mind Assurance Banner -->
+        <section
+          class="w-full bg-surface-container-lowest py-space-xl px-margin-mobile lg:px-margin mt-space-lg"
+        >
+          <div
+            class="max-w-[1280px] mx-auto flex flex-col md:flex-row items-center justify-between gap-space-lg"
+          >
+            <div class="flex items-center gap-space-md">
+              <div
+                class="w-14 h-14 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed shrink-0"
+              >
+                <span class="material-symbols-outlined text-3xl"
+                  >hotel_class</span
+                >
+              </div>
+              <div>
+                <h3
+                  class="font-headline-sm text-headline-sm font-bold text-on-surface"
+                >
+                  Rated 4.8 / 5 by Over 1,200 East African Travelers
+                </h3>
+                <p class="font-body-md text-body-md text-on-surface-variant">
+                  Renowned for refreshing serenity, sparkling pool facilities,
+                  and premier conference comfort in Kitui.
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center gap-space-sm shrink-0">
+              <span
+                class="px-space-md py-space-xs rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-bold flex items-center gap-1"
+              >
+                <span class="material-symbols-outlined text-sm">task_alt</span>
+                Verified Safe Stay
+              </span>
+              <span
+                class="px-space-md py-space-xs rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm font-bold flex items-center gap-1"
+              >
+                <span class="material-symbols-outlined text-sm">bolt</span>
+                Instant Confirmation
+              </span>
+            </div>
+          </div>
+        </section>
+        <!-- Interactive Modal / Overlay Simulation for M-Pesa STK Trigger -->
+        <div
+          class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-space-md"
+          id="payment-modal"
+        >
+          <div
+            class="bg-surface-container-lowest max-w-md w-full rounded-2xl p-space-xl shadow-2xl flex flex-col items-center text-center gap-space-md"
+          >
+            <div
+              class="w-16 h-16 rounded-full bg-tertiary-fixed flex items-center justify-center text-tertiary"
+            >
+              <span class="material-symbols-outlined text-3xl animate-pulse"
+                >send_to_mobile</span
+              >
+            </div>
+            <div>
+              <h4
+                class="font-headline-md text-headline-md font-bold text-on-surface"
+              >
+                STK Push Sent!
+              </h4>
+              <p class="font-body-md text-body-md text-on-surface-variant mt-1">
+                Please check your phone (+254 722 458 912) and enter your M-Pesa
+                Secret PIN to complete payment of
+                <strong class="text-on-surface">KES 22,080</strong>.
+              </p>
+            </div>
+            <div
+              class="w-full bg-surface-container-low p-space-md rounded-lg flex items-center justify-between font-label-md text-label-md"
+            >
+              <span class="text-outline">Paybill: <strong>522522</strong></span>
+              <span class="text-primary font-bold">Ref: ICHK-RES781</span>
+            </div>
+            <button
+              class="w-full py-space-sm rounded-full bg-secondary text-on-secondary font-label-md text-label-md font-bold"
+              onclick="
+                document
+                  .getElementById('payment-modal')
+                  .classList.add('hidden');
+                document
+                  .getElementById('payment-modal')
+                  .classList.remove('flex');
+              "
+              type="button"
+            >
+              I Have Entered My PIN
+            </button>
+            <button
+              class="font-label-sm text-label-sm text-outline hover:text-on-surface"
+              onclick="
+                document
+                  .getElementById('payment-modal')
+                  .classList.add('hidden');
+                document
+                  .getElementById('payment-modal')
+                  .classList.remove('flex');
+              "
+              type="button"
+            >
+              Cancel or Use Another Phone
+            </button>
+          </div>
+        </div>
+        <!-- Interactive Script for Payment Selection and Countdown -->
+        <script>
+          function selectPaymentMethod(method) {
+            const panelMpesa = document.getElementById("panel-mpesa");
+            const panelCard = document.getElementById("panel-card");
+            const panelArrival = document.getElementById("panel-arrival");
+
+            const tabMpesa = document.getElementById("tab-mpesa");
+            const tabCard = document.getElementById("tab-card");
+            const tabArrival = document.getElementById("tab-arrival");
+
+            // Reset all tabs
+            [tabMpesa, tabCard, tabArrival].forEach((tab) => {
+              tab.className =
+                "p-space-md rounded-xl text-left transition-all flex flex-col justify-between gap-space-sm bg-surface-container-low text-on-surface hover:bg-surface-container shadow-sm";
+              const radioIcon = tab.querySelector(
+                ".material-symbols-outlined:last-child",
+              );
+              if (radioIcon) {
+                radioIcon.textContent = "radio_button_unchecked";
+                radioIcon.className =
+                  "material-symbols-outlined text-outline text-xl";
+              }
+            });
+
+            // Hide all panels
+            panelMpesa.classList.add("hidden");
+            panelCard.classList.add("hidden");
+            panelArrival.classList.add("hidden");
+
+            if (method === "mpesa") {
+              panelMpesa.classList.remove("hidden");
+              tabMpesa.className =
+                "p-space-md rounded-xl text-left transition-all flex flex-col justify-between gap-space-sm bg-tertiary-fixed/30 text-on-tertiary-fixed shadow-sm";
+              const icon = tabMpesa.querySelector(
+                ".material-symbols-outlined:last-child",
+              );
+              if (icon) {
+                icon.textContent = "radio_button_checked";
+                icon.className =
+                  "material-symbols-outlined text-tertiary text-xl";
+              }
+            } else if (method === "card") {
+              panelCard.classList.remove("hidden");
+              panelCard.classList.add("flex");
+              tabCard.className =
+                "p-space-md rounded-xl text-left transition-all flex flex-col justify-between gap-space-sm bg-primary/10 text-primary shadow-sm";
+              const icon = tabCard.querySelector(
+                ".material-symbols-outlined:last-child",
+              );
+              if (icon) {
+                icon.textContent = "radio_button_checked";
+                icon.className =
+                  "material-symbols-outlined text-primary text-xl";
+              }
+            } else if (method === "arrival") {
+              panelArrival.classList.remove("hidden");
+              panelArrival.classList.add("flex");
+              tabArrival.className =
+                "p-space-md rounded-xl text-left transition-all flex flex-col justify-between gap-space-sm bg-secondary/10 text-secondary shadow-sm";
+              const icon = tabArrival.querySelector(
+                ".material-symbols-outlined:last-child",
+              );
+              if (icon) {
+                icon.textContent = "radio_button_checked";
+                icon.className =
+                  "material-symbols-outlined text-secondary text-xl";
+              }
+            }
+          }
+
+          function triggerPaymentSimulation() {
+            const modal = document.getElementById("payment-modal");
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+          }
+
+          // Reservation Countdown Timer Simulation
+          (function initTimer() {
+            let seconds = 878;
+            const el = document.getElementById("countdown-timer");
+            setInterval(() => {
+              if (seconds > 0) {
+                seconds--;
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                el.textContent = `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+              }
+            }, 1000);
+          })();
+        </script>
+      </div>
+    </main>
+{% endblock %}

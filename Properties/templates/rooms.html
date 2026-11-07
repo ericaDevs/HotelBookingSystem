@@ -1,0 +1,1736 @@
+{% extends "layout.html" %}
+
+{% block title %}Rooms & Suites | Intercounty Hotels{% endblock %}
+{% block body_class %}bg-surface font-body-md text-on-surface antialiased min-h-screen{% endblock %}
+{% block head %}
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @layer base {
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+        }
+        body {
+          overscroll-behavior: none;
+        }
+        main > :first-child {
+          margin-top: 0 !important;
+        }
+        main > :last-child {
+          margin-bottom: 0 !important;
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              secondary: "#b2273d",
+              "secondary-fixed": "#ffdada",
+              outline: "#7f737f",
+              surface: "#f9f9ff",
+              "surface-dim": "#cfdaf2",
+              "on-primary-fixed-variant": "#672f76",
+              "on-error-container": "#93000a",
+              "tertiary-container": "#3c725b",
+              "outline-variant": "#d1c2cf",
+              "surface-container-lowest": "#ffffff",
+              "secondary-fixed-dim": "#ffb3b6",
+              "surface-bright": "#f9f9ff",
+              primary: "#713980",
+              tertiary: "#215944",
+              "surface-container": "#e7eeff",
+              "on-tertiary-fixed-variant": "#16503b",
+              "on-surface": "#111c2d",
+              "on-error": "#ffffff",
+              "on-primary-fixed": "#340043",
+              "primary-fixed": "#fcd7ff",
+              "on-primary": "#ffffff",
+              "on-surface-variant": "#4e444e",
+              "on-tertiary-fixed": "#002115",
+              "primary-container": "#8c519a",
+              "on-secondary-fixed-variant": "#900628",
+              "surface-variant": "#d8e3fb",
+              "surface-container-high": "#dee8ff",
+              "on-primary-container": "#fedeff",
+              "inverse-on-surface": "#ecf1ff",
+              "surface-container-highest": "#d8e3fb",
+              "on-secondary-container": "#640018",
+              error: "#ba1a1a",
+              "surface-tint": "#814790",
+              "on-tertiary-container": "#baf4d8",
+              "error-container": "#ffdad6",
+              "tertiary-fixed-dim": "#9ad3b7",
+              "tertiary-fixed": "#b5efd3",
+              "primary-fixed-dim": "#f2afff",
+              background: "#f9f9ff",
+              "inverse-primary": "#f2afff",
+              "secondary-container": "#fe5f70",
+              "on-secondary": "#ffffff",
+              "surface-container-low": "#f0f3ff",
+              "on-background": "#111c2d",
+              "inverse-surface": "#263143",
+              "on-tertiary": "#ffffff",
+              "on-secondary-fixed": "#40000c",
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+            spacing: {
+              "space-xs": "0.25rem",
+              gutter: "1.5rem",
+              margin: "3rem",
+              "gutter-mobile": "1rem",
+              "space-sm": "0.5rem",
+              "space-md": "1rem",
+              "space-lg": "1.5rem",
+              "margin-mobile": "1.25rem",
+              "space-xl": "2.5rem",
+            },
+            fontFamily: {
+              "headline-xl-mobile": ["Figtree"],
+              "headline-xl": ["Figtree"],
+              "headline-md": ["Figtree"],
+              "headline-sm": ["Figtree"],
+              "label-md": ["Figtree"],
+              "headline-lg": ["Figtree"],
+              "body-md": ["Figtree"],
+              "label-lg": ["Figtree"],
+              "display-lg-mobile": ["Figtree"],
+              "body-lg": ["Figtree"],
+              "body-sm": ["Figtree"],
+              "label-sm": ["Figtree"],
+              "display-lg": ["Figtree"],
+            },
+            fontSize: {
+              "headline-xl-mobile": [
+                "28px",
+                {
+                  lineHeight: "36px",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "700",
+                },
+              ],
+              "headline-xl": [
+                "40px",
+                {
+                  lineHeight: "48px",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "700",
+                },
+              ],
+              "headline-md": [
+                "24px",
+                { lineHeight: "32px", fontWeight: "600" },
+              ],
+              "headline-sm": [
+                "20px",
+                { lineHeight: "28px", fontWeight: "600" },
+              ],
+              "label-md": [
+                "14px",
+                {
+                  lineHeight: "18px",
+                  letterSpacing: "0.02em",
+                  fontWeight: "600",
+                },
+              ],
+              "headline-lg": [
+                "32px",
+                {
+                  lineHeight: "40px",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "600",
+                },
+              ],
+              "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+              "label-lg": [
+                "16px",
+                {
+                  lineHeight: "20px",
+                  letterSpacing: "0.01em",
+                  fontWeight: "600",
+                },
+              ],
+              "display-lg-mobile": [
+                "36px",
+                {
+                  lineHeight: "44px",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "700",
+                },
+              ],
+              "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+              "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+              "label-sm": [
+                "12px",
+                {
+                  lineHeight: "16px",
+                  letterSpacing: "0.03em",
+                  fontWeight: "500",
+                },
+              ],
+              "display-lg": [
+                "56px",
+                {
+                  lineHeight: "64px",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "700",
+                },
+              ],
+            },
+          },
+        },
+      };
+    </script>
+  
+{% endblock %}
+
+{% block main %}
+<main class="w-full pt-20 bg-surface">
+      <div class="flex flex-col w-full">
+        <!-- Top Editorial Hero & Breadcrumb Strip -->
+        <section
+          class="relative w-full bg-surface-container-low overflow-hidden py-space-xl px-margin-mobile lg:px-margin"
+        >
+          <div
+            class="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-primary/5 blur-3xl pointer-events-none"
+          ></div>
+          <div
+            class="absolute left-1/3 -bottom-20 w-72 h-72 rounded-full bg-secondary/5 blur-3xl pointer-events-none"
+          ></div>
+          <div
+            class="max-w-[1280px] mx-auto relative z-10 flex flex-col gap-space-md"
+          >
+            <!-- Breadcrumb navigation -->
+            <nav
+              class="flex items-center gap-space-xs font-label-sm text-label-sm text-on-surface-variant"
+            >
+              <a
+                class="hover:text-primary transition-colors flex items-center gap-1"
+                data-path="home"
+                href="#"
+              >
+                <span class="material-symbols-outlined text-sm">home</span> Home
+              </a>
+              <span class="material-symbols-outlined text-xs"
+                >chevron_right</span
+              >
+              <span class="text-primary font-semibold">Rooms & Suites</span>
+            </nav>
+            <div
+              class="flex flex-col md:flex-row md:items-end justify-between gap-space-lg"
+            >
+              <div class="max-w-2xl flex flex-col gap-space-xs">
+                <div
+                  class="inline-flex items-center gap-2 self-start px-space-md py-space-xs rounded-full bg-primary-container/10 text-primary font-label-md text-label-md"
+                >
+                  <span class="material-symbols-outlined text-base">bed</span>
+                  <span>Handcrafted Lodging Experience</span>
+                </div>
+                <h1
+                  class="font-headline-xl text-headline-xl text-on-surface tracking-tight font-bold"
+                >
+                  Rooms & Luxury Suites
+                </h1>
+                <p
+                  class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed"
+                >
+                  Discover personalized comfort, contemporary Swahili
+                  aesthetics, and serene garden & pool vistas in Kitui. Every
+                  sanctuary is curated for restful nights and effortless
+                  leisure.
+                </p>
+              </div>
+              <!-- Highlight Badge Mosaic -->
+              <div
+                class="flex items-center gap-space-sm shrink-0 bg-surface-container-lowest p-space-sm rounded-xl shadow-sm"
+              >
+                <div
+                  class="w-12 h-12 rounded-lg bg-tertiary-container/10 flex items-center justify-center text-tertiary"
+                >
+                  <span class="material-symbols-outlined text-2xl"
+                    >verified</span
+                  >
+                </div>
+                <div class="flex flex-col pr-space-md">
+                  <span
+                    class="font-label-lg text-label-lg font-bold text-on-surface"
+                    >Best Rate Guarantee</span
+                  >
+                  <span
+                    class="font-body-sm text-body-sm text-on-surface-variant"
+                    >Direct booking perks & zero hidden fees</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- Sticky Filter & Search Control Dock -->
+        <section
+          class="sticky top-20 z-40 w-full bg-surface-container-lowest shadow-md"
+        >
+          <div
+            class="max-w-[1280px] mx-auto px-margin-mobile lg:px-margin py-space-md"
+          >
+            <!-- Category Tabs Row -->
+            <div
+              class="flex items-center justify-between gap-space-md overflow-x-auto pb-space-xs scrollbar-none"
+            >
+              <div
+                class="flex items-center gap-space-xs shrink-0"
+                id="room-category-filter"
+              >
+                <button
+                  class="filter-tab-btn active px-space-md py-space-xs rounded-full bg-primary text-on-primary font-label-md text-label-md transition-all"
+                  data-filter="all"
+                  type="button"
+                >
+                  All Accommodations (6)
+                </button>
+                <button
+                  class="filter-tab-btn px-space-md py-space-xs rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all"
+                  data-filter="presidential"
+                  type="button"
+                >
+                  Presidential Suites
+                </button>
+                <button
+                  class="filter-tab-btn px-space-md py-space-xs rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all"
+                  data-filter="executive"
+                  type="button"
+                >
+                  Executive Rooms
+                </button>
+                <button
+                  class="filter-tab-btn px-space-md py-space-xs rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all"
+                  data-filter="deluxe"
+                  type="button"
+                >
+                  Deluxe Rooms
+                </button>
+                <button
+                  class="filter-tab-btn px-space-md py-space-xs rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all"
+                  data-filter="cottage"
+                  type="button"
+                >
+                  Family Chalets
+                </button>
+              </div>
+              <button
+                class="shrink-0 flex items-center gap-1.5 px-space-md py-space-xs rounded-full bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-all"
+                onclick="
+                  document
+                    .getElementById('advanced-filters-panel')
+                    .classList.toggle('hidden')
+                "
+                type="button"
+              >
+                <span class="material-symbols-outlined text-base">tune</span>
+                <span>Filters & Sort</span>
+                <span
+                  class="w-2 h-2 rounded-full bg-secondary"
+                  id="active-filter-badge"
+                ></span>
+              </button>
+            </div>
+            <!-- Advanced Filters Dropdown / Collapsible Drawer -->
+            <div
+              class="hidden pt-space-md mt-space-sm bg-surface-container-low rounded-xl p-space-md shadow-inner flex flex-col gap-space-md"
+              id="advanced-filters-panel"
+            >
+              <div
+                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md"
+              >
+                <!-- Price Range Filter -->
+                <div class="flex flex-col gap-space-xs">
+                  <label
+                    class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant"
+                    >Price Range (KES)</label
+                  >
+                  <select
+                    class="w-full bg-surface-container-lowest text-on-surface font-body-sm text-body-sm rounded-lg px-space-sm py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                    id="price-filter"
+                  >
+                    <option value="all">Any Price</option>
+                    <option value="under7">Under KES 7,000</option>
+                    <option value="7to15">KES 7,000 – KES 15,000</option>
+                    <option value="above15">KES 15,000 & Above</option>
+                  </select>
+                </div>
+                <!-- Bed Arrangement -->
+                <div class="flex flex-col gap-space-xs">
+                  <label
+                    class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant"
+                    >Bed Configuration</label
+                  >
+                  <select
+                    class="w-full bg-surface-container-lowest text-on-surface font-body-sm text-body-sm rounded-lg px-space-sm py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                    id="bed-filter"
+                  >
+                    <option value="all">All Bed Types</option>
+                    <option value="king">Super King / King Bed</option>
+                    <option value="queen">Queen Bed</option>
+                    <option value="twin">Twin Beds (Double Singles)</option>
+                    <option value="family">Family (Multi-bed)</option>
+                  </select>
+                </div>
+                <!-- Sort Selector -->
+                <div class="flex flex-col gap-space-xs">
+                  <label
+                    class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant"
+                    >Sort By</label
+                  >
+                  <select
+                    class="w-full bg-surface-container-lowest text-on-surface font-body-sm text-body-sm rounded-lg px-space-sm py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                    id="sort-selector"
+                  >
+                    <option value="recommended">Recommended & Featured</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="capacity-desc">
+                      Highest Guest Capacity
+                    </option>
+                  </select>
+                </div>
+                <!-- Quick Amenities Checklist -->
+                <div class="flex flex-col gap-space-xs">
+                  <label
+                    class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant"
+                    >Must-Have Amenities</label
+                  >
+                  <div class="flex flex-wrap gap-2 pt-1">
+                    <label
+                      class="inline-flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container-lowest text-on-surface font-body-sm text-body-sm cursor-pointer hover:bg-surface-bright"
+                    >
+                      <input class="accent-primary rounded" type="checkbox" />
+                      <span>Pool View</span>
+                    </label>
+                    <label
+                      class="inline-flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container-lowest text-on-surface font-body-sm text-body-sm cursor-pointer hover:bg-surface-bright"
+                    >
+                      <input class="accent-primary rounded" type="checkbox" />
+                      <span>Balcony</span>
+                    </label>
+                    <label
+                      class="inline-flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container-lowest text-on-surface font-body-sm text-body-sm cursor-pointer hover:bg-surface-bright"
+                    >
+                      <input class="accent-primary rounded" type="checkbox" />
+                      <span>Jacuzzi</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="flex items-center justify-between pt-space-xs border-t border-surface-dim/40"
+              >
+                <span class="font-body-sm text-body-sm text-on-surface-variant"
+                  >Showing active curated selections</span
+                >
+                <button
+                  class="font-label-sm text-label-sm text-secondary hover:underline"
+                  onclick="resetFilters()"
+                  type="button"
+                >
+                  Reset All Filters
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- Room Catalog Section -->
+        <section
+          class="w-full py-space-xl px-margin-mobile lg:px-margin bg-surface"
+        >
+          <div class="max-w-[1280px] mx-auto flex flex-col gap-space-xl">
+            <!-- Catalog Grid: 6 Distinct High-Polish Room Cards -->
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter"
+              id="rooms-grid"
+            >
+              <!-- Card 1: The Royal Presidential Suite -->
+              <article
+                class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
+                data-bed="king"
+                data-capacity="4"
+                data-category="presidential"
+                data-price="22000"
+              >
+                <div class="relative w-full aspect-[16/10] overflow-hidden">
+                  <img
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    data-alt="Opulent Royal Presidential Suite bedroom in Kitui luxury hotel featuring warm hardwood floors, plush king-size bed draped in fine crisp linens with deep purple and gold accents, expansive sunlit private terrace overlooking swimming pool and acacia trees, architectural Swahili carvings, soft morning golden hour ambient lighting."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDD9LWQMiQ5T-m8RY9REsF-7S-mQ_X5gehkDmUpz1J6zIXtRCc729fyjAFz-5ZA4omxZQgWOuRRUIukrC3pbNE9XVjGC4E5oRNZr8vMqK4d2mMyUJKgt0lPYpySm1Ty27ABlvrPYHE7vXjpBGIlPAgXLWuuHgNmNdkdOzsJ6GiH2XUO2Oc8HcgDcIWBi3c6ceEs8lN6kSYMVjOw86jvVK47UkvF0Plpii31HtxVnNs"
+                  />
+                  <div class="absolute top-3 left-3 flex flex-wrap gap-1.5">
+                    <span
+                      class="px-space-sm py-0.5 rounded-full bg-secondary text-on-secondary font-label-sm text-label-sm font-semibold shadow-sm"
+                    >
+                      Most Exclusive
+                    </span>
+                    <span
+                      class="px-space-sm py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface font-label-sm text-label-sm"
+                    >
+                      Pool & Bridge View
+                    </span>
+                  </div>
+                  <div
+                    class="absolute bottom-3 right-3 px-space-sm py-0.5 rounded-md bg-inverse-surface/85 backdrop-blur text-inverse-on-surface font-label-sm text-label-sm flex items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined text-xs"
+                      >square_foot</span
+                    >
+                    <span>85 m²</span>
+                  </div>
+                </div>
+                <div
+                  class="p-space-lg flex flex-col flex-1 justify-between gap-space-md"
+                >
+                  <div class="flex flex-col gap-space-xs">
+                    <div class="flex items-center justify-between gap-2">
+                      <span
+                        class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-bold"
+                        >Presidential Wing</span
+                      >
+                      <div
+                        class="flex items-center gap-1 text-secondary font-label-sm text-label-sm font-bold"
+                      >
+                        <span
+                          class="material-symbols-outlined text-sm"
+                          style="font-variation-settings: &quot;FILL&quot; 1"
+                          >star</span
+                        >
+                        <span>4.98 (42)</span>
+                      </div>
+                    </div>
+                    <h2
+                      class="font-headline-md text-headline-md text-on-surface font-bold group-hover:text-primary transition-colors"
+                    >
+                      The Royal Presidential Suite
+                    </h2>
+                    <p
+                      class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2"
+                    >
+                      Expansive master quarter featuring private terrace
+                      overlooking the iconic bridge pool, executive lounge,
+                      ensuite jacuzzi, and dedicated butler pantry.
+                    </p>
+                    <!-- Room Specs Matrix -->
+                    <div
+                      class="grid grid-cols-2 gap-y-2 gap-x-4 py-space-xs my-space-xs bg-surface-container-low/60 rounded-lg p-space-sm"
+                    >
+                      <div
+                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
+                      >
+                        <span
+                          class="material-symbols-outlined text-base text-primary"
+                          >groups</span
+                        >
+                        <span>Up to 4 Guests</span>
+                      </div>
+                      <div
+                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
+                      >
+                        <span
+                          class="material-symbols-outlined text-base text-primary"
+                          >king_bed</span
+                        >
+                        <span>Super King Bed</span>
+                      </div>
+                      <div
+                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
+                      >
+                        <span
+                          class="material-symbols-outlined text-base text-primary"
+                          >hot_tub</span
+                        >
+                        <span>Hydrotherapy Tub</span>
+                      </div>
+                      <div
+                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
+                      >
+                        <span
+                          class="material-symbols-outlined text-base text-primary"
+                          >deck</span
+                        >
+                        <span>Private Sun Deck</span>
+                      </div>
+                    </div>
+                    <!-- Amenity Pills -->
+                    <div class="flex flex-wrap gap-1.5 pt-1">
+                      <span
+                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
+                        >High-Speed Wi-Fi</span
+                      >
+                      <span
+                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
+                        >Nespresso Machine</span
+                      >
+                      <span
+                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
+                        >Airport Chauffeur</span
+                      >
+                    </div>
+                  </div>
+                  <!-- Pricing & Action Row -->
+                  <div
+                    class="pt-space-md border-t border-surface-container-high/60 flex items-end justify-between gap-space-sm"
+                  >
+                    <div class="flex flex-col">
+                      <span
+                        class="font-label-sm text-label-sm text-on-surface-variant"
+                        >Nightly Retreat</span
+                      >
+                      <div class="flex items-baseline gap-1">
+                        <span
+                          class="font-headline-lg text-headline-lg font-bold text-on-surface"
+                          >KES 22,000</span
+                        >
+                        <span
+                          class="font-body-sm text-body-sm text-on-surface-variant"
+                          >/ night</span
+                        >
+                      </div>
+                      <span
+                        class="font-label-sm text-label-sm text-tertiary font-semibold flex items-center gap-1"
+                      >
+                        <span class="material-symbols-outlined text-xs"
+                          >done</span
+                        >
+                        Taxes & Gourmet Breakfast Included
+                      </span>
+                    </div>
+                    <a
+                      class="px-space-lg py-space-sm rounded-full bg-secondary text-on-secondary font-label-md text-label-md font-semibold hover:bg-secondary-container transition-all shadow-md shrink-0 flex items-center gap-1"
+                      data-path="booking"
+                      href="#"
+                    >
+                      <span>Book Room</span>
+                      <span class="material-symbols-outlined text-sm"
+                        >arrow_forward</span
+                      >
+                    </a>
+                  </div>
+                </div>
+              </article>
+              <!-- Card 2: Executive Garden Suite -->
+              <article
+                class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
+                data-bed="king"
+                data-capacity="2"
+                data-category="executive"
+                data-price="14500"
+              >
+                <div class="relative w-full aspect-[16/10] overflow-hidden">
+                  <img
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    data-alt="Luxurious Executive Garden Suite inside a modern Kenyan safari hotel with teak wood furniture, rich maroon throw pillows, plush king bed, private garden balcony overlooking flowering bougainvillea and tall palm trees, warm ambient reading lights, serene afternoon ambiance."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCS3BQYbI-qzgNP8hvfnV3YidV8G79mTMbNhQDFbsGVbu9NJNec_vgrcJFbq57Hiye0YSIA54ulwe0ePRZDIHVBfoFofrnx4AyjaeKvmBOU_PUsZs7dxqgpsSlpFPle9ebs2u3tTGMnt5Ut8CTc2FFxOmfrixgNeoINEgCrUI1GjHxrMNZiYc8kD61etoWGp2xhr-odnQRFDrj7fODObpBZOi3nrn0DXvmKtSo0dcg"
+                  />
+                  <div class="absolute top-3 left-3 flex flex-wrap gap-1.5">
+                    <span
+                      class="px-space-sm py-0.5 rounded-full bg-primary text-on-primary font-label-sm text-label-sm font-semibold shadow-sm"
+                    >
+                      Guest Favorite
+                    </span>
+                    <span
+                      class="px-space-sm py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface font-label-sm text-label-sm"
+                    >
+                      Garden Vistas
+                    </span>
+                  </div>
+                  <div
+                    class="absolute bottom-3 right-3 px-space-sm py-0.5 rounded-md bg-inverse-surface/85 backdrop-blur text-inverse-on-surface font-label-sm text-label-sm flex items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined text-xs"
+                      >square_foot</span
+                    >
+                    <span>52 m²</span>
+                  </div>
+                </div>
+                <div
+                  class="p-space-lg flex flex-col flex-1 justify-between gap-space-md"
+                >
+                  <div class="flex flex-col gap-space-xs">
+                    <div class="flex items-center justify-between gap-2">
+                      <span
+                        class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-bold"
+                        >Executive Floor</span
+                      >
+                      <div
+                        class="flex items-center gap-1 text-secondary font-label-sm text-label-sm font-bold"
+                      >
+                        <span
+                          class="material-symbols-outlined text-sm"
+                          style="font-variation-settings: &quot;FILL&quot; 1"
+                          >star</span
+                        >
+                        <span>4.92 (68)</span>
+                      </div>
+                    </div>
+                    <h2
+                      class="font-headline-md text-headline-md text-on-surface font-bold group-hover:text-primary transition-colors"
+                    >
+                      Executive Garden Suite
+                    </h2>
+                    <p
+                      class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2"
+                    >
+                      Designed for discerning professionals and couples. Unwind
+                      on your private balcony offering sweeping sunset views
+                      across the hotel's lush botanical gardens.
+                    </p>
+                    <!-- Room Specs Matrix -->
+                    <div
+                      class="grid grid-cols-2 gap-y-2 gap-x-4 py-space-xs my-space-xs bg-surface-container-low/60 rounded-lg p-space-sm"
+                    >
+                      <div
+                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
+                      >
+                        <span
+                          class="material-symbols-outlined text-base text-primary"
+                          >groups</span
+                        >
+                        <span>2 Guests</span>
+                      </div>
+                      <div
+                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
+                      >
+                        <span
+                          class="material-symbols-outlined text-base text-primary"
+                          >king_bed</span
+                        >
+                        <span>King Bed</span>
+                      </div>
+                      <div
+                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
+                      >
+                        <span
+                          class="material-symbols-outlined text-base text-primary"
+                          >balcony</span
+                        >
+                        <span>Sunset Balcony</span>
+                      </div>
+                      <div
+                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
+                      >
+                        <span
+                          class="material-symbols-outlined text-base text-primary"
+                          >work</span
+                        >
+                        <span>Executive Work Desk</span>
+                      </div>
+                    </div>
+                    <!-- Amenity Pills -->
+                    <div class="flex flex-wrap gap-1.5 pt-1">
+                      <span
+                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
+                        >High-Speed Wi-Fi</span
+                      >
+                      <span
+                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
+                        >Rain Shower</span
+                      >
+                      <span
+                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
+                        >Climate AC</span
+                      >
+                    </div>
+                  </div>
+                  <!-- Pricing & Action Row -->
+                  <div
+                    class="pt-space-md border-t border-surface-container-high/60 flex items-end justify-between gap-space-sm"
+                  >
+                    <div class="flex flex-col">
+                      <span
+                        class="font-label-sm text-label-sm text-on-surface-variant"
+                        >Nightly Rate</span
+                      >
+                      <div class="flex items-baseline gap-1">
+                        <span
+                          class="font-headline-lg text-headline-lg font-bold text-on-surface"
+                          >KES 14,500</span
+                        >
+                        <span
+                          class="font-body-sm text-body-sm text-on-surface-variant"
+                          >/ night</span
+                        >
+                      </div>
+                      <span
+                        class="font-label-sm text-label-sm text-tertiary font-semibold flex items-center gap-1"
+                      >
+                        <span class="material-symbols-outlined text-xs"
+                          >done</span
+                        >
+                        Buffet Breakfast Included
+                      </span>
+                    </div>
+                    <a
+                      class="px-space-lg py-space-sm rounded-full bg-secondary text-on-secondary font-label-md text-label-md font-semibold hover:bg-secondary-container transition-all shadow-md shrink-0 flex items-center gap-1"
+                      data-path="booking"
+                      href="#"
+                    >
+                      <span>Book Room</span>
+                      <span class="material-symbols-outlined text-sm"
+                        >arrow_forward</span
+                      >
+                    </a>
+                  </div>
+                </div>
+              </article>
+              <!-- Card 3: Deluxe Pool View Room -->
+              <article
+                class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
+                data-bed="queen"
+                data-capacity="2"
+                data-category="deluxe"
+                data-price="9800"
+              >
+                <div class="relative w-full aspect-[16/10] overflow-hidden">
+                  <img
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    data-alt="Chic deluxe resort bedroom overlooking sparkling turquoise swimming pool and iconic timber arched bridge in Kitui Kenya, large floor-to-ceiling sliding glass doors, elegant queen bed with purple and white cotton duvet, sun lounger patio directly outside room."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhBGFm5ryaABUCQMXEIIGbA-sabaUTgMGIq76cvk7ZeEJVXLgkYIrZyoeNPsgXNolxs3MZTkf7J_W0nwe36gD0YIqwDOn0247qRpFVPDtTshW1dUXscfACWTMjo5TcjP5oTv4S6eJWr1PDcyjZUHdeJ0-tXJGfvKFlxHOSgwiUqol0BcsvBs2g5LXJTVytO9u-LJ39k3yViF0a1IkehsywKEOYn6RyqPn1yxkq1X0"
+                  />
+                  <div class="absolute top-3 left-3 flex flex-wrap gap-1.5">
+                    <span
+                      class="px-space-sm py-0.5 rounded-full bg-secondary text-on-secondary font-label-sm text-label-sm font-semibold shadow-sm"
+                    >
+                      Popular
+                    </span>
+                    <span
+                      class="px-space-sm py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface font-label-sm text-label-sm"
+                    >
+                      Pool Access
+                    </span>
+                  </div>
+                  <div
+                    class="absolute bottom-3 right-3 px-space-sm py-0.5 rounded-md bg-inverse-surface/85 backdrop-blur text-inverse-on-surface font-label-sm text-label-sm flex items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined text-xs"
+                      >square_foot</span
+                    >
+                    <span>38 m²</span>
+                  </div>
+                </div>
+                <div
+                  class="p-space-lg flex flex-col flex-1 justify-between gap-space-md"
+                >
+                  <div class="flex flex-col gap-space-xs">
+                    <div class="flex items-center justify-between gap-2">
+                      <span
+                        class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-bold"
+                        >Poolside Wing</span
+                      >
+                      <div
+                        class="flex items-center gap-1 text-secondary font-label-sm text-label-sm font-bold"
+                      >
+                        <span
+                          class="material-symbols-outlined text-sm"
+                          style="font-variation-settings: &quot;FILL&quot; 1"
+                          >star</span
+                        >
+                        <span>4.88 (95)</span>
+                      </div>
+                    </div>
+                    <h2
+                      class="font-headline-md text-headline-md text-on-surface font-bold group-hover:text-primary transition-colors"
+                    >
+                      Deluxe Pool View Room
+                    </h2>
+                    <p
+                      class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2"
+                    >
+                      Step directly from your personal sun patio onto the azure
+                      poolside deck. Bathed in morning sunshine with calming
+                      water reflections.
+                    </p>
+                    <!-- Room Specs Matrix -->
+                    <div
+                      class="grid grid-cols-2 gap-y-2 gap-x-4 py-space-xs my-space-xs bg-surface-container-low/60 rounded-lg p-space-sm"
+                    >
+                      <div
+                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
+                      >
+                        <span
+                          class="material-symbols-outlined text-base text-primary"
+                          >groups</span
+                        >
+                        <span>2 Guests</span>
+                      </div>
+                      <div
+                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
+                      >
+                        <span
+                          class="material-symbols-outlined text-base text-primary"
+                          >single_bed</span
+                        >
+                        <span>Queen Bed</span>
+                      </div>
+                      <div
+                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
+                      >
+                        <span
+                          class="material-symbols-outlined text-base text-primary"
+                          >pool</span
+                        >
+                        <span>Poolfront Terrace</span>
+                      </div>
+                      <div
+                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
+                      >
+                        <span
+                          class="material-symbols-outlined text-base text-primary"
+                          >ac_unit</span
+                        >
+                        <span>Dual Zone A/C</span>
+                      </div>
+                    </div>
+                    <!-- Amenity Pills -->
+                    <div class="flex flex-wrap gap-1.5 pt-1">
+                      <span
+                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
+                        >High-Speed Wi-Fi</span
+                      >
+                      <span
+                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
+                        >Smart TV</span
+                      >
+                      <span
+                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
+                        >Mini Bar</span
+                      >
+                    </div>
+                  </div>
+                  <!-- Pricing & Action Row -->
+                  <div
+                    class="pt-space-md border-t border-surface-container-high/60 flex items-end justify-between gap-space-sm"
+                  >
+                    <div class="flex flex-col">
+                      <span
+                        class="font-label-sm text-label-sm text-on-surface-variant"
+                        >Nightly Rate</span
+                      >
+                      <div class="flex items-baseline gap-1">
+                        <span
+                          class="font-headline-lg text-headline-lg font-bold text-on-surface"
+                          >KES 9,800</span
+                        >
+                        <span
+                          class="font-body-sm text-body-sm text-on-surface-variant"
+                          >/ night</span
+                        >
+                      </div>
+                      <span
+                        class="font-label-sm text-label-sm text-tertiary font-semibold flex items-center gap-1"
+                      >
+                        <span class="material-symbols-outlined text-xs"
+                          >done</span
+                        >
+                        Free Cancellation 48h
+                      </span>
+                    </div>
+                    <a
+                      class="px-space-lg py-space-sm rounded-full bg-secondary text-on-secondary font-label-md text-label-md font-semibold hover:bg-secondary-container transition-all shadow-md shrink-0 flex items-center gap-1"
+                      data-path="booking"
+                      href="#"
+                    >
+                      <span>Book Room</span>
+                      <span class="material-symbols-outlined text-sm"
+                        >arrow_forward</span
+                      >
+                    </a>
+                  </div>
+                </div>
+              </article>
+              <!-- Card 4: Classic Twin Deluxe -->
+              <article
+                class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
+                data-bed="twin"
+                data-capacity="2"
+                data-category="deluxe"
+                data-price="8000"
+              >
+                <div class="relative w-full aspect-[16/10] overflow-hidden">
+                  <img
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    data-alt="Modern spacious twin bedroom in Intercounty Hotel Kitui with two separate deluxe twin beds, artisanal wood headboards, bright airy window facing tranquil courtyard, clean contemporary workspace, warm neutral tones with soft violet runners, professional hospitality ambiance."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVdpwv1XYBboyaURsSXFtX598Wru0cReB-Cv7UIy9gpPKf3GtxpC95BX7hAdwf6pgXj017fgnBI7z3rycmtPByYRCPpyDshm2xPsI9esMKrxL8np_bn9HoPiYxcy1Xc0aM_g05Ab6hLReXuDezAzMhoWKKESwRETk0SQc-0A6I9lurzVaS1B1iSITzNmkiwfZik3jl3XnxCMOTPFW_wGhsEjcQyhmGXweDfc_Bt14"
+                  />
+                  <div class="absolute top-3 left-3 flex flex-wrap gap-1.5">
+                    <span
+                      class="px-space-sm py-0.5 rounded-full bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm font-semibold shadow-sm"
+                    >
+                      Corporate Choice
+                    </span>
+                  </div>
+                  <div
+                    class="absolute bottom-3 right-3 px-space-sm py-0.5 rounded-md bg-inverse-surface/85 backdrop-blur text-inverse-on-surface font-label-sm text-label-sm flex items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined text-xs"
+                      >square_foot</span
+                    >
+                    <span>36 m²</span>
+                  </div>
+                </div>
+                <div
+                  class="p-space-lg flex flex-col flex-1 justify-between gap-space-md"
+                >
+                  <div class="flex flex-col gap-space-xs">
+                    <div class="flex items-center justify-between gap-2">
+                      <span
+                        class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-bold"
+                        >Standard Deluxe</span
+                      >
+                      <div
+                        class="flex items-center gap-1 text-secondary font-label-sm text-label-sm font-bold"
+                      >
+                        <span
+                          class="material-symbols-outlined text-sm"
+                          style="font-variation-settings: &quot;FILL&quot; 1"
+                          >star</span
+                        >
+                        <span>4.85 (51)</span>
+                      </div>
+                    </div>
+                    <h2
+                      class="font-headline-md text-headline-md text-on-surface font-bold group-hover:text-primary transition-colors"
+                    >
+                      Classic Twin Deluxe
+                    </h2>
+                    <p
+                      class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2"
+                    >
+                      Tailored for traveling colleagues and friends. Two plush
+                      individual beds, individual bedside charging stations, and
+                      sound-insulated partition windows.
+                    </p>
+                    <!-- Room Specs Matrix -->
+                    <div
+                      class="grid grid-cols-2 gap-y-2 gap-x-4 py-space-xs my-space-xs bg-surface-container-low/60 rounded-lg p-space-sm"
+                    >
+                      <div
+                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
+                      >
+                        <span
+                          class="material-symbols-outlined text-base text-primary"
+                          >groups</span
+                        >
+                        <span>2 Guests</span>
+                      </div>
+                      <div
+                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
+                      >
+                        <span
+                          class="material-symbols-outlined text-base text-primary"
+                          >bed</span
+                        >
+                        <span>2 Twin Beds</span>
+                      </div>
+                      <div
+                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
+                      >
+                        <span
+                          class="material-symbols-outlined text-base text-primary"
+                          >wifi</span
+                        >
+                        <span>Fiber Wi-Fi</span>
+                      </div>
+                      <div
+                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
+                      >
+                        <span
+                          class="material-symbols-outlined text-base text-primary"
+                          >coffee</span
+                        >
+                        <span>Tea & Coffee Setup</span>
+                      </div>
+                    </div>
+                    <!-- Amenity Pills -->
+                    <div class="flex flex-wrap gap-1.5 pt-1">
+                      <span
+                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
+                        >High-Speed Wi-Fi</span
+                      >
+                      <span
+                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
+                        >Work Desk</span
+                      >
+                      <span
+                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
+                        >Climate AC</span
+                      >
+                    </div>
+                  </div>
+                  <!-- Pricing & Action Row -->
+                  <div
+                    class="pt-space-md border-t border-surface-container-high/60 flex items-end justify-between gap-space-sm"
+                  >
+                    <div class="flex flex-col">
+                      <span
+                        class="font-label-sm text-label-sm text-on-surface-variant"
+                        >Nightly Rate</span
+                      >
+                      <div class="flex items-baseline gap-1">
+                        <span
+                          class="font-headline-lg text-headline-lg font-bold text-on-surface"
+                          >KES 8,000</span
+                        >
+                        <span
+                          class="font-body-sm text-body-sm text-on-surface-variant"
+                          >/ night</span
+                        >
+                      </div>
+                      <span
+                        class="font-label-sm text-label-sm text-tertiary font-semibold flex items-center gap-1"
+                      >
+                        <span class="material-symbols-outlined text-xs"
+                          >done</span
+                        >
+                        Full English Breakfast
+                      </span>
+                    </div>
+                    <a
+                      class="px-space-lg py-space-sm rounded-full bg-secondary text-on-secondary font-label-md text-label-md font-semibold hover:bg-secondary-container transition-all shadow-md shrink-0 flex items-center gap-1"
+                      data-path="booking"
+                      href="#"
+                    >
+                      <span>Book Room</span>
+                      <span class="material-symbols-outlined text-sm"
+                        >arrow_forward</span
+                      >
+                    </a>
+                  </div>
+                </div>
+              </article>
+              <!-- Card 5: Family Garden Cottage -->
+              <article
+                class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
+                data-bed="family"
+                data-capacity="5"
+                data-category="cottage"
+                data-price="16000"
+              >
+                <div class="relative w-full aspect-[16/10] overflow-hidden">
+                  <img
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    data-alt="Charming detached Family Garden Cottage nestled in a green landscaped lawn in Kitui Kenya, stone and timber architecture, wide open veranda with family outdoor table, cozy living room visible through panoramic French windows, warm twilight garden lanterns glowing softly."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeAX9WFb3xfRml5aWjOMdqP3fRLh9z-ZfdWMmKf6Y1nUP-vlWDpFUnyj2LHuPXwOSZ604767LA_3gZoov42dSRRc3xsM6eW-W6Y6dJ325iqQ52s_lFfdav4AxKuGUMBF5AHedFeu_xREABE6DEeLHZNJ46i0jkuO6Ti7CUy3r8y1LLe2gpZuUmkZKXl2i_xrKLEE5WOja6LOrp-lXw-nf-DKdPXCe3r5GdIQbmZBw"
+                  />
+                  <div class="absolute top-3 left-3 flex flex-wrap gap-1.5">
+                    <span
+                      class="px-space-sm py-0.5 rounded-full bg-secondary text-on-secondary font-label-sm text-label-sm font-semibold shadow-sm"
+                    >
+                      Spacious Retreat
+                    </span>
+                    <span
+                      class="px-space-sm py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface font-label-sm text-label-sm"
+                    >
+                      Private Cottage
+                    </span>
+                  </div>
+                  <div
+                    class="absolute bottom-3 right-3 px-space-sm py-0.5 rounded-md bg-inverse-surface/85 backdrop-blur text-inverse-on-surface font-label-sm text-label-sm flex items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined text-xs"
+                      >square_foot</span
+                    >
+                    <span>76 m²</span>
+                  </div>
+                </div>
+                <div
+                  class="p-space-lg flex flex-col flex-1 justify-between gap-space-md"
+                >
+                  <div class="flex flex-col gap-space-xs">
+                    <div class="flex items-center justify-between gap-2">
+                      <span
+                        class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-bold"
+                        >Chalet & Cottages</span
+                      >
+                      <div
+                        class="flex items-center gap-1 text-secondary font-label-sm text-label-sm font-bold"
+                      >
+                        <span
+                          class="material-symbols-outlined text-sm"
+                          style="font-variation-settings: &quot;FILL&quot; 1"
+                          >star</span
+                        >
+                        <span>4.95 (39)</span>
+                      </div>
+                    </div>
+                    <h2
+                      class="font-headline-md text-headline-md text-on-surface font-bold group-hover:text-primary transition-colors"
+                    >
+                      Family Garden Cottage
+                    </h2>
+                    <p
+                      class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2"
+                    >
+                      Detached sanctuary with interconnected bedrooms, sunlit
+                      central living lounge, dining corner, and a secluded lawn
+                      patio perfect for children.
+                    </p>
+                    <!-- Room Specs Matrix -->
+                    <div
+                      class="grid grid-cols-2 gap-y-2 gap-x-4 py-space-xs my-space-xs bg-surface-container-low/60 rounded-lg p-space-sm"
+                    >
+                      <div
+                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
+                      >
+                        <span
+                          class="material-symbols-outlined text-base text-primary"
+                          >family_restroom</span
+                        >
+                        <span>Up to 5 Guests</span>
+                      </div>
+                      <div
+                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
+                      >
+                        <span
+                          class="material-symbols-outlined text-base text-primary"
+                          >bed</span
+                        >
+                        <span>1 King + 2 Singles</span>
+                      </div>
+                      <div
+                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
+                      >
+                        <span
+                          class="material-symbols-outlined text-base text-primary"
+                          >living</span
+                        >
+                        <span>Private Living Room</span>
+                      </div>
+                      <div
+                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
+                      >
+                        <span
+                          class="material-symbols-outlined text-base text-primary"
+                          >yard</span
+                        >
+                        <span>Enclosed Lawn</span>
+                      </div>
+                    </div>
+                    <!-- Amenity Pills -->
+                    <div class="flex flex-wrap gap-1.5 pt-1">
+                      <span
+                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
+                        >High-Speed Wi-Fi</span
+                      >
+                      <span
+                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
+                        >Kitchenette</span
+                      >
+                      <span
+                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
+                        >2 Bathrooms</span
+                      >
+                    </div>
+                  </div>
+                  <!-- Pricing & Action Row -->
+                  <div
+                    class="pt-space-md border-t border-surface-container-high/60 flex items-end justify-between gap-space-sm"
+                  >
+                    <div class="flex flex-col">
+                      <span
+                        class="font-label-sm text-label-sm text-on-surface-variant"
+                        >Nightly Cottage</span
+                      >
+                      <div class="flex items-baseline gap-1">
+                        <span
+                          class="font-headline-lg text-headline-lg font-bold text-on-surface"
+                          >KES 16,000</span
+                        >
+                        <span
+                          class="font-body-sm text-body-sm text-on-surface-variant"
+                          >/ night</span
+                        >
+                      </div>
+                      <span
+                        class="font-label-sm text-label-sm text-tertiary font-semibold flex items-center gap-1"
+                      >
+                        <span class="material-symbols-outlined text-xs"
+                          >done</span
+                        >
+                        Full Family Breakfast
+                      </span>
+                    </div>
+                    <a
+                      class="px-space-lg py-space-sm rounded-full bg-secondary text-on-secondary font-label-md text-label-md font-semibold hover:bg-secondary-container transition-all shadow-md shrink-0 flex items-center gap-1"
+                      data-path="booking"
+                      href="#"
+                    >
+                      <span>Book Room</span>
+                      <span class="material-symbols-outlined text-sm"
+                        >arrow_forward</span
+                      >
+                    </a>
+                  </div>
+                </div>
+              </article>
+              <!-- Card 6: Standard Comfort Room -->
+              <article
+                class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
+                data-bed="queen"
+                data-capacity="2"
+                data-category="executive"
+                data-price="6500"
+              >
+                <div class="relative w-full aspect-[16/10] overflow-hidden">
+                  <img
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    data-alt="Clean and welcoming Standard Comfort Room in Intercounty Hotel Kitui Kenya, queen bed with plush pillows and crisp white duvet, ergonomic work desk with modern task lamp, high-speed Wi-Fi, understated Swahili wall tapestry, bright clean bathroom with glass walk-in shower."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQZ7YcirzcNDsh99yjl_m6NfJQ2xAqs6wfYsVHqoIR46JLue2lW6j1uTdLRzjSYejZZzuEOTz-PFN76pfnPt9JEkYQxnGoanxSTCOC-60c7iZ0hF5zxLfKShDsa1-tHb9qRucxgCWiU9rSfMVrSfL8MPsYjDEfY2hbRSuHcRK8CkDsDGi_wqxtE_f91WEh2F964cMcM4D9WudWTRUFBy8KiwTSWdrie2wnvt2Q3hA"
+                  />
+                  <div class="absolute top-3 left-3 flex flex-wrap gap-1.5">
+                    <span
+                      class="px-space-sm py-0.5 rounded-full bg-tertiary text-on-tertiary font-label-sm text-label-sm font-semibold shadow-sm"
+                    >
+                      Best Value
+                    </span>
+                  </div>
+                  <div
+                    class="absolute bottom-3 right-3 px-space-sm py-0.5 rounded-md bg-inverse-surface/85 backdrop-blur text-inverse-on-surface font-label-sm text-label-sm flex items-center gap-1"
+                  >
+                    <span class="material-symbols-outlined text-xs"
+                      >square_foot</span
+                    >
+                    <span>28 m²</span>
+                  </div>
+                </div>
+                <div
+                  class="p-space-lg flex flex-col flex-1 justify-between gap-space-md"
+                >
+                  <div class="flex flex-col gap-space-xs">
+                    <div class="flex items-center justify-between gap-2">
+                      <span
+                        class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-bold"
+                        >Smart Traveler</span
+                      >
+                      <div
+                        class="flex items-center gap-1 text-secondary font-label-sm text-label-sm font-bold"
+                      >
+                        <span
+                          class="material-symbols-outlined text-sm"
+                          style="font-variation-settings: &quot;FILL&quot; 1"
+                          >star</span
+                        >
+                        <span>4.81 (112)</span>
+                      </div>
+                    </div>
+                    <h2
+                      class="font-headline-md text-headline-md text-on-surface font-bold group-hover:text-primary transition-colors"
+                    >
+                      Standard Comfort Room
+                    </h2>
+                    <p
+                      class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2"
+                    >
+                      Exceptional utility and quiet serenity. Designed with a
+                      double plush mattress, streamlined work counter, and
+                      high-speed Wi-Fi for efficient solo or duo stays.
+                    </p>
+                    <!-- Room Specs Matrix -->
+                    <div
+                      class="grid grid-cols-2 gap-y-2 gap-x-4 py-space-xs my-space-xs bg-surface-container-low/60 rounded-lg p-space-sm"
+                    >
+                      <div
+                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
+                      >
+                        <span
+                          class="material-symbols-outlined text-base text-primary"
+                          >groups</span
+                        >
+                        <span>2 Guests</span>
+                      </div>
+                      <div
+                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
+                      >
+                        <span
+                          class="material-symbols-outlined text-base text-primary"
+                          >hotel</span
+                        >
+                        <span>Double Bed</span>
+                      </div>
+                      <div
+                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
+                      >
+                        <span
+                          class="material-symbols-outlined text-base text-primary"
+                          >wifi</span
+                        >
+                        <span>High-speed Wi-Fi</span>
+                      </div>
+                      <div
+                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
+                      >
+                        <span
+                          class="material-symbols-outlined text-base text-primary"
+                          >shower</span
+                        >
+                        <span>Walk-in Shower</span>
+                      </div>
+                    </div>
+                    <!-- Amenity Pills -->
+                    <div class="flex flex-wrap gap-1.5 pt-1">
+                      <span
+                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
+                        >High-Speed Wi-Fi</span
+                      >
+                      <span
+                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
+                        >Work Counter</span
+                      >
+                      <span
+                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
+                        >Daily Housekeeping</span
+                      >
+                    </div>
+                  </div>
+                  <!-- Pricing & Action Row -->
+                  <div
+                    class="pt-space-md border-t border-surface-container-high/60 flex items-end justify-between gap-space-sm"
+                  >
+                    <div class="flex flex-col">
+                      <span
+                        class="font-label-sm text-label-sm text-on-surface-variant"
+                        >Nightly Rate</span
+                      >
+                      <div class="flex items-baseline gap-1">
+                        <span
+                          class="font-headline-lg text-headline-lg font-bold text-on-surface"
+                          >KES 6,500</span
+                        >
+                        <span
+                          class="font-body-sm text-body-sm text-on-surface-variant"
+                          >/ night</span
+                        >
+                      </div>
+                      <span
+                        class="font-label-sm text-label-sm text-tertiary font-semibold flex items-center gap-1"
+                      >
+                        <span class="material-symbols-outlined text-xs"
+                          >done</span
+                        >
+                        Complimentary Breakfast
+                      </span>
+                    </div>
+                    <a
+                      class="px-space-lg py-space-sm rounded-full bg-secondary text-on-secondary font-label-md text-label-md font-semibold hover:bg-secondary-container transition-all shadow-md shrink-0 flex items-center gap-1"
+                      data-path="booking"
+                      href="#"
+                    >
+                      <span>Book Room</span>
+                      <span class="material-symbols-outlined text-sm"
+                        >arrow_forward</span
+                      >
+                    </a>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+        <!-- Inclusions, Guest Privileges & Transparent Policies -->
+        <section
+          class="w-full bg-surface-container py-space-xl px-margin-mobile lg:px-margin"
+        >
+          <div class="max-w-[1280px] mx-auto flex flex-col gap-space-lg">
+            <div
+              class="flex flex-col md:flex-row md:items-end justify-between gap-space-md"
+            >
+              <div class="flex flex-col gap-space-xs max-w-xl">
+                <span
+                  class="font-label-md text-label-md text-secondary uppercase tracking-widest font-bold"
+                  >Standard Stays</span
+                >
+                <h2
+                  class="font-headline-xl text-headline-xl font-bold text-on-surface"
+                >
+                  Included In Every Stay
+                </h2>
+                <p class="font-body-md text-body-md text-on-surface-variant">
+                  At Intercounty Hotel Kitui, exceptional service is never an
+                  add-on. Every reservation enjoys our comprehensive suite of
+                  hospitality touches.
+                </p>
+              </div>
+              <div class="flex items-center gap-2">
+                <span
+                  class="px-space-md py-space-xs rounded-full bg-surface-container-lowest text-primary font-label-sm text-label-sm font-semibold shadow-sm"
+                >
+                  4-Star Standard Compliant
+                </span>
+              </div>
+            </div>
+            <!-- Policy & Inclusion Bento Cards -->
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter"
+            >
+              <!-- Perk 1: Breakfast Buffet -->
+              <div
+                class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col gap-space-sm hover:translate-y-[-2px] transition-transform"
+              >
+                <div
+                  class="w-12 h-12 rounded-xl bg-primary-container/15 text-primary flex items-center justify-center"
+                >
+                  <span class="material-symbols-outlined text-2xl"
+                    >restaurant</span
+                  >
+                </div>
+                <h3
+                  class="font-headline-sm text-headline-sm font-bold text-on-surface"
+                >
+                  Complimentary Buffet
+                </h3>
+                <p
+                  class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed"
+                >
+                  Freshly prepared tropical fruits, Swahili mahamri, artisanal
+                  eggs cooked to order, Kenyan highland coffees, and farm teas
+                  served daily from 6:30 AM to 10:30 AM.
+                </p>
+              </div>
+              <!-- Perk 2: Flexible Check-in -->
+              <div
+                class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col gap-space-sm hover:translate-y-[-2px] transition-transform"
+              >
+                <div
+                  class="w-12 h-12 rounded-xl bg-secondary-container/20 text-secondary flex items-center justify-center"
+                >
+                  <span class="material-symbols-outlined text-2xl"
+                    >more_time</span
+                  >
+                </div>
+                <h3
+                  class="font-headline-sm text-headline-sm font-bold text-on-surface"
+                >
+                  24-Hour Reception
+                </h3>
+                <p
+                  class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed"
+                >
+                  Standard check-in from 12:00 PM, flexible early arrival on
+                  request, seamless late luggage storage, and 24/7 dedicated
+                  concierge assistance.
+                </p>
+              </div>
+              <!-- Perk 3: Free Cancellation -->
+              <div
+                class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col gap-space-sm hover:translate-y-[-2px] transition-transform"
+              >
+                <div
+                  class="w-12 h-12 rounded-xl bg-tertiary-container/15 text-tertiary flex items-center justify-center"
+                >
+                  <span class="material-symbols-outlined text-2xl"
+                    >event_available</span
+                  >
+                </div>
+                <h3
+                  class="font-headline-sm text-headline-sm font-bold text-on-surface"
+                >
+                  Free 48h Cancellation
+                </h3>
+                <p
+                  class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed"
+                >
+                  Plans change. Cancel or reschedule your reservation with zero
+                  penalty fees up to 48 hours prior to your scheduled check-in
+                  date.
+                </p>
+              </div>
+              <!-- Perk 4: Resort Access -->
+              <div
+                class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col gap-space-sm hover:translate-y-[-2px] transition-transform"
+              >
+                <div
+                  class="w-12 h-12 rounded-xl bg-primary-container/15 text-primary flex items-center justify-center"
+                >
+                  <span class="material-symbols-outlined text-2xl">pool</span>
+                </div>
+                <h3
+                  class="font-headline-sm text-headline-sm font-bold text-on-surface"
+                >
+                  Bridge Pool & Valet
+                </h3>
+                <p
+                  class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed"
+                >
+                  Unlimited guest privileges for our signature outdoor swimming
+                  pool, secure on-site gated parking with 24-hr surveillance,
+                  and high-speed fiber Wi-Fi throughout.
+                </p>
+              </div>
+            </div>
+            <!-- Need Custom Group Booking Callout -->
+            <div
+              class="mt-space-md p-space-lg rounded-xl bg-primary text-on-primary flex flex-col md:flex-row items-center justify-between gap-space-md shadow-md"
+            >
+              <div class="flex items-center gap-space-md">
+                <div
+                  class="w-14 h-14 rounded-full bg-on-primary/10 flex items-center justify-center shrink-0"
+                >
+                  <span
+                    class="material-symbols-outlined text-3xl text-primary-fixed"
+                    >corporate_fare</span
+                  >
+                </div>
+                <div class="flex flex-col">
+                  <h4
+                    class="font-headline-sm text-headline-sm font-bold text-on-primary"
+                  >
+                    Planning a Conference, Delegation, or Wedding?
+                  </h4>
+                  <p
+                    class="font-body-sm text-body-sm text-surface-container-high"
+                  >
+                    We offer bespoke group room blocks, corporate rates, and
+                    coordinated banquet catering across Kitui County.
+                  </p>
+                </div>
+              </div>
+              <div
+                class="flex items-center gap-space-sm shrink-0 w-full md:w-auto"
+              >
+                <a
+                  class="w-full md:w-auto text-center px-space-lg py-space-sm rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md font-semibold hover:bg-surface-bright transition-all shadow"
+                  data-path="contact"
+                  href="#"
+                >
+                  Contact Events Team
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <script>
+        // Simple client-side category filtering & sorting logic
+        document.addEventListener("DOMContentLoaded", () => {
+          const categoryButtons = document.querySelectorAll(".filter-tab-btn");
+          const cards = Array.from(
+            document.querySelectorAll("#rooms-grid article"),
+          );
+          const priceFilter = document.getElementById("price-filter");
+          const bedFilter = document.getElementById("bed-filter");
+          const sortSelector = document.getElementById("sort-selector");
+          const roomsGrid = document.getElementById("rooms-grid");
+
+          let currentCategory = "all";
+
+          function applyFilters() {
+            const selectedPrice = priceFilter.value;
+            const selectedBed = bedFilter.value;
+
+            cards.forEach((card) => {
+              const cat = card.dataset.category;
+              const price = parseInt(card.dataset.price, 10);
+              const bed = card.dataset.bed;
+
+              let matchesCat =
+                currentCategory === "all" || cat === currentCategory;
+              let matchesPrice = true;
+              if (selectedPrice === "under7") matchesPrice = price < 7000;
+              else if (selectedPrice === "7to15")
+                matchesPrice = price >= 7000 && price <= 15000;
+              else if (selectedPrice === "above15")
+                matchesPrice = price > 15000;
+
+              let matchesBed = selectedBed === "all" || bed === selectedBed;
+
+              if (matchesCat && matchesPrice && matchesBed) {
+                card.classList.remove("hidden");
+              } else {
+                card.classList.add("hidden");
+              }
+            });
+
+            applySorting();
+          }
+
+          function applySorting() {
+            const sortBy = sortSelector.value;
+            const sortedCards = [...cards].sort((a, b) => {
+              const priceA = parseInt(a.dataset.price, 10);
+              const priceB = parseInt(b.dataset.price, 10);
+              const capA = parseInt(a.dataset.capacity, 10);
+              const capB = parseInt(b.dataset.capacity, 10);
+
+              if (sortBy === "price-asc") return priceA - priceB;
+              if (sortBy === "price-desc") return priceB - priceA;
+              if (sortBy === "capacity-desc") return capB - capA;
+              return 0; // Default/recommended
+            });
+
+            sortedCards.forEach((c) => roomsGrid.appendChild(c));
+          }
+
+          categoryButtons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+              categoryButtons.forEach((b) => {
+                b.classList.remove("bg-primary", "text-on-primary");
+                b.classList.add(
+                  "bg-surface-container",
+                  "text-on-surface-variant",
+                );
+              });
+              btn.classList.remove(
+                "bg-surface-container",
+                "text-on-surface-variant",
+              );
+              btn.classList.add("bg-primary", "text-on-primary");
+
+              currentCategory = btn.dataset.filter;
+              applyFilters();
+            });
+          });
+
+          priceFilter.addEventListener("change", applyFilters);
+          bedFilter.addEventListener("change", applyFilters);
+          sortSelector.addEventListener("change", applySorting);
+
+          window.resetFilters = function () {
+            priceFilter.value = "all";
+            bedFilter.value = "all";
+            sortSelector.value = "recommended";
+            currentCategory = "all";
+
+            categoryButtons.forEach((b, idx) => {
+              if (idx === 0) {
+                b.classList.remove(
+                  "bg-surface-container",
+                  "text-on-surface-variant",
+                );
+                b.classList.add("bg-primary", "text-on-primary");
+              } else {
+                b.classList.remove("bg-primary", "text-on-primary");
+                b.classList.add(
+                  "bg-surface-container",
+                  "text-on-surface-variant",
+                );
+              }
+            });
+            applyFilters();
+          };
+        });
+      </script>
+    </main>
+{% endblock %}
