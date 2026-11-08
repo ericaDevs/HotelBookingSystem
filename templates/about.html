@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% load static %}
 
 {% block title %}About Us | Intercounty Hotels{% endblock %}
 {% block body_class %}bg-surface font-body-md text-on-surface antialiased min-h-screen{% endblock %}
@@ -204,30 +205,17 @@
 {% endblock %}
 
 {% block main %}
-<main class="w-full pt-20 bg-surface">
+<main class="w-full bg-surface">
       <div class="flex flex-col w-full">
         <!-- Editorial Hero Section -->
         <section
-          class="relative w-full overflow-hidden bg-surface-container-low py-space-xl lg:py-space-xl"
+          class="relative w-full bg-surface-container-low py-space-xl md:min-h-screen md:flex md:items-center"
         >
-          <div class="max-w-[1280px] mx-auto px-margin-mobile lg:px-margin">
+          <div class="w-full max-w-7xl mx-auto px-margin-mobile lg:px-margin">
             <div
-              class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center"
+              class="grid grid-cols-1 md:grid-cols-2 gap-gutter items-center"
             >
-              <div class="lg:col-span-7 flex flex-col gap-space-md">
-                <div
-                  class="inline-flex items-center gap-2 self-start px-space-md py-space-xs rounded-full bg-primary-fixed text-on-primary-fixed shadow-sm"
-                >
-                  <span
-                    class="material-symbols-outlined text-sm"
-                    style="font-variation-settings: &quot;FILL&quot; 1"
-                    >workspace_premium</span
-                  >
-                  <span
-                    class="font-label-sm text-label-sm uppercase tracking-wider"
-                    >Heritage & Excellence in Eastern Kenya</span
-                  >
-                </div>
+              <div class="flex flex-col gap-space-md">
                 <h1
                   class="font-headline-xl text-headline-xl lg:font-display-lg lg:text-display-lg text-on-surface tracking-tight leading-tight"
                 >
@@ -269,19 +257,20 @@
                   </a>
                 </div>
               </div>
+
               <!-- Asymmetric Visual Showcase -->
-              <div class="lg:col-span-5 relative mt-space-lg lg:mt-0">
-                <div class="relative mx-auto max-w-md lg:max-w-none">
+              <div class="relative w-full min-w-0">
+                <div class="relative mx-auto max-w-md md:max-w-none">
                   <div
-                    class="relative rounded-2xl overflow-hidden shadow-xl bg-surface-container-lowest"
+                    class="relative aspect-4/3 w-full rounded-2xl overflow-hidden shadow-xl"
                   >
                     <img
-                      class="w-full h-[420px] object-cover transition-transform duration-700 hover:scale-105"
-                      data-alt="Sunlit architectural view of Intercounty Hotel Kitui showing pristine modern East African terracotta and stone facades, surrounded by manicured tropical gardens, flowering acacia trees, and a sun-drenched azure pool under a crisp Kenyan blue sky."
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOG5Y99PykNBHOUdpUi2QE7P52rQp-mUio94P7jXSAhJTtASdxCE5HMfnPwS3SEQ8yj6WivbB0f6S7n8MSeeYZ3iNxy5V-uyl2Xny1A8yDMsHeki6OxZtICu-646g-PNeGP63pSb9IpA9IPHUlZMoIR3f2ympITVAnsYyTyMt-RsupRzjR54_5kBbtVxAOEn_4-mYusFcFDVdpoDJeUsxmcGz4HFNgYbohOEXr-2U"
+                      class="absolute inset-0 h-full w-full object-cover object-center"
+                      src="{% static 'images/hero two.webp' %}"
+                      alt="Intercounty Hotel Kitui, viewed from the pool and landscaped grounds"
                     />
                     <div
-                      class="absolute inset-0 bg-gradient-to-t from-on-surface/70 via-transparent to-transparent"
+                      class="absolute inset-0 bg-linear-to-t from-on-surface/70 via-transparent to-transparent"
                     ></div>
                     <div
                       class="absolute bottom-space-md left-space-md right-space-md p-space-md rounded-xl bg-surface/90 backdrop-blur-md shadow-lg flex items-center justify-between"
@@ -305,30 +294,24 @@
                       </div>
                     </div>
                   </div>
-                  <!-- Overlapping Float Pill -->
-                  <div
-                    class="-ml-4 -mt-8 relative z-10 inline-flex items-center gap-space-sm px-space-md py-space-sm rounded-full bg-surface-container-lowest shadow-xl text-on-surface"
-                  >
-                    <span
-                      class="w-3 h-3 rounded-full bg-tertiary animate-pulse"
-                    ></span>
-                    <span class="font-label-sm text-label-sm font-semibold"
-                      >Welcoming Guests Since Foundation</span
-                    >
-                  </div>
                 </div>
               </div>
+
             </div>
           </div>
         </section>
+
+
+
+
         <!-- Narrative & Core Pillars -->
         <section class="w-full py-space-xl bg-surface" id="narrative">
           <div
-            class="max-w-[1280px] mx-auto px-margin-mobile lg:px-margin flex flex-col gap-space-xl"
+            class="max-w-7xl mx-auto px-margin-mobile lg:px-margin flex flex-col gap-space-xl"
           >
             <!-- Split Narrative Row -->
             <div
-              class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-stretch"
+              class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-stretch md:mb-16"
             >
               <!-- Story Column -->
               <div
@@ -336,9 +319,6 @@
               >
                 <div class="flex flex-col gap-space-md">
                   <div class="flex items-center gap-space-xs text-primary">
-                    <span class="material-symbols-outlined text-2xl"
-                      >history_edu</span
-                    >
                     <span
                       class="font-label-sm text-label-sm uppercase tracking-widest font-bold"
                       >The Genesis</span
@@ -352,7 +332,7 @@
                   <p
                     class="font-body-md text-body-md text-on-surface-variant leading-relaxed"
                   >
-                    Intercounty Hotel Kitui originated from a bold ambition: to
+                    Inter-county Gardens Hotel Kitui originated from a bold ambition: to
                     deliver an oasis of five-star tranquility and refined
                     service amidst the breathtaking landscapes of Kitui County.
                     Inspired by the legendary graciousness of Akamba culture,
@@ -417,7 +397,7 @@
                     The Mission
                   </h3>
                   <blockquote
-                    class="font-headline-lg text-headline-lg lg:font-headline-xl lg:text-headline-xl font-bold leading-snug tracking-tight text-on-primary"
+                    class="text-2xl font-bold leading-snug tracking-tight text-on-primary"
                   >
                     “To deliver unforgettable East African guest experiences
                     through gracious service, exceptional culinary craft, and an
@@ -426,9 +406,9 @@
                   <p
                     class="font-body-md text-body-md text-primary-fixed-dim leading-relaxed pt-space-xs"
                   >
-                    Every detail—from our signature architectural arched bridge
+                    Every detail from our signature architectural arched bridge
                     spanning the sparkling swimming pool to our organic
-                    garden-to-table cuisine—is crafted to honor our land while
+                    garden-to-table cuisine is crafted to honor our land while
                     setting new hospitality standards.
                   </p>
                 </div>
@@ -446,7 +426,7 @@
                     <div class="flex flex-col">
                       <span
                         class="font-label-md text-label-md font-bold text-on-primary"
-                        >Intercounty Promise</span
+                        >Inter-county Gardens Hotel Promise</span
                       >
                       <span
                         class="font-label-sm text-label-sm text-primary-fixed"
@@ -454,13 +434,75 @@
                       >
                     </div>
                   </div>
-                  <span
-                    class="font-label-sm text-label-sm text-primary-fixed-dim uppercase tracking-widest font-mono"
-                    >ICHK • 2025</span
-                  >
                 </div>
               </div>
             </div>
+
+            <!-- New Section Header -->
+            <section
+              class="grid grid-cols-1 items-center gap-gutter rounded-3xl bg-surface-container-low p-space-lg shadow-sm md:p-space-xl lg:grid-cols-2"
+              aria-labelledby="about-experience-title"
+            >
+              <div class="relative">
+                <img
+                  class="h-72 w-full rounded-2xl object-cover shadow-md sm:h-96"
+                  src="{% static 'images/about-hero.jpg' %}"
+                  alt="The hotel pool, garden and grounds at Intercounty Gardens Hotel in Kitui"
+                  loading="lazy"
+                />
+                <div
+                  class="absolute bottom-4 left-4 rounded-xl bg-surface-container-lowest/95 px-4 py-3 shadow-lg backdrop-blur-sm"
+                >
+                  <span class="block font-label-sm text-label-sm font-bold uppercase tracking-wider text-secondary">
+                    Your Kitui escape
+                  </span>
+                  <span class="mt-1 block font-headline-sm text-headline-sm font-semibold text-on-surface">
+                    Relax, reconnect, feel at home
+                  </span>
+                </div>
+              </div>
+              <div class="flex flex-col gap-space-md">
+                <span
+                  class="font-label-md text-label-md font-bold uppercase tracking-wider text-primary"
+                >
+                  A stay to make your own
+                </span>
+                <h2
+                  id="about-experience-title"
+                  class="font-headline-xl text-headline-xl font-bold tracking-tight text-on-surface"
+                >
+                  Make room for a little
+                  <span class="text-primary">more</span>
+                </h2>
+                <p class="font-body-md text-body-md leading-relaxed text-on-surface-variant">
+                  From a refreshing pause by the pool to time well spent with
+                  family, friends or colleagues, Intercounty Gardens Hotel is a
+                  welcoming place to slow down and enjoy Kitui.
+                </p>
+                <ul class="flex flex-col gap-space-sm">
+                  <li class="flex items-center gap-space-sm text-on-surface">
+                    <span class="material-symbols-outlined text-primary" aria-hidden="true">check_circle</span>
+                    <span class="font-label-md text-label-md font-semibold">Unwind in our pool and garden setting</span>
+                  </li>
+                  <li class="flex items-center gap-space-sm text-on-surface">
+                    <span class="material-symbols-outlined text-primary" aria-hidden="true">check_circle</span>
+                    <span class="font-label-md text-label-md font-semibold">Enjoy a warm welcome in the heart of Kitui</span>
+                  </li>
+                  <li class="flex items-center gap-space-sm text-on-surface">
+                    <span class="material-symbols-outlined text-primary" aria-hidden="true">check_circle</span>
+                    <span class="font-label-md text-label-md font-semibold">Find space to relax, dine and gather</span>
+                  </li>
+                </ul>
+                <a
+                  class="inline-flex w-fit items-center gap-2 rounded-full bg-secondary px-space-lg py-space-sm font-label-md text-label-md font-semibold text-on-secondary shadow-md transition-colors hover:bg-secondary-container"
+                  href="{% url 'bookings' %}"
+                >
+                  Book your Space
+                  <span class="material-symbols-outlined text-sm" aria-hidden="true">arrow_forward</span>
+                </a>
+              </div>
+            </section>
+
             <!-- Core Values Bento Grid -->
             <div class="flex flex-col gap-space-md">
               <div class="flex flex-col gap-space-xs">
@@ -575,11 +617,16 @@
             </div>
           </div>
         </section>
+
+
+
+
+
         <!-- Milestones By The Numbers Section -->
         <section
-          class="w-full py-space-xl bg-surface-container-high relative overflow-hidden"
+          class="w-full py-space-xl bg-surface-container-high relative overflow-hidden md:mb-22"
         >
-          <div class="max-w-[1280px] mx-auto px-margin-mobile lg:px-margin">
+          <div class="max-w-7xl mx-auto px-margin-mobile lg:px-margin">
             <div
               class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md mb-space-xl"
             >
@@ -601,6 +648,9 @@
                 preferred hospitality destination.
               </p>
             </div>
+
+
+
             <!-- Quantitative Bento Grid -->
             <div
               class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter"
@@ -611,8 +661,8 @@
               >
                 <div class="flex items-center justify-between">
                   <span
-                    class="font-display-lg text-display-lg text-primary font-bold tracking-tight"
-                    >120+</span
+                    class="text-5xl text-primary font-bold tracking-tight"
+                    >30+</span
                   >
                   <span
                     class="material-symbols-outlined text-primary-container text-3xl"
@@ -644,8 +694,8 @@
               >
                 <div class="flex items-center justify-between">
                   <span
-                    class="font-display-lg text-display-lg text-secondary font-bold tracking-tight"
-                    >15K+</span
+                    class="text-5xl text-secondary font-bold tracking-tight"
+                    >5k+</span
                   >
                   <span
                     class="material-symbols-outlined text-secondary-container text-3xl"
@@ -677,7 +727,7 @@
               >
                 <div class="flex items-center justify-between">
                   <span
-                    class="font-display-lg text-display-lg text-tertiary font-bold tracking-tight"
+                    class="text-5xl text-tertiary font-bold tracking-tight"
                     >1</span
                   >
                   <span
@@ -710,7 +760,7 @@
               >
                 <div class="flex items-center justify-between">
                   <span
-                    class="font-display-lg text-display-lg text-on-surface font-bold tracking-tight"
+                    class="text-5xl text-on-surface font-bold tracking-tight"
                     >4.9</span
                   >
                   <div class="flex items-center text-secondary">
@@ -746,232 +796,114 @@
                 </div>
               </div>
             </div>
-            <!-- Photographic Feature Strip -->
-            <div class="mt-space-xl grid grid-cols-1 md:grid-cols-3 gap-gutter">
-              <div
-                class="relative rounded-2xl overflow-hidden shadow-md h-64 group"
-              >
-                <img
-                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  data-alt="Modern sparkling Olympic size swimming pool at Intercounty Hotel Kitui with an elegant arched pedestrian bridge curving across crystal blue water, surrounded by tropical sun loungers, umbrella shades, and lush gardens."
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBe8iVXJEQEBlksvWxt01MC1okn6fcB5ZR-jswOeQMP88gz588cTXpONrVRsmLnYdD8ZcUKMhQjqd8WzmiNqQps-s97qEDqtMpucEoTBjvTybN6Cu084cGmpPx_DSGf7MYj4NEXXhtmO9sOuIzQT2FVE5H7Gl9up3FZ3vEocnXVqPZXPUp82TQGoILEyTEhXQujNRSHwQQV8MC66n43FaJa_5dZqP2edNMqfV2Q7K8"
-                />
-                <div
-                  class="absolute inset-0 bg-gradient-to-t from-on-surface/80 via-transparent to-transparent flex items-end p-space-md"
-                >
-                  <span
-                    class="font-headline-sm text-headline-sm text-surface font-semibold"
-                    >The Arched Bridge & Pool</span
-                  >
-                </div>
-              </div>
-              <div
-                class="relative rounded-2xl overflow-hidden shadow-md h-64 group"
-              >
-                <img
-                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  data-alt="Sophisticated conference ballroom at Intercounty Hotel Kitui equipped with ergonomic leather seating, polished mahogany tables, modern audio visual presentation displays, and ambient warm lighting for high level seminars."
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBC6vc8OZkberzNnj4R8SbnXRmKsaPhDd2qlCkwojV-SkFQScU59sUungsjCFtqREeBvyH5tzMRkUPy87NXjM9MBKX-tZcnS1CTyehhVG4SkSiu4s1AkEjyw3hEGyabApU6-t0F-ks0vvZ99-lugF6VwLbsWTgroUci4s37rFKPYRcY0JL5fexnkdO71UIiNv79sesqZfyyZ2aZPEQdtTyPW6WOnBypfeo5Mva_M3c"
-                />
-                <div
-                  class="absolute inset-0 bg-gradient-to-t from-on-surface/80 via-transparent to-transparent flex items-end p-space-md"
-                >
-                  <span
-                    class="font-headline-sm text-headline-sm text-surface font-semibold"
-                    >Executive Conference Suites</span
-                  >
-                </div>
-              </div>
-              <div
-                class="relative rounded-2xl overflow-hidden shadow-md h-64 group"
-              >
-                <img
-                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  data-alt="Exquisitely presented contemporary Kenyan fusion dinner plate in a fine dining restaurant, artfully garnished with fresh microgreens, vibrant spiced purees, and paired with premium vintage wine at Intercounty Hotel Kitui."
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtU6yavzMWtpB3t8eXwD-hAjYrSRq4eyZaXmRiPKZs-hANNOO3cGscn7FUswayiTTp6rU0_8gDzVgLsVJjE-iGQ1_sWfImjiDkCqO0ieUSu0MS3yHVfXv_5TntFfz_wjLv0_Ewa059BhqF0miK4gcjNP8TumFJoGrC80qCd_drPz8mmjqjJ4GnJ_GLOGmbpu-YUeDmOEJ6xTgreiqkXfLKySKHGWNf5pESD97At7U"
-                />
-                <div
-                  class="absolute inset-0 bg-gradient-to-t from-on-surface/80 via-transparent to-transparent flex items-end p-space-md"
-                >
-                  <span
-                    class="font-headline-sm text-headline-sm text-surface font-semibold"
-                    >Artisanal Gastronomy</span
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <!-- Leadership & Hospitality Team Showcase -->
-        <section class="w-full py-space-xl bg-surface">
-          <div
-            class="max-w-[1280px] mx-auto px-margin-mobile lg:px-margin flex flex-col gap-space-xl"
-          >
-            <div
-              class="flex flex-col md:flex-row md:items-end justify-between gap-space-sm"
-            >
-              <div class="flex flex-col gap-space-xs">
+
+
+            <!-- Our Vission -->
+            <div class="mt-22">
+              <div class="flex flex-col gap-space-xs mt-space-xl">
                 <span
-                  class="font-label-md text-label-md text-secondary font-bold uppercase tracking-wider"
-                  >The Custodians of Your Comfort</span
+                  class="font-label-md text-label-md text-primary font-bold uppercase tracking-widest"
+                  >Our Vision</span
                 >
                 <h2
-                  class="font-headline-xl text-headline-xl text-on-surface font-bold tracking-tight"
+                  class="font-headline-lg text-headline-lg text-on-surface font-bold tracking-tight"
                 >
-                  Leadership & Hospitality Team
+                  A Premier Hospitality Destination in Eastern Kenya
                 </h2>
               </div>
               <p
-                class="font-body-md text-body-md text-on-surface-variant max-w-lg"
+                class="font-body-md text-body-md text-on-surface-variant leading-relaxed mt-space-sm"
               >
-                Meet the passionate industry veterans committed to making every
-                visit to Intercounty Hotel Kitui an unforgettable sojourn.
+                Inter-county Gardens Hotel aspires to be the foremost
+                resort and conference destination in Eastern Kenya, celebrated
+                for its exceptional service, sustainable practices, and
+                authentic cultural experiences that resonate with both local
+                and international guests.
               </p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
-              <!-- Leader 1: GM -->
-              <div
-                class="flex flex-col rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
-              >
-                <div class="relative h-80 overflow-hidden bg-surface-container">
-                  <img
-                    class="w-full h-full object-cover object-top"
-                    data-alt="Professional portrait of an African male General Manager dressed in a tailored navy suit with an open collar, smiling warmly in the sunlit open-air hotel reception pavilion of Intercounty Hotel Kitui."
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOZlNM5X6dJFeb6-LQPFIFlqGnWhQtL2VKjxqnMCNVLnD5-gEy6QHPpICYF3jB5x0EjYmH1kXn02TDxJAQwOfySUgBtRLedDM6SUxcZtAGtiHribb8h5ayZzn2AKVXyS66XQzMjnA9FFb2_oEI9dg4CJqCfOUFHsU9Jk4UBo9AD1x57rx7yB58G9xigihR_wuxQMsrjFsxVQEONqEtFea1UTqD63L0PAfh4pCaW9Q"
-                  />
-                  <div
-                    class="absolute top-space-sm right-space-sm px-space-sm py-space-xs rounded-full bg-primary text-on-primary font-label-sm text-label-sm font-semibold"
-                  >
-                    General Management
-                  </div>
-                </div>
-                <div class="p-space-lg flex flex-col gap-space-xs">
-                  <h3
-                    class="font-headline-sm text-headline-sm text-on-surface font-bold"
-                  >
-                    David Mutiso
-                  </h3>
-                  <span
-                    class="font-label-md text-label-md text-primary font-semibold"
-                    >General Manager</span
-                  >
-                  <p
-                    class="font-body-sm text-body-sm text-on-surface-variant mt-space-xs leading-relaxed"
-                  >
-                    With over 18 years steering luxury hospitality across East
-                    Africa, David ensures our operations harmonize international
-                    luxury standards with genuine local warmth.
-                  </p>
-                  <div
-                    class="pt-space-sm mt-space-xs flex items-center gap-space-sm text-on-surface-variant"
-                  >
-                    <span class="material-symbols-outlined text-sm text-primary"
-                      >verified</span
-                    >
-                    <span class="font-label-sm text-label-sm"
-                      >Hospitality Leadership Alum</span
-                    >
-                  </div>
-                </div>
-              </div>
-              <!-- Leader 2: Executive Chef -->
-              <div
-                class="flex flex-col rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
-              >
-                <div class="relative h-80 overflow-hidden bg-surface-container">
-                  <img
-                    class="w-full h-full object-cover object-top"
-                    data-alt="Distinguished professional portrait of an African female Executive Chef in a pristine white chef jacket with purple trim, holding fresh organic herbs in a modern commercial stainless steel kitchen at Intercounty Hotel Kitui."
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBt9Z5VzYAL5Ajh0LOZrR4bpf7jlC8EoG7yFmjIe6LKMnTUJk7bONZUX5X5naMVfdP9kiWS8u1H8-S2m_nnKm4HA6-uU95ja2zajIPf38bzGNzCq9gCRa5NLtzxJof7fiBK0HGHv8Kg4vsiuoOi_Is9CpYu8UyVdFjqcdw9SuVCYXzvHIuD8vKF-0VUSQTtdrWFvWEYQGOGrjF-C76wcjLdXmB4o9rHW11D9zkmRxg"
-                  />
-                  <div
-                    class="absolute top-space-sm right-space-sm px-space-sm py-space-xs rounded-full bg-secondary text-on-secondary font-label-sm text-label-sm font-semibold"
-                  >
-                    Culinary Art
-                  </div>
-                </div>
-                <div class="p-space-lg flex flex-col gap-space-xs">
-                  <h3
-                    class="font-headline-sm text-headline-sm text-on-surface font-bold"
-                  >
-                    Chef Beatrice Mwende
-                  </h3>
-                  <span
-                    class="font-label-md text-label-md text-secondary font-semibold"
-                    >Executive Chef</span
-                  >
-                  <p
-                    class="font-body-sm text-body-sm text-on-surface-variant mt-space-xs leading-relaxed"
-                  >
-                    Trained in Nairobi and Paris, Chef Mwende pioneers
-                    contemporary Kenyan fusion dining, transforming native Kitui
-                    organic ingredients into gourmet culinary journeys.
-                  </p>
-                  <div
-                    class="pt-space-sm mt-space-xs flex items-center gap-space-sm text-on-surface-variant"
-                  >
-                    <span
-                      class="material-symbols-outlined text-sm text-secondary"
-                      >restaurant_menu</span
-                    >
-                    <span class="font-label-sm text-label-sm"
-                      >Farm-to-Table Specialist</span
-                    >
-                  </div>
-                </div>
-              </div>
-              <!-- Leader 3: Guest Relations Lead -->
-              <div
-                class="flex flex-col rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
-              >
-                <div class="relative h-80 overflow-hidden bg-surface-container">
-                  <img
-                    class="w-full h-full object-cover object-top"
-                    data-alt="Warm and welcoming portrait of an African female Guest Relations Director in smart corporate attire smiling graciously at the Intercounty Hotel Kitui lounge, with gentle garden greenery in the soft background."
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSdYs6rv0nEyHd0VyzyuJSWvW-Dxzd3JE72hVi181XwcbCEovDNDrdaGwnCnMvb2e90hXigB6uLM0gsljEv_pX3OKz_rgVDDyf6HymOw2kw-_KeChxc6msT2EBqkCJkyQKOGzggtqvL-nBGkilrNh69kvtVsMUrBpyPXa1loNCNnZNcrO5yYmhnBJcXXCyR3lQGFQa0u6-y4HdKihLIjj0SKYWUTnxqYFQdZpVsEA"
-                  />
-                  <div
-                    class="absolute top-space-sm right-space-sm px-space-sm py-space-xs rounded-full bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm font-semibold"
-                  >
-                    Concierge & Care
-                  </div>
-                </div>
-                <div class="p-space-lg flex flex-col gap-space-xs">
-                  <h3
-                    class="font-headline-sm text-headline-sm text-on-surface font-bold"
-                  >
-                    Grace Kalekye
-                  </h3>
-                  <span
-                    class="font-label-md text-label-md text-tertiary font-semibold"
-                    >Head of Guest Experience</span
-                  >
-                  <p
-                    class="font-body-sm text-body-sm text-on-surface-variant mt-space-xs leading-relaxed"
-                  >
-                    Grace and her concierge team orchestrate every individual
-                    detail—ensuring VIP arrivals, private excursions, and
-                    bespoke conference logistics unfold effortlessly.
-                  </p>
-                  <div
-                    class="pt-space-sm mt-space-xs flex items-center gap-space-sm text-on-surface-variant"
-                  >
-                    <span
-                      class="material-symbols-outlined text-sm text-tertiary"
-                      >sentiment_very_satisfied</span
-                    >
-                    <span class="font-label-sm text-label-sm"
-                      >Dedicated Guest Concierge</span
-                    >
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </section>
+
+
+
+        
+        <!-- About Us Feature -->
+        <section class="w-full overflow-hidden bg-primary text-lilac py-18 text-pri md:py-12">
+          <div
+            class="mx-auto grid max-w-7xl grid-cols-1 items-center gap-8 px-margin-mobile md:grid-cols-2 md:px-margin"
+          >
+            <div class="relative mx-auto w-full max-w-lg">
+              <div
+                class="absolute -left-8 top-8 h-40 w-40 rounded-full bg-[#8C519A]/30 blur-3xl"
+                aria-hidden="true"
+              ></div>
+              <div
+                class="relative mx-auto aspect-square w-full max-w-107.5 overflow-hidden rounded-full border-8 border-white/10 shadow-2xl"
+              >
+                <img
+                  class="h-full w-full object-cover"
+                  src="{% static 'images/about-two.webp' %}"
+                  alt="The hotel pool and gardens at Inter-county Gardens Hotel in Kitui"
+                />
+              </div>
+              <div
+                class="absolute bottom-3 left-0 flex items-center gap-3 rounded-2xl border border-white/10 bg-[#292333]/90 p-4 shadow-xl backdrop-blur sm:bottom-8 sm:left-2"
+              >
+                <span
+                  class="flex h-11 w-11 items-center justify-center rounded-full bg-[#BE3045] text-white"
+                >
+                  <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+                </span>
+                <span>
+                  <span class="block text-xs font-semibold uppercase tracking-widest text-[#F6D1FF]">A warm welcome</span>
+                  <span class="mt-1 block font-semibold">Kitui, Kenya</span>
+                </span>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-5">
+              <h2 class="max-w-2xl text-3xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-5xl">
+                A welcoming stay in the heart of
+                <span class="text-[#F6D1FF]">Kitui</span>
+              </h2>
+              <p class="max-w-2xl text-base leading-7 text-white/75 sm:text-lg">
+                Intercounty Gardens Hotel brings together relaxed stays, friendly
+                Kenyan hospitality and spaces to gather. Whether you are here to
+                unwind by the pool, share a meal or meet with colleagues, we make
+                it easy to feel at home.
+              </p>
+
+              <div class="mt-2 flex flex-col gap-3">
+                <div class="flex items-center gap-4">
+                  <span class="material-symbols-outlined text-2xl text-lilac" aria-hidden="true">bed</span>
+                  <span class="font-semibold">Comfortable stays and restful rooms</span>
+                </div>
+                <div class="flex items-center gap-4">
+                  <span class="material-symbols-outlined text-2xl text-lilac" aria-hidden="true">pool</span>
+                  <span class="font-semibold">A pool and gardens made for unwinding</span>
+                </div>
+                <div class="flex items-center gap-4">
+                  <span class="material-symbols-outlined text-2xl text-lilac" aria-hidden="true">groups</span>
+                  <span class="font-semibold">Welcoming spaces for dining and gatherings</span>
+                </div>
+              </div>
+
+              <a
+                class="mt-2 inline-flex w-fit items-center gap-2 rounded-full bg-white px-6 py-3 font-semibold text-[#713980] transition hover:bg-lilac"
+                href="{% url 'bookings' %}"
+              >
+                Plan your stay
+                <span class="material-symbols-outlined text-lg" aria-hidden="true">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+
+
         <!-- Community & Sustainability Commitment Section -->
         <section class="w-full py-space-xl bg-surface-container-low">
-          <div class="max-w-[1280px] mx-auto px-margin-mobile lg:px-margin">
+          <div class="max-w-7xl mx-auto px-margin-mobile lg:px-margin">
             <div
               class="p-space-lg lg:p-space-xl rounded-3xl bg-surface-container-lowest shadow-lg"
             >
@@ -1083,7 +1015,7 @@
                       src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH082o-aSiBna2yBA8bVIoeFOExhWabaXMl-r4JkfKj4HRaXNBz0KR4Jr75CVD2GnOYSsXpByiJxD9lt7DnLTUjxEpUVSM-Y8BRkWnwVa_XTW5At7kv6lphPx4OTZgft-Qu9zs9q_u3kMRGsZCTYPnbC_TBc8uzwal7DlKmfrD2gH2Zkd04ytbVCFqLOrQweihvUJYds3b-kE3H0FY-T9OVPbtYacAHwZoPtxgV1o"
                     />
                     <div
-                      class="absolute inset-0 bg-gradient-to-t from-on-surface/80 via-transparent to-transparent flex flex-col justify-end p-space-lg text-surface"
+                      class="absolute inset-0 bg-linear-to-t from-on-surface/80 via-transparent to-transparent flex flex-col justify-end p-space-lg text-surface"
                     >
                       <span
                         class="font-label-sm text-label-sm uppercase font-semibold text-tertiary-fixed"
@@ -1133,11 +1065,13 @@
             </div>
           </div>
         </section>
+
+
         <!-- Interactive Visit / Plan Your Stay CTA -->
         <section class="w-full py-space-xl bg-surface">
-          <div class="max-w-[1280px] mx-auto px-margin-mobile lg:px-margin">
+          <div class="max-w-7xl mx-auto px-margin-mobile lg:px-margin">
             <div
-              class="rounded-3xl bg-gradient-to-br from-primary via-primary-container to-secondary p-space-lg lg:p-space-xl text-on-primary shadow-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-space-lg"
+              class="rounded-3xl bg-secondary p-space-lg lg:p-space-xl text-on-secondary shadow-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-space-lg"
             >
               <div class="flex flex-col gap-space-sm max-w-xl">
                 <span

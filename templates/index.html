@@ -17,38 +17,39 @@
 <!-- HERO SECTION -->
 <section class="relative w-full -mt-20 overflow-visible">
 <!-- Immersive Background Image Container -->
-<div class="relative w-full h-160 lg:h-180 bg-cover bg-center flex items-center justify-center" style="
-        background-image: linear-gradient(rgba(13, 13, 13, 0.32), rgba(13, 13, 13, 0.48)),
-          url(https://i.pinimg.com/736x/a3/00/7e/a3007e4c5c79bb2753722a0b961a9f3d.jpg)">
+<div class="relative w-full h-122 bg-cover bg-center flex items-center justify-center" style="background-image:linear-gradient(rgba(13, 13, 13, 0.32), rgba(13, 13, 13, 0.48)), url(https://i.pinimg.com/736x/a3/00/7e/a3007e4c5c79bb2753722a0b961a9f3d.jpg)">
 <!-- Gradient Scrim for editorial contrast -->
 <div class="absolute inset-0 bg-linear-to-t from-on-surface/90 via-on-surface/45 to-on-surface/30"></div>
 <!-- Text Content clearing shell header -->
-<div class="relative z-10 max-w-7xl mx-auto px-margin-mobile lg:px-margin w-full pt-28 pb-32 text-center flex flex-col items-center">
+<div class="relative z-10 max-w-7xl mx-auto lg:px-margin w-full pt-18 pb-32 text-center flex flex-col items-center justify-start">
+
 <!-- Prestige Eyebrow Badge -->
 <div class="inline-flex items-center gap-2 px-space-md py-space-xs rounded-full bg-surface-container-lowest/20 backdrop-blur-md text-surface mb-space-md shadow-sm">
-<span class="w-2 h-2 rounded-full bg-secondary-container animate-pulse"></span>
-<span class="font-label-md text-label-md uppercase tracking-wider text-surface-bright">The Crown of Kitui County</span>
+  <span class="w-2 h-2 rounded-full bg-secondary-container animate-pulse"></span>
+  <span class="font-label-md text-label-md uppercase tracking-wider text-surface-bright">The Crown of Kitui County</span>
 </div>
-<h1 class="font-display-lg text-display-lg-mobile lg:text-display-lg text-surface-bright max-w-4xl tracking-tight drop-shadow-md">
+
+  <h1 class="font-display-lg text-display-lg-mobile lg:text-display-lg text-surface-bright max-w-4xl tracking-tight drop-shadow-md">
           Experience Premier East African Hospitality in Kitui
         </h1>
-<p class="font-body-lg text-body-lg text-surface-container-high max-w-2xl mt-space-md mb-space-lg leading-relaxed drop-shadow">
+  <p class="font-body-lg text-body-lg text-surface-container-high max-w-2xl mt-space-md mb-space-lg leading-relaxed drop-shadow">
           A serene sanctuary featuring lush landscaped gardens, luxury suites, gourmet cuisine, and our iconic arched bridge pool.
         </p>
-<div class="flex flex-wrap items-center justify-center gap-space-md">
-<a class="inline-flex items-center justify-center px-space-xl py-space-md rounded-full bg-secondary text-on-secondary font-label-lg text-label-lg shadow-xl hover:bg-secondary-container transition-all transform hover:-translate-y-0.5" href="#booking-dock">
-            Book Your Stay
-            <span class="material-symbols-outlined ml-2 text-base">calendar_month</span>
-</a>
-<a class="inline-flex items-center justify-center px-space-lg py-space-md rounded-full bg-surface-container-lowest/20 backdrop-blur-md text-surface-bright font-label-lg text-label-lg hover:bg-surface-container-lowest/30 transition-all" href="#rooms-section">
-            Explore Suites
-            <span class="material-symbols-outlined ml-2 text-base">arrow_downward</span>
-</a>
+  <div class="flex flex-wrap items-center justify-center gap-space-md">
+    <a class="inline-flex items-center justify-center px-space-xl py-space-md rounded-full bg-secondary text-on-secondary font-label-lg text-label-lg shadow-xl hover:bg-secondary-container transition-all transform" href="{% url 'bookings' %}">
+        Book Your Stay 
+        
+    </a>
+
+    <a class="inline-flex items-center justify-center px-space-lg py-space-md rounded-full bg-surface-container-lowest/20 backdrop-blur-md text-surface-bright font-label-lg text-label-lg hover:bg-surface-container-lowest/30 transition-all" href="{% url 'rooms' %}">
+        Explore Suites
+    </a>
+
 </div>
 </div>
 </div>
 <!-- FLOATING INTERACTIVE BOOKING BAR (Negative Margin Overlap) -->
-<div class="relative z-20 max-w-[1200px] mx-auto -mt-20 px-margin-mobile lg:px-margin w-full" id="booking-dock">
+<div class="relative z-20 max-w-300 mx-auto -mt-20 px-margin-mobile lg:px-margin w-full" id="booking-dock">
 <div class="bg-surface-container-lowest rounded-xl p-space-md lg:p-space-lg shadow-xl flex flex-col lg:flex-row items-stretch lg:items-end gap-space-md">
 <!-- Check-in Field -->
 <div class="flex-1 flex flex-col gap-space-xs">
@@ -109,20 +110,23 @@
       </div>
 </div>
 </section>
+
+
+
 <!-- WELCOME SECTION -->
-<section class="max-w-[1280px] mx-auto px-margin-mobile lg:px-margin pt-24 pb-16 w-full">
+<section class="max-w-7xl mx-auto px-margin-mobile lg:px-margin pt-24 pb-16 w-full">
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center">
 <!-- Storytelling Left Column -->
 <div class="lg:col-span-6 flex flex-col gap-space-md">
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined text-tertiary text-2xl">spa</span>
-<span class="font-label-md text-label-md text-tertiary uppercase tracking-widest font-bold">Karibu Intercounty Hotel</span>
+<span class="font-label-md text-label-md text-tertiary uppercase tracking-widest font-bold">Karibu Inter-county Gardens</span>
 </div>
 <h2 class="font-headline-xl text-headline-xl text-on-surface">
           A Tranquil Haven Where Kitui Culture Meets Uncompromised Luxury
         </h2>
 <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-          Nestled along Kalawa Road against the gentle breezes of Kitui County, Intercounty Hotel Kitui (ICHK) offers an idyllic retreat for leisure wanderers, high-level business summits, and weekend getaways. Our hotel pays homage to authentic Kenyan cordiality, centered around shimmering waters, flowering acacia canopies, and architectural finesse.
+          Nestled along Kalawa Road against the gentle breezes of Kitui County, Inter-county Gardens Hotel offers retreat for leisure wanderers, high-level business summits, and weekend getaways. Our hotel pays homage to authentic Kenyan cordiality, centered around shimmering waters, flowering acacia canopies, and architectural finesse.
         </p>
 <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
           Whether unwinding with a chilled hibiscus tea across our signature arched pool bridge, delighting in aromatic Swahili delicacies, or hosting corporate summits in tech-enabled halls, experience world-class pampering right in the heart of eastern Kenya.
@@ -149,26 +153,31 @@
 <!-- Mosaic Visual Showcase Right Column -->
 <div class="lg:col-span-6 relative">
 <div class="grid grid-cols-2 gap-space-md">
-<div class="flex flex-col gap-space-md">
-<div class="h-64 rounded-xl bg-cover bg-center shadow-lg transform -rotate-1 hover:rotate-0 transition-transform duration-300" data-alt="Close-up of the iconic curved footbridge crossing over the turquoise hotel swimming pool with sparkling water reflections and decorative stone arches in Kitui Kenya" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDtw92ghJ4t_M4qgbF7yXsN0P7OoTPKw2nEWbD1OTm7MFOz3KVbSmkkGS1iiZwru6EETBIV07eP5ERBMMbw0hj0SosXAhjKo9veRpaiDOyCXpzkuz3QeRy8Nr0greKYypKvwSxDDnVxoSA_Yp1eDtDJotPqL7c_DLFvvhxtYtSA3LilB64VSM3GckWK85yRvv_GVokBAYSEq2H9QiyQDiRGwLb64r3t-17om5z1s9I')">
-                  </div>
-<div class="p-space-md rounded-xl bg-primary text-on-primary shadow-lg flex flex-col justify-center">
-<span class="font-display-lg text-headline-xl text-primary-fixed leading-none font-bold">98%</span>
-<span class="font-label-sm text-label-sm text-surface-container-high mt-1 uppercase tracking-wider">Guest Satisfaction Index</span>
-<p class="font-body-sm text-body-sm text-surface-container-low mt-space-xs">Over 1,200 verified reviews across Kitui region stays.</p>
+  <div class="flex flex-col gap-space-md">
+    <div class="flex flex-col gap-space-md">
+      <img class="h-64 rounded-xl bg-cover bg-center object-cover shadow-lg transform -rotate-1 hover:rotate-0 transition-transform duration-300" src="{% static 'images/hero one.webp' %}" alt="Intercounty Hotel Kitui arched bridge pool"/>
+    </div>
+
+    <div class="p-space-md rounded-xl bg-primary text-on-primary shadow-lg flex flex-col justify-center">
+      <span class="font-display-lg text-headline-xl text-primary-fixed leading-none font-bold">98%</span>
+      <span class="font-label-sm text-label-sm text-surface-container-high mt-1 uppercase tracking-wider">Guest Satisfaction Index</span>
+      <p class="font-body-sm text-body-sm text-surface-container-low mt-space-xs">Over 1,200 verified reviews across Kitui region stays.</p>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-space-md pt-space-lg">
+    <img class="h-80 rounded-xl shadow-lg object-cover  transform rotate-1 hover:rotate-0 transition-transform duration-300" src="{% static 'images/hero two.webp' %}" alt="Intercounty Hotel swimming pool">
+  </div>
 </div>
-</div>
-<div class="flex flex-col gap-space-md pt-space-lg">
-<div class="h-80 rounded-xl bg-cover bg-center shadow-lg transform rotate-1 hover:rotate-0 transition-transform duration-300" data-alt="Fine dining table set with artisanal African tableware gourmet Swahili fish curry fresh tropical juices and wines in an open-air veranda at Intercounty Hotel Kitui" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA0o5b00tcOn58zYSh5GXKgCY7n4dyOnyZ3LzDMOTuNZMG99Tl1QZgJUCESsP9gAal7aPigIiacEOIRaSWA-pNRV5J10gmX21WYDxVgG5D1T3r6-LHyTG1-06MLxTwEolOrPN5Spsi5lTc7ZGN7CdpearLZb1ZiMyHfSlRvO983uAPKMRvWyqByfBCmk16N972ekPYxAClj7RMdq0xNUIL6QikndsfNrpU3uo0X-vc')">
-                  </div>
-</div>
+
+
 </div>
 </div>
 </div>
 </section>
 <!-- FEATURED ROOMS & SUITES SECTION -->
 <section class="w-full bg-surface-container-low py-20" id="rooms-section">
-<div class="max-w-[1280px] mx-auto px-margin-mobile lg:px-margin">
+<div class="max-w-7xl mx-auto px-margin-mobile lg:px-margin">
 <!-- Section Header -->
 <div class="flex flex-col md:flex-row md:items-end justify-between mb-space-xl gap-space-md">
 <div>
@@ -428,121 +437,127 @@
 </div>
 </div>
 </section>
+
+
+
 <!-- SPECIAL GUEST EXPERIENCE & TESTIMONIALS SECTION -->
-<section class="w-full bg-surface-container py-20">
-<div class="max-w-[1280px] mx-auto px-margin-mobile lg:px-margin">
-<!-- Top Title -->
-<div class="text-center max-w-2xl mx-auto mb-space-xl">
-<span class="font-label-md text-label-md text-secondary uppercase tracking-wider font-semibold">Testimonials</span>
-<h2 class="font-headline-xl text-headline-xl text-on-surface mt-space-xs">
-          Loved by Kenyan & Global Travelers
-        </h2>
-<p class="font-body-md text-body-md text-on-surface-variant mt-space-xs">
-          Hear firsthand memories created under our sunlit skies and hospitality care.
-        </p>
-</div>
-<!-- Testimonial Cards Carousel / Grid -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-space-xl">
-<!-- Review 1 -->
-<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
-<div>
-<div class="flex items-center text-secondary mb-space-sm">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-</div>
-<p class="font-body-md text-body-md text-on-surface-variant italic mb-space-md">
-              "The arched bridge over the pool is genuinely magical, especially in late afternoon sun. Rooms are exceptionally hygienic, food was fresh, and the staff treat you like royalty."
-            </p>
-</div>
-<div class="flex items-center gap-space-sm pt-space-sm border-t border-surface-container">
-<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary">
-              EK
+            <section class="w-full bg-surface-container py-20">
+            <div class="max-w-[1280px] mx-auto px-margin-mobile lg:px-margin">
+            <!-- Top Title -->
+            <div class="text-center max-w-2xl mx-auto mb-space-xl">
+            <span class="font-label-md text-label-md text-secondary uppercase tracking-wider font-semibold">Testimonials</span>
+            <h2 class="font-headline-xl text-headline-xl text-on-surface mt-space-xs">
+                      Loved by Kenyan & Global Travelers
+                    </h2>
+            <p class="font-body-md text-body-md text-on-surface-variant mt-space-xs">
+                      Hear firsthand memories created under our sunlit skies and hospitality care.
+                    </p>
             </div>
-<div>
-<span class="font-label-md text-label-md text-on-surface block font-bold">Eng. Kennedy Mwangi</span>
-<span class="font-body-sm text-body-sm text-outline">Nairobi, Kenya</span>
-</div>
-</div>
-</div>
-<!-- Review 2 -->
-<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
-<div>
-<div class="flex items-center text-secondary mb-space-sm">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-</div>
-<p class="font-body-md text-body-md text-on-surface-variant italic mb-space-md">
-              "We hosted our NGO annual strategy summit here for 4 days. The conference acoustics and Wi-Fi speed were flawless. Outstanding service from the banquet team."
-            </p>
-</div>
-<div class="flex items-center gap-space-sm pt-space-sm border-t border-surface-container">
-<div class="w-10 h-10 rounded-full bg-tertiary-container/30 flex items-center justify-center font-bold text-tertiary">
-              SA
+            <!-- Testimonial Cards Carousel / Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-space-xl">
+            <!-- Review 1 -->
+            <div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
+            <div>
+            <div class="flex items-center text-secondary mb-space-sm">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
             </div>
-<div>
-<span class="font-label-md text-label-md text-on-surface block font-bold">Sarah Al-Mansoor</span>
-<span class="font-body-sm text-body-sm text-outline">Regional Director, UNDP</span>
-</div>
-</div>
-</div>
-<!-- Review 3 -->
-<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
-<div>
-<div class="flex items-center text-secondary mb-space-sm">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-</div>
-<p class="font-body-md text-body-md text-on-surface-variant italic mb-space-md">
-              "The best hotel in Kitui without question. Serene garden setting, lovely breeze, and the Presidential Suite jacuzzi made our anniversary truly unforgettable."
-            </p>
-</div>
-<div class="flex items-center gap-space-sm pt-space-sm border-t border-surface-container">
-<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center font-bold text-secondary">
-              BM
+            <p class="font-body-md text-body-md text-on-surface-variant italic mb-space-md">
+                          "The arched bridge over the pool is genuinely magical, especially in late afternoon sun. Rooms are exceptionally hygienic, food was fresh, and the staff treat you like royalty."
+                        </p>
             </div>
-<div>
-<span class="font-label-md text-label-md text-on-surface block font-bold">Dr. Beatrice Mutua</span>
-<span class="font-body-sm text-body-sm text-outline">Machakos, Kenya</span>
-</div>
-</div>
-</div>
-</div>
-<!-- Quick M-Pesa & Weekend Special Banner -->
-<div class="w-full bg-gradient-to-r from-primary via-primary-container to-secondary rounded-xl p-space-lg lg:p-space-xl text-on-primary shadow-xl flex flex-col lg:flex-row items-center justify-between gap-space-lg">
-<div class="flex flex-col gap-space-xs text-center lg:text-left">
-<div class="inline-flex items-center justify-center lg:justify-start gap-2">
-<span class="px-space-sm py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-bold uppercase tracking-wider">
-              Exclusive Weekend Offer
-            </span>
-<span class="font-label-sm text-label-sm text-secondary-fixed">Save 15% via M-Pesa</span>
-</div>
-<h3 class="font-headline-lg text-headline-lg font-bold text-surface-bright">
-            Escape to Kitui This Weekend
-          </h3>
-<p class="font-body-md text-body-md text-surface-container-high max-w-xl">
-            Book directly using M-Pesa or Card and enjoy complimentary buffet breakfast, late check-out at 14:00, and free access to our arched bridge pool.
-          </p>
-</div>
-<div class="flex flex-col sm:flex-row items-center gap-space-sm shrink-0">
-<a class="px-space-xl py-space-md rounded-full bg-surface-container-lowest text-primary hover:bg-surface-bright font-label-lg text-label-lg font-bold transition-all shadow-lg text-center" href="#booking-dock">
-            Claim Special Offer
-          </a>
-<a class="px-space-lg py-space-md rounded-full bg-surface-container-lowest/20 backdrop-blur-sm text-surface-bright hover:bg-surface-container-lowest/30 font-label-lg text-label-lg transition-all text-center" href="tel:+254700123456">
-            Call Concierge
-          </a>
-</div>
-</div>
-</div>
-</section>
+            <div class="flex items-center gap-space-sm pt-space-sm border-t border-surface-container">
+            <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary">
+                          EK
+                        </div>
+            <div>
+            <span class="font-label-md text-label-md text-on-surface block font-bold">Eng. Kennedy Mwangi</span>
+            <span class="font-body-sm text-body-sm text-outline">Nairobi, Kenya</span>
+            </div>
+            </div>
+            </div>
+            <!-- Review 2 -->
+            <div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
+            <div>
+            <div class="flex items-center text-secondary mb-space-sm">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+            </div>
+            <p class="font-body-md text-body-md text-on-surface-variant italic mb-space-md">
+                          "We hosted our NGO annual strategy summit here for 4 days. The conference acoustics and Wi-Fi speed were flawless. Outstanding service from the banquet team."
+                        </p>
+            </div>
+            <div class="flex items-center gap-space-sm pt-space-sm border-t border-surface-container">
+            <div class="w-10 h-10 rounded-full bg-tertiary-container/30 flex items-center justify-center font-bold text-tertiary">
+                          SA
+                        </div>
+            <div>
+            <span class="font-label-md text-label-md text-on-surface block font-bold">Sarah Al-Mansoor</span>
+            <span class="font-body-sm text-body-sm text-outline">Regional Director, UNDP</span>
+            </div>
+            </div>
+            </div>
+            <!-- Review 3 -->
+            <div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
+            <div>
+            <div class="flex items-center text-secondary mb-space-sm">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+            </div>
+            <p class="font-body-md text-body-md text-on-surface-variant italic mb-space-md">
+                          "The best hotel in Kitui without question. Serene garden setting, lovely breeze, and the Presidential Suite jacuzzi made our anniversary truly unforgettable."
+                        </p>
+            </div>
+            <div class="flex items-center gap-space-sm pt-space-sm border-t border-surface-container">
+            <div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center font-bold text-secondary">
+                          BM
+                        </div>
+            <div>
+            <span class="font-label-md text-label-md text-on-surface block font-bold">Dr. Beatrice Mutua</span>
+            <span class="font-body-sm text-body-sm text-outline">Machakos, Kenya</span>
+            </div>
+            </div>
+            </div>
+            </div>
+
+
+
+            <!-- Quick M-Pesa & Weekend Special Banner -->
+              <div class="w-full bg-secondary rounded-xl p-space-lg lg:p-space-xl text-on-primary shadow-xl flex flex-col lg:flex-row items-center justify-between gap-space-lg">
+              <div class="flex flex-col gap-space-xs text-center lg:text-left">
+              <div class="inline-flex items-center justify-center lg:justify-start gap-2">
+              <span class="px-space-sm py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-bold uppercase tracking-wider">
+                            Exclusive Weekend Offer
+                          </span>
+              <span class="font-label-sm text-label-sm text-secondary-fixed">Save 15% via M-Pesa</span>
+              </div>
+              <h3 class="font-headline-lg text-headline-lg font-bold text-surface-bright">
+                          Escape to Kitui This Weekend
+                        </h3>
+              <p class="font-body-md text-body-md text-surface-container-high max-w-xl">
+                          Book directly using M-Pesa and enjoy complimentary buffet breakfast, late check-out at 14:00, and free access to our arched bridge pool.
+                        </p>
+              </div>
+              <div class="flex flex-col sm:flex-row items-center gap-space-sm shrink-0">
+              <a class="px-space-xl py-space-md rounded-full bg-surface-container-lowest text-primary hover:bg-surface-bright font-label-lg text-label-lg font-bold transition-all shadow-lg text-center" href="{% url 'bookings' %}">
+                          Claim Special Offer
+                        </a>
+              <a class="px-space-lg py-space-md rounded-full bg-surface-container-lowest/20 backdrop-blur-sm text-surface-bright hover:bg-surface-container-lowest/30 font-label-lg text-label-lg transition-all text-center" href="tel:+254700123456">
+                          Call Us Today
+                        </a>
+              </div>
+              </div>
+              </div>
+            </section>
 </div>
 <script>
   function checkBooking() {

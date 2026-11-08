@@ -16,13 +16,12 @@
     <header class="site-header">
       <div class="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-4 lg:px-8">
         <a class="flex shrink-0 items-center gap-3" href="{% url 'home' %}" aria-label="Intercounty Hotels home">
-          <span class="brand-mark" aria-hidden="true">I</span>
           <span class="leading-tight">
-            <span class="block text-lg font-bold tracking-tight text-ink">INTERCOUNTY</span>
-            <span class="block text-[10px] font-semibold tracking-[.24em] text-plum">HOTELS &amp; RESORTS</span>
+            <span class="block text-lg font-bold tracking-tight text-ink">INTERCOUNTY GARDENS</span>
+            <span class="block text-[10px] font-semibold tracking-[.24em] text-plum">HOTEL &amp; Kitui</span>
           </span>
         </a>
-        <nav class="hidden items-center gap-7 lg:flex" aria-label="Main navigation">
+        <nav class="hidden items-center text-base gap-7 lg:flex" aria-label="Main navigation">
           <a class="nav-link {% if request.path == '/' %}nav-link-active{% endif %}" href="{% url 'home' %}">Home</a>
           <a class="nav-link {% if request.path == '/rooms/' %}nav-link-active{% endif %}" href="{% url 'rooms' %}">Rooms &amp; Suites</a>
           <a class="nav-link {% if request.path == '/bookings/' %}nav-link-active{% endif %}" href="{% url 'bookings' %}">Booking &amp; Reservation</a>
@@ -30,7 +29,7 @@
           <a class="nav-link {% if request.path == '/about/' %}nav-link-active{% endif %}" href="{% url 'about' %}">About Us</a>
           <a class="nav-link {% if request.path == '/contact/' %}nav-link-active{% endif %}" href="{% url 'contact' %}">Contact Us</a>
         </nav>
-        <a class="bg-secondary text-on-secondary px-space-xl rounded-full hidden sm:inline-flex" href="{% url 'bookings' %}">Book your stay <span aria-hidden="true">→</span></a>
+        <a class="bg-primary text-on-primary py-3 px-8 rounded-full hidden sm:inline-flex" href="{% url 'bookings' %}">Book your stay <span aria-hidden="true">→</span></a>
         <details class="relative lg:hidden">
           <summary class="mobile-menu-button" aria-label="Open navigation menu"><span></span><span></span><span></span></summary>
           <nav class="mobile-menu" aria-label="Mobile navigation">
@@ -52,16 +51,15 @@
       <div class="mx-auto grid max-w-7xl gap-10 px-5 py-12 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
         <div>
           <a class="mb-4 inline-flex items-center gap-3" href="{% url 'home' %}">
-            <span class="brand-mark brand-mark-light" aria-hidden="true">I</span>
             <span class="leading-tight">
-              <span class="block text-lg font-bold tracking-tight text-white">INTERCOUNTY</span>
-              <span class="block text-[10px] font-semibold tracking-[.24em] text-lilac">HOTELS &amp; RESORTS</span>
+              <span class="block text-lg font-bold tracking-tight text-white">INTERCOUNTY GARDENS</span>
+              <span class="block text-[10px] font-semibold tracking-[.24em] text-lilac">HOTEL &amp; Kitui</span>
             </span>
           </a>
           <p class="max-w-xs text-sm leading-6 text-white/75">A thoughtful escape where East African hospitality meets timeless comfort.</p>
         </div>
         <div>
-          <h2 class="footer-heading">Explore</h2>
+          <h2 class="footer-heading mb-2">Explore</h2>
           <ul class="footer-links">
             <li><a href="{% url 'home' %}">Homepage</a></li>
             <li><a href="{% url 'rooms' %}">Rooms &amp; Suites</a></li>
@@ -70,25 +68,26 @@
           </ul>
         </div>
         <div>
-          <h2 class="footer-heading">Reservations</h2>
+          <h2 class="footer-heading mb-2">Reservations</h2>
           <ul class="footer-links">
             <li><a href="{% url 'bookings' %}">Book a stay</a></li>
             <li><a href="{% url 'contact' %}">Contact us</a></li>
             <li><a href="{% url 'contact' %}#faq">Frequently asked questions</a></li>
           </ul>
         </div>
+
         <div>
-          <h2 class="footer-heading">Get in touch</h2>
+          <h2 class="footer-heading mb-2">Get in touch</h2>
           <ul class="footer-links">
-            <li>Kigali, Rwanda</li>
+            <li>Kitui, Kenya</li>
             <li><a href="mailto:reservations@intercountyhotels.com">reservations@intercountyhotels.com</a></li>
-            <li><a href="tel:+250000000000">+250 000 000 000</a></li>
+            <li><a href="tel:+254000000000">+254 000 000 000</a></li>
           </ul>
         </div>
       </div>
       <div class="border-t border-white/15">
         <div class="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-5 text-xs text-white/65 sm:flex-row sm:items-center sm:justify-between lg:px-8">
-          <p>&copy; {% now "Y" %} Intercounty Hotels &amp; Resorts. All rights reserved.</p>
+          <p>&copy; {% now "Y" %} Inter-county Gardens Hotel &amp; Resorts. All rights reserved.</p>
           <p>Made for memorable stays in East Africa.</p>
         </div>
       </div>
