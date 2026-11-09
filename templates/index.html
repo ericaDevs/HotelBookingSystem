@@ -331,6 +331,9 @@
 </div>
 </div>
 </section>
+
+
+
 <!-- SIGNATURE AMENITIES GRID SECTION -->
 <section class="max-w-[1280px] mx-auto px-margin-mobile lg:px-margin py-24 w-full">
 <!-- Section Title -->
@@ -436,6 +439,56 @@
 </span>
 </div>
 </div>
+</section>
+
+
+
+<!-- MORNING HOURS SECTION -->
+<section class="w-full bg-surface-container-low py-20">
+  <div class="max-w-[1280px] mx-auto px-margin-mobile lg:px-margin">
+    <div class="grid grid-cols-1 lg:grid-cols-2 items-center gap-gutter rounded-3xl bg-surface-container-lowest p-space-lg lg:p-space-xl shadow-sm">
+      <div class="relative overflow-hidden rounded-2xl shadow-lg">
+        <img
+          class="w-full h-72 sm:h-96 object-cover"
+          src="{% static 'images/morning-hours-corrected.webp' %}"
+          alt="Morning light over the gardens and hotel grounds at Intercounty Gardens Hotel"
+          loading="lazy"
+        />
+        <div class="absolute inset-0 bg-linear-to-t from-on-surface/50 via-transparent to-transparent"></div>
+        <span class="absolute bottom-space-md left-space-md inline-flex items-center gap-space-xs rounded-full bg-surface-container-lowest/90 px-space-md py-space-xs font-label-sm text-label-sm font-semibold text-on-surface shadow">
+          <span class="material-symbols-outlined text-primary" aria-hidden="true">wb_twilight</span>
+          A fresh start in Kitui
+        </span>
+      </div>
+      <div class="flex flex-col items-start gap-space-md">
+        <span class="font-label-md text-label-md text-tertiary uppercase tracking-wider font-semibold">Slow down and savour the morning</span>
+        <h2 class="font-headline-xl text-headline-xl text-on-surface">
+          Make the most of your morning hours
+        </h2>
+        <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+          Wake to the calm of our garden setting, ease into the day over breakfast,
+          and enjoy a little time to yourself before exploring Kitui. Whether
+          you’re here for a restful escape or a busy day ahead, mornings at
+          Intercounty are yours to enjoy at your own pace.
+        </p>
+        <div class="flex flex-wrap gap-space-sm pt-space-xs">
+          <a
+            class="inline-flex items-center justify-center gap-space-xs rounded-full bg-secondary px-space-xl py-space-md font-label-lg text-label-lg text-on-secondary shadow-md transition hover:bg-secondary-container"
+            href="{% url 'bookings' %}"
+          >
+            Plan your stay
+            <span class="material-symbols-outlined text-lg" aria-hidden="true">arrow_forward</span>
+          </a>
+          <a
+            class="inline-flex items-center justify-center rounded-full border border-outline-variant px-space-lg py-space-md font-label-lg text-label-lg text-primary transition hover:bg-primary/5"
+            href="{% url 'rooms' %}"
+          >
+            Explore our rooms
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 
