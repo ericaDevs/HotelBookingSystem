@@ -5,8 +5,6 @@
 {% block html_class %}[&::-webkit-scrollbar]:hidden [&_*::-webkit-scrollbar]:hidden{% endblock %}
 {% block body_class %}bg-surface font-body-md text-on-surface antialiased min-h-screen overscroll-none{% endblock %}
 {% block head %}
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com"></script>
 <script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "secondary": "#b2273d", "secondary-fixed": "#ffdada", "outline": "#7f737f", "surface": "#f9f9ff", "surface-dim": "#cfdaf2", "on-primary-fixed-variant": "#672f76", "on-error-container": "#93000a", "tertiary-container": "#3c725b", "outline-variant": "#d1c2cf", "surface-container-lowest": "#ffffff", "secondary-fixed-dim": "#ffb3b6", "surface-bright": "#f9f9ff", "primary": "#713980", "tertiary": "#215944", "surface-container": "#e7eeff", "on-tertiary-fixed-variant": "#16503b", "on-surface": "#111c2d", "on-error": "#ffffff", "on-primary-fixed": "#340043", "primary-fixed": "#fcd7ff", "on-primary": "#ffffff", "on-surface-variant": "#4e444e", "on-tertiary-fixed": "#002115", "primary-container": "#8c519a", "on-secondary-fixed-variant": "#900628", "surface-variant": "#d8e3fb", "surface-container-high": "#dee8ff", "on-primary-container": "#fedeff", "inverse-on-surface": "#ecf1ff", "surface-container-highest": "#d8e3fb", "on-secondary-container": "#640018", "error": "#ba1a1a", "surface-tint": "#814790", "on-tertiary-container": "#baf4d8", "error-container": "#ffdad6", "tertiary-fixed-dim": "#9ad3b7", "tertiary-fixed": "#b5efd3", "primary-fixed-dim": "#f2afff", "background": "#f9f9ff", "inverse-primary": "#f2afff", "secondary-container": "#fe5f70", "on-secondary": "#ffffff", "surface-container-low": "#f0f3ff", "on-background": "#111c2d", "inverse-surface": "#263143", "on-tertiary": "#ffffff", "on-secondary-fixed": "#40000c" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-xs": "0.25rem", "gutter": "1.5rem", "margin": "3rem", "gutter-mobile": "1rem", "space-sm": "0.5rem", "space-md": "1rem", "space-lg": "1.5rem", "margin-mobile": "1.25rem", "space-xl": "2.5rem" }, "fontFamily": { "headline-xl-mobile": ["Figtree"], "headline-xl": ["Figtree"], "headline-md": ["Figtree"], "headline-sm": ["Figtree"], "label-md": ["Figtree"], "headline-lg": ["Figtree"], "body-md": ["Figtree"], "label-lg": ["Figtree"], "display-lg-mobile": ["Figtree"], "body-lg": ["Figtree"], "body-sm": ["Figtree"], "label-sm": ["Figtree"], "display-lg": ["Figtree"] }, "fontSize": { "headline-xl-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }], "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }], "label-md": ["14px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "label-lg": ["16px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }], "display-lg-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }], "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "500" }], "display-lg": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "700" }] } } } };</script>
 {% endblock %}
@@ -54,7 +52,7 @@
 <!-- Check-in Field -->
 <div class="flex-1 flex flex-col gap-space-xs">
 <label class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1" for="checkin">
-<span class="material-symbols-outlined text-sm text-primary">flight_land</span>
+<i data-lucide="plane-landing" class="text-sm text-primary"></i>
             CHECK-IN DATE
           </label>
 <div class="relative">
@@ -64,7 +62,7 @@
 <!-- Check-out Field -->
 <div class="flex-1 flex flex-col gap-space-xs">
 <label class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1" for="checkout">
-<span class="material-symbols-outlined text-sm text-primary">flight_takeoff</span>
+<i data-lucide="plane-takeoff" class="text-sm text-primary"></i>
             CHECK-OUT DATE
           </label>
 <div class="relative">
@@ -74,7 +72,7 @@
 <!-- Room Type Selector -->
 <div class="flex-1 flex flex-col gap-space-xs">
 <label class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1" for="room-type">
-<span class="material-symbols-outlined text-sm text-primary">king_bed</span>
+<i data-lucide="bed-double" class="text-sm text-primary"></i>
             ROOM SUITE
           </label>
 <select class="w-full h-12 px-space-md bg-surface-container-low rounded-lg font-body-sm text-body-sm text-on-surface focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer appearance-none" id="room-type">
@@ -87,7 +85,7 @@
 <!-- Guests Selector -->
 <div class="w-full lg:w-44 flex flex-col gap-space-xs">
 <label class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1" for="guests">
-<span class="material-symbols-outlined text-sm text-primary">groups</span>
+<i data-lucide="users" class="text-sm text-primary"></i>
             GUESTS
           </label>
 <select class="w-full h-12 px-space-md bg-surface-container-low rounded-lg font-body-sm text-body-sm text-on-surface focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer appearance-none" id="guests">
@@ -101,7 +99,7 @@
 <div class="w-full lg:w-auto shrink-0 flex items-end">
 <button class="w-full lg:w-auto h-12 px-space-xl rounded-full bg-secondary text-on-secondary font-label-lg text-label-lg hover:bg-secondary-container transition-all shadow-md flex items-center justify-center gap-2" onclick="checkBooking()" type="button">
 <span>Check Availability</span>
-<span class="material-symbols-outlined text-lg">search</span>
+<i data-lucide="search" class="text-lg"></i>
 </button>
 </div>
 </div>
@@ -119,7 +117,7 @@
 <!-- Storytelling Left Column -->
 <div class="lg:col-span-6 flex flex-col gap-space-md">
 <div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-tertiary text-2xl">spa</span>
+<i data-lucide="sparkles" class="text-tertiary text-2xl"></i>
 <span class="font-label-md text-label-md text-tertiary uppercase tracking-widest font-bold">Karibu Inter-county Gardens</span>
 </div>
 <h2 class="font-headline-xl text-headline-xl text-on-surface">
@@ -134,17 +132,17 @@
 <!-- Highlights Badges -->
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-space-sm pt-space-sm">
 <div class="p-space-sm rounded-lg bg-surface-container-low flex flex-col items-center text-center gap-1 shadow-sm">
-<span class="material-symbols-outlined text-tertiary text-2xl">workspace_premium</span>
+<i data-lucide="award" class="text-tertiary text-2xl"></i>
 <span class="font-label-sm text-label-sm text-tertiary font-bold">5-Star Standards</span>
 <span class="font-body-sm text-[11px] text-on-surface-variant">Benchmark Hospitality</span>
 </div>
 <div class="p-space-sm rounded-lg bg-surface-container-low flex flex-col items-center text-center gap-1 shadow-sm">
-<span class="material-symbols-outlined text-tertiary text-2xl">nature_people</span>
+<i data-lucide="trees" class="text-tertiary text-2xl"></i>
 <span class="font-label-sm text-label-sm text-tertiary font-bold">Countryside Bliss</span>
 <span class="font-body-sm text-[11px] text-on-surface-variant">Serene Kitui Foothills</span>
 </div>
 <div class="p-space-sm rounded-lg bg-surface-container-low flex flex-col items-center text-center gap-1 shadow-sm">
-<span class="material-symbols-outlined text-tertiary text-2xl">restaurant</span>
+<i data-lucide="utensils" class="text-tertiary text-2xl"></i>
 <span class="font-label-sm text-label-sm text-tertiary font-bold">Gourmet Dining</span>
 <span class="font-body-sm text-[11px] text-on-surface-variant">Swahili & Continental</span>
 </div>
@@ -182,7 +180,7 @@
 <div class="flex flex-col md:flex-row md:items-end justify-between mb-space-xl gap-space-md">
 <div>
 <span class="font-label-md text-label-md text-secondary uppercase tracking-wider font-semibold flex items-center gap-1">
-<span class="material-symbols-outlined text-sm">bed</span>
+<i data-lucide="bed" class="text-sm"></i>
             Accommodations
           </span>
 <h2 class="font-headline-xl text-headline-xl text-on-surface mt-space-xs">
@@ -194,7 +192,7 @@
 </div>
 <a class="inline-flex items-center gap-2 font-label-lg text-label-lg text-primary hover:text-primary-container transition-colors shrink-0" href="#">
 <span>View All 42 Rooms</span>
-<span class="material-symbols-outlined">arrow_forward</span>
+<i data-lucide="arrow-right"></i>
 </a>
 </div>
 <!-- 3-Column Rooms Grid -->
@@ -207,7 +205,7 @@
               Top Tier Luxury
             </span>
 <div class="absolute bottom-space-sm right-space-sm px-space-sm py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-sm font-label-sm text-label-sm text-on-surface flex items-center gap-1">
-<span class="material-symbols-outlined text-sm text-primary">groups</span>
+<i data-lucide="users" class="text-sm text-primary"></i>
               2-4 Guests
             </div>
 </div>
@@ -250,7 +248,7 @@
               Most Popular
             </span>
 <div class="absolute bottom-space-sm right-space-sm px-space-sm py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-sm font-label-sm text-label-sm text-on-surface flex items-center gap-1">
-<span class="material-symbols-outlined text-sm text-primary">groups</span>
+<i data-lucide="users" class="text-sm text-primary"></i>
               2 Guests
             </div>
 </div>
@@ -293,7 +291,7 @@
               Direct Pool Access
             </span>
 <div class="absolute bottom-space-sm right-space-sm px-space-sm py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-sm font-label-sm text-label-sm text-on-surface flex items-center gap-1">
-<span class="material-symbols-outlined text-sm text-primary">groups</span>
+<i data-lucide="users" class="text-sm text-primary"></i>
               2 Guests
             </div>
 </div>
@@ -351,7 +349,7 @@
 <!-- Card 1 -->
 <div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col gap-space-sm group">
 <div class="w-14 h-14 rounded-xl bg-tertiary-container/15 flex items-center justify-center text-tertiary group-hover:bg-tertiary group-hover:text-on-tertiary transition-colors">
-<span class="material-symbols-outlined text-3xl">pool</span>
+<i data-lucide="waves" class="text-3xl"></i>
 </div>
 <h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors">
           Olympic Pool & Arched Bridge
@@ -360,13 +358,13 @@
           The signature centerpiece of ICHK. Crystal-filtered sparkling waters, complete with an aesthetic wooden crossover footbridge and poolside sun-loungers.
         </p>
 <span class="mt-auto font-label-sm text-label-sm text-tertiary font-bold flex items-center gap-1">
-          Open 06:00 - 20:00 Daily <span class="material-symbols-outlined text-xs">arrow_forward</span>
+          Open 06:00 - 20:00 Daily <i data-lucide="arrow-right" class="text-xs"></i>
 </span>
 </div>
 <!-- Card 2 -->
 <div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col gap-space-sm group">
 <div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">
-<span class="material-symbols-outlined text-3xl">restaurant_menu</span>
+<i data-lucide="utensils-crossed" class="text-3xl"></i>
 </div>
 <h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors">
           The Acacia Fine Dining & Bar
@@ -375,13 +373,13 @@
           Savor freshly prepared Swahili seafood dishes, authentic Kitui roast meats, continental feasts, and handcrafted signature cocktails in our airy terrace.
         </p>
 <span class="mt-auto font-label-sm text-label-sm text-primary font-bold flex items-center gap-1">
-          Buffet & À La Carte <span class="material-symbols-outlined text-xs">arrow_forward</span>
+          Buffet & À La Carte <i data-lucide="arrow-right" class="text-xs"></i>
 </span>
 </div>
 <!-- Card 3 -->
 <div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col gap-space-sm group">
 <div class="w-14 h-14 rounded-xl bg-tertiary-container/15 flex items-center justify-center text-tertiary group-hover:bg-tertiary group-hover:text-on-tertiary transition-colors">
-<span class="material-symbols-outlined text-3xl">co_present</span>
+<i data-lucide="presentation" class="text-3xl"></i>
 </div>
 <h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors">
           Modern Conference & Event Halls
@@ -390,13 +388,13 @@
           Fully climate-controlled spaces seating up to 350 delegates. Equipped with HD projection, PA acoustic sound systems, and dedicated break-out gardens.
         </p>
 <span class="mt-auto font-label-sm text-label-sm text-tertiary font-bold flex items-center gap-1">
-          Corporate Packages <span class="material-symbols-outlined text-xs">arrow_forward</span>
+          Corporate Packages <i data-lucide="arrow-right" class="text-xs"></i>
 </span>
 </div>
 <!-- Card 4 -->
 <div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col gap-space-sm group">
 <div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">
-<span class="material-symbols-outlined text-3xl">wifi</span>
+<i data-lucide="wifi" class="text-3xl"></i>
 </div>
 <h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors">
           High-Speed Fiber Wi-Fi
@@ -405,13 +403,13 @@
           Stay seamlessly plugged in with uninterrupted enterprise optic-fiber connectivity reaching every suite, veranda, poolside cabana, and boardroom.
         </p>
 <span class="mt-auto font-label-sm text-label-sm text-primary font-bold flex items-center gap-1">
-          Complimentary 250 Mbps <span class="material-symbols-outlined text-xs">arrow_forward</span>
+          Complimentary 250 Mbps <i data-lucide="arrow-right" class="text-xs"></i>
 </span>
 </div>
 <!-- Card 5 -->
 <div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col gap-space-sm group">
 <div class="w-14 h-14 rounded-xl bg-tertiary-container/15 flex items-center justify-center text-tertiary group-hover:bg-tertiary group-hover:text-on-tertiary transition-colors">
-<span class="material-symbols-outlined text-3xl">landscape</span>
+<i data-lucide="mountain-snow" class="text-3xl"></i>
 </div>
 <h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors">
           Scenic Balconies & Hill Views
@@ -420,13 +418,13 @@
           Catch golden sunrises and serene African sunsets over the rolling Kitui landscape from your private room terrace furnished with wicker loungers.
         </p>
 <span class="mt-auto font-label-sm text-label-sm text-tertiary font-bold flex items-center gap-1">
-          Panoramic Sunset Vistas <span class="material-symbols-outlined text-xs">arrow_forward</span>
+          Panoramic Sunset Vistas <i data-lucide="arrow-right" class="text-xs"></i>
 </span>
 </div>
 <!-- Card 6 -->
 <div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col gap-space-sm group">
 <div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">
-<span class="material-symbols-outlined text-3xl">local_police</span>
+<i data-lucide="shield-check" class="text-3xl"></i>
 </div>
 <h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors">
           24/7 Security & Valet Parking
@@ -435,7 +433,7 @@
           Comprehensive biometric perimeter surveillance, guarded private car park with valet assistance, and attentive round-the-clock concierge services.
         </p>
 <span class="mt-auto font-label-sm text-label-sm text-primary font-bold flex items-center gap-1">
-          Safe & Accessible <span class="material-symbols-outlined text-xs">arrow_forward</span>
+          Safe & Accessible <i data-lucide="arrow-right" class="text-xs"></i>
 </span>
 </div>
 </div>
@@ -456,7 +454,7 @@
         />
         <div class="absolute inset-0 bg-linear-to-t from-on-surface/50 via-transparent to-transparent"></div>
         <span class="absolute bottom-space-md left-space-md inline-flex items-center gap-space-xs rounded-full bg-surface-container-lowest/90 px-space-md py-space-xs font-label-sm text-label-sm font-semibold text-on-surface shadow">
-          <span class="material-symbols-outlined text-primary" aria-hidden="true">wb_twilight</span>
+          <i data-lucide="sunset" class="text-primary" aria-hidden="true"></i>
           A fresh start in Kitui
         </span>
       </div>
@@ -477,7 +475,7 @@
             href="{% url 'bookings' %}"
           >
             Plan your stay
-            <span class="material-symbols-outlined text-lg" aria-hidden="true">arrow_forward</span>
+            <i data-lucide="arrow-right" class="text-lg" aria-hidden="true"></i>
           </a>
           <a
             class="inline-flex items-center justify-center rounded-full border border-outline-variant px-space-lg py-space-md font-label-lg text-label-lg text-primary transition hover:bg-primary/5"
@@ -512,11 +510,11 @@
             <div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
             <div>
             <div class="flex items-center text-secondary mb-space-sm">
-            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+            <i data-lucide="star" class="fill-current" FILL' 1;"></i>
+            <i data-lucide="star" class="fill-current" FILL' 1;"></i>
+            <i data-lucide="star" class="fill-current" FILL' 1;"></i>
+            <i data-lucide="star" class="fill-current" FILL' 1;"></i>
+            <i data-lucide="star" class="fill-current" FILL' 1;"></i>
             </div>
             <p class="font-body-md text-body-md text-on-surface-variant italic mb-space-md">
                           "The arched bridge over the pool is genuinely magical, especially in late afternoon sun. Rooms are exceptionally hygienic, food was fresh, and the staff treat you like royalty."
@@ -536,11 +534,11 @@
             <div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
             <div>
             <div class="flex items-center text-secondary mb-space-sm">
-            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+            <i data-lucide="star" class="fill-current" FILL' 1;"></i>
+            <i data-lucide="star" class="fill-current" FILL' 1;"></i>
+            <i data-lucide="star" class="fill-current" FILL' 1;"></i>
+            <i data-lucide="star" class="fill-current" FILL' 1;"></i>
+            <i data-lucide="star" class="fill-current" FILL' 1;"></i>
             </div>
             <p class="font-body-md text-body-md text-on-surface-variant italic mb-space-md">
                           "We hosted our NGO annual strategy summit here for 4 days. The conference acoustics and Wi-Fi speed were flawless. Outstanding service from the banquet team."
@@ -560,11 +558,11 @@
             <div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
             <div>
             <div class="flex items-center text-secondary mb-space-sm">
-            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+            <i data-lucide="star" class="fill-current" FILL' 1;"></i>
+            <i data-lucide="star" class="fill-current" FILL' 1;"></i>
+            <i data-lucide="star" class="fill-current" FILL' 1;"></i>
+            <i data-lucide="star" class="fill-current" FILL' 1;"></i>
+            <i data-lucide="star" class="fill-current" FILL' 1;"></i>
             </div>
             <p class="font-body-md text-body-md text-on-surface-variant italic mb-space-md">
                           "The best hotel in Kitui without question. Serene garden setting, lovely breeze, and the Presidential Suite jacuzzi made our anniversary truly unforgettable."

@@ -3,14 +3,6 @@
 {% block title %}Booking & Reservation | Intercounty Hotels{% endblock %}
 {% block body_class %}bg-surface font-body-md text-on-surface antialiased min-h-screen{% endblock %}
 {% block head %}
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-      rel="stylesheet"
-    />
     <style>
       @layer base {
         html,
@@ -233,7 +225,7 @@
                 <div
                   class="w-7 h-7 rounded-full bg-tertiary-container text-on-tertiary flex items-center justify-center font-label-sm text-label-sm"
                 >
-                  <span class="material-symbols-outlined text-base">check</span>
+                  <i data-lucide="check" class="text-base"></i>
                 </div>
                 <span
                   class="hidden sm:inline font-label-md text-label-md text-on-surface-variant font-medium"
@@ -282,9 +274,7 @@
                 class="flex items-center justify-between p-space-md rounded-xl bg-primary-fixed/40 text-on-primary-fixed shadow-sm"
               >
                 <div class="flex items-center gap-space-sm">
-                  <span class="material-symbols-outlined text-primary text-xl"
-                    >lock_clock</span
-                  >
+                  <i data-lucide="lock-keyhole" class="text-primary text-xl"></i>
                   <p class="font-body-sm text-body-sm">
                     We are holding your selected suite at guaranteed rate for:
                   </p>
@@ -302,10 +292,7 @@
               >
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-space-sm">
-                    <span
-                      class="material-symbols-outlined text-primary text-2xl"
-                      >person_outline</span
-                    >
+                    <i data-lucide="user" class="text-primary text-2xl"></i>
                     <h2
                       class="font-headline-sm text-headline-sm text-on-surface"
                     >
@@ -415,9 +402,7 @@
                 class="bg-surface-container-lowest p-space-lg lg:p-space-xl rounded-xl shadow-sm flex flex-col gap-space-md"
               >
                 <div class="flex items-center gap-space-sm">
-                  <span class="material-symbols-outlined text-primary text-2xl"
-                    >schedule</span
-                  >
+                  <i data-lucide="clock" class="text-primary text-2xl"></i>
                   <h2 class="font-headline-sm text-headline-sm text-on-surface">
                     2. Arrival Preferences & Requests
                   </h2>
@@ -481,7 +466,7 @@
                       "
                       type="button"
                     >
-                      <span class="material-symbols-outlined text-sm">bed</span>
+                      <i data-lucide="bed" class="text-sm"></i>
                       High Floor Quiet Wing
                     </button>
                     <button
@@ -493,9 +478,7 @@
                       "
                       type="button"
                     >
-                      <span class="material-symbols-outlined text-sm"
-                        >cake</span
-                      >
+                      <i data-lucide="cake" class="text-sm"></i>
                       Honeymoon / Anniversary Fruit Basket
                     </button>
                     <button
@@ -507,9 +490,7 @@
                       "
                       type="button"
                     >
-                      <span class="material-symbols-outlined text-sm"
-                        >restaurant</span
-                      >
+                      <i data-lucide="utensils" class="text-sm"></i>
                       Halal / Vegan Breakfast Note
                     </button>
                     <button
@@ -521,9 +502,7 @@
                       "
                       type="button"
                     >
-                      <span class="material-symbols-outlined text-sm"
-                        >desk</span
-                      >
+                      <i data-lucide="laptop" class="text-sm"></i>
                       Extra Executive Workstation Desk
                     </button>
                   </div>
@@ -548,10 +527,7 @@
                   class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs"
                 >
                   <div class="flex items-center gap-space-sm">
-                    <span
-                      class="material-symbols-outlined text-secondary text-2xl"
-                      >payments</span
-                    >
+                    <i data-lucide="banknote" class="text-secondary text-2xl"></i>
                     <h2
                       class="font-headline-sm text-headline-sm text-on-surface"
                     >
@@ -561,9 +537,7 @@
                   <div
                     class="flex items-center gap-2 text-tertiary-container font-label-sm text-label-sm"
                   >
-                    <span class="material-symbols-outlined text-base"
-                      >verified_user</span
-                    >
+                    <i data-lucide="shield-check" class="text-base"></i>
                     <span>256-Bit SSL Encrypted Gateway</span>
                   </div>
                 </div>
@@ -582,10 +556,7 @@
                       >
                         KES
                       </div>
-                      <span
-                        class="material-symbols-outlined text-tertiary text-xl"
-                        >radio_button_checked</span
-                      >
+                      <i data-lucide="disc" class="text-tertiary text-xl"></i>
                     </div>
                     <div>
                       <p
@@ -611,14 +582,9 @@
                       <div
                         class="w-8 h-8 rounded-full bg-surface-variant text-on-surface flex items-center justify-center font-bold text-xs"
                       >
-                        <span class="material-symbols-outlined text-base"
-                          >credit_card</span
-                        >
+                        <i data-lucide="credit-card" class="text-base"></i>
                       </div>
-                      <span
-                        class="material-symbols-outlined text-outline text-xl"
-                        >radio_button_unchecked</span
-                      >
+                      <i data-lucide="circle" class="text-outline text-xl"></i>
                     </div>
                     <div>
                       <p
@@ -644,14 +610,9 @@
                       <div
                         class="w-8 h-8 rounded-full bg-surface-variant text-on-surface flex items-center justify-center font-bold text-xs"
                       >
-                        <span class="material-symbols-outlined text-base"
-                          >domain</span
-                        >
+                        <i data-lucide="building" class="text-base"></i>
                       </div>
-                      <span
-                        class="material-symbols-outlined text-outline text-xl"
-                        >radio_button_unchecked</span
-                      >
+                      <i data-lucide="circle" class="text-outline text-xl"></i>
                     </div>
                     <div>
                       <p
@@ -677,9 +638,7 @@
                   >
                     <div class="flex items-center gap-space-sm">
                       <div class="p-2 rounded-lg bg-tertiary text-on-tertiary">
-                        <span class="material-symbols-outlined text-xl"
-                          >smartphone</span
-                        >
+                        <i data-lucide="smartphone" class="text-xl"></i>
                       </div>
                       <div>
                         <h3
@@ -742,9 +701,7 @@
                       <div
                         class="flex items-center gap-space-sm text-tertiary mb-1"
                       >
-                        <span class="material-symbols-outlined text-lg"
-                          >check_circle</span
-                        >
+                        <i data-lucide="check-circle-2" class="text-lg"></i>
                         <span class="font-label-md text-label-md font-bold"
                           >Automatic Verification</span
                         >
@@ -811,10 +768,7 @@
                           placeholder="4242 •••• •••• 1024"
                           type="text"
                         />
-                        <span
-                          class="material-symbols-outlined absolute right-3 top-3 text-outline"
-                          >credit_card</span
-                        >
+                        <i data-lucide="credit-card" class="absolute right-3 top-3 text-outline"></i>
                       </div>
                     </div>
                     <div class="flex flex-col gap-1.5">
@@ -848,9 +802,7 @@
                   id="panel-arrival"
                 >
                   <div class="flex items-center gap-space-sm text-primary">
-                    <span class="material-symbols-outlined text-2xl"
-                      >account_balance</span
-                    >
+                    <i data-lucide="landmark" class="text-2xl"></i>
                     <h3
                       class="font-headline-sm text-headline-sm text-on-surface"
                     >
@@ -881,10 +833,7 @@
                   class="grid grid-cols-1 sm:grid-cols-3 gap-space-md pt-space-sm"
                 >
                   <div class="flex items-center gap-space-sm">
-                    <span
-                      class="material-symbols-outlined text-tertiary text-xl"
-                      >shield</span
-                    >
+                    <i data-lucide="shield" class="text-tertiary text-xl"></i>
                     <div class="flex flex-col">
                       <span
                         class="font-label-sm text-label-sm font-bold text-on-surface"
@@ -897,10 +846,7 @@
                     </div>
                   </div>
                   <div class="flex items-center gap-space-sm">
-                    <span
-                      class="material-symbols-outlined text-secondary text-xl"
-                      >event_available</span
-                    >
+                    <i data-lucide="calendar-check" class="text-secondary text-xl"></i>
                     <div class="flex flex-col">
                       <span
                         class="font-label-sm text-label-sm font-bold text-on-surface"
@@ -913,9 +859,7 @@
                     </div>
                   </div>
                   <div class="flex items-center gap-space-sm">
-                    <span class="material-symbols-outlined text-primary text-xl"
-                      >sms</span
-                    >
+                    <i data-lucide="message-square" class="text-primary text-xl"></i>
                     <div class="flex flex-col">
                       <span
                         class="font-label-sm text-label-sm font-bold text-on-surface"
@@ -1007,18 +951,12 @@
                     class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant px-1"
                   >
                     <span class="flex items-center gap-1">
-                      <span
-                        class="material-symbols-outlined text-base text-primary"
-                        >nights_stay</span
-                      >
+                      <i data-lucide="moon" class="text-base text-primary"></i>
                       Total Duration:
                       <strong class="text-on-surface">2 Nights</strong>
                     </span>
                     <span class="flex items-center gap-1">
-                      <span
-                        class="material-symbols-outlined text-base text-primary"
-                        >group</span
-                      >
+                      <i data-lucide="users" class="text-base text-primary"></i>
                       Guests: <strong class="text-on-surface">2 Adults</strong>
                     </span>
                   </div>
@@ -1027,24 +965,15 @@
                     class="p-space-sm rounded-lg bg-surface-container/60 flex flex-col gap-1.5 font-label-sm text-label-sm text-on-surface"
                   >
                     <div class="flex items-center gap-2">
-                      <span
-                        class="material-symbols-outlined text-tertiary text-base"
-                        >check</span
-                      >
+                      <i data-lucide="check" class="text-tertiary text-base"></i>
                       <span>Sumptuous Buffet Breakfast included daily</span>
                     </div>
                     <div class="flex items-center gap-2">
-                      <span
-                        class="material-symbols-outlined text-tertiary text-base"
-                        >check</span
-                      >
+                      <i data-lucide="check" class="text-tertiary text-base"></i>
                       <span>Olympic Swimming Pool & Sunken Lounger access</span>
                     </div>
                     <div class="flex items-center gap-2">
-                      <span
-                        class="material-symbols-outlined text-tertiary text-base"
-                        >check</span
-                      >
+                      <i data-lucide="check" class="text-tertiary text-base"></i>
                       <span>High-speed Resort Fiber Wi-Fi throughout</span>
                     </div>
                   </div>
@@ -1080,9 +1009,7 @@
                       class="flex justify-between font-body-sm text-body-sm text-tertiary"
                     >
                       <span class="flex items-center gap-1">
-                        <span class="material-symbols-outlined text-sm"
-                          >high_res</span
-                        >
+                        <i data-lucide="image" class="text-sm"></i>
                         Online M-Pesa Saver (-10%)
                       </span>
                       <span class="font-bold">-KES 2,400</span>
@@ -1119,16 +1046,14 @@
                     onclick="triggerPaymentSimulation()"
                     type="button"
                   >
-                    <span class="material-symbols-outlined">lock</span>
+                    <i data-lucide="lock"></i>
                     <span>Confirm Booking & Pay KES 22,080</span>
                   </button>
                   <!-- Reassurance Note -->
                   <div
                     class="flex items-center justify-center gap-1.5 font-label-sm text-label-sm text-tertiary"
                   >
-                    <span class="material-symbols-outlined text-base"
-                      >check_circle</span
-                    >
+                    <i data-lucide="check-circle-2" class="text-base"></i>
                     <span
                       >Free cancellation until 48 hours before check-in</span
                     >
@@ -1142,7 +1067,7 @@
                     <div
                       class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary"
                     >
-                      <span class="material-symbols-outlined">headset_mic</span>
+                      <i data-lucide="headset"></i>
                     </div>
                     <div>
                       <p
@@ -1169,10 +1094,7 @@
               <div
                 class="p-space-md rounded-xl bg-surface-container-low flex items-start gap-space-sm"
               >
-                <span
-                  class="material-symbols-outlined text-primary text-xl shrink-0 mt-0.5"
-                  >verified</span
-                >
+                <i data-lucide="badge-check" class="text-primary text-xl shrink-0 mt-0.5"></i>
                 <p class="font-body-sm text-body-sm text-on-surface-variant">
                   <strong>Official Website Direct Rate:</strong> Guaranteed
                   lowest price, priority room allocation overlooking Kitui
@@ -1193,9 +1115,7 @@
               <div
                 class="w-14 h-14 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed shrink-0"
               >
-                <span class="material-symbols-outlined text-3xl"
-                  >hotel_class</span
-                >
+                <i data-lucide="award" class="text-3xl"></i>
               </div>
               <div>
                 <h3
@@ -1213,13 +1133,13 @@
               <span
                 class="px-space-md py-space-xs rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-bold flex items-center gap-1"
               >
-                <span class="material-symbols-outlined text-sm">task_alt</span>
+                <i data-lucide="badge-check" class="text-sm"></i>
                 Verified Safe Stay
               </span>
               <span
                 class="px-space-md py-space-xs rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm font-bold flex items-center gap-1"
               >
-                <span class="material-symbols-outlined text-sm">bolt</span>
+                <i data-lucide="zap" class="text-sm"></i>
                 Instant Confirmation
               </span>
             </div>
@@ -1236,9 +1156,7 @@
             <div
               class="w-16 h-16 rounded-full bg-tertiary-fixed flex items-center justify-center text-tertiary"
             >
-              <span class="material-symbols-outlined text-3xl animate-pulse"
-                >send_to_mobile</span
-              >
+              <i data-lucide="smartphone-charging" class="text-3xl animate-pulse"></i>
             </div>
             <div>
               <h4
@@ -1303,13 +1221,13 @@
             [tabMpesa, tabCard, tabArrival].forEach((tab) => {
               tab.className =
                 "p-space-md rounded-xl text-left transition-all flex flex-col justify-between gap-space-sm bg-surface-container-low text-on-surface hover:bg-surface-container shadow-sm";
-              const radioIcon = tab.querySelector(
-                ".material-symbols-outlined:last-child",
-              );
-              if (radioIcon) {
-                radioIcon.textContent = "radio_button_unchecked";
-                radioIcon.className =
-                  "material-symbols-outlined text-outline text-xl";
+              const radioContainer = tab.firstElementChild;
+              const lastChild = radioContainer ? radioContainer.lastElementChild : null;
+              if (lastChild) {
+                const newIcon = document.createElement("i");
+                newIcon.setAttribute("data-lucide", "circle");
+                newIcon.className = "text-outline text-xl";
+                lastChild.replaceWith(newIcon);
               }
             });
 
@@ -1318,44 +1236,37 @@
             panelCard.classList.add("hidden");
             panelArrival.classList.add("hidden");
 
+            function setActiveRadio(tab, colorClass) {
+              const radioContainer = tab.firstElementChild;
+              const lastChild = radioContainer ? radioContainer.lastElementChild : null;
+              if (lastChild) {
+                const newIcon = document.createElement("i");
+                newIcon.setAttribute("data-lucide", "disc");
+                newIcon.className = colorClass + " text-xl";
+                lastChild.replaceWith(newIcon);
+              }
+            }
+
             if (method === "mpesa") {
               panelMpesa.classList.remove("hidden");
               tabMpesa.className =
                 "p-space-md rounded-xl text-left transition-all flex flex-col justify-between gap-space-sm bg-tertiary-fixed/30 text-on-tertiary-fixed shadow-sm";
-              const icon = tabMpesa.querySelector(
-                ".material-symbols-outlined:last-child",
-              );
-              if (icon) {
-                icon.textContent = "radio_button_checked";
-                icon.className =
-                  "material-symbols-outlined text-tertiary text-xl";
-              }
+              setActiveRadio(tabMpesa, "text-tertiary");
             } else if (method === "card") {
               panelCard.classList.remove("hidden");
               panelCard.classList.add("flex");
               tabCard.className =
                 "p-space-md rounded-xl text-left transition-all flex flex-col justify-between gap-space-sm bg-primary/10 text-primary shadow-sm";
-              const icon = tabCard.querySelector(
-                ".material-symbols-outlined:last-child",
-              );
-              if (icon) {
-                icon.textContent = "radio_button_checked";
-                icon.className =
-                  "material-symbols-outlined text-primary text-xl";
-              }
+              setActiveRadio(tabCard, "text-primary");
             } else if (method === "arrival") {
               panelArrival.classList.remove("hidden");
               panelArrival.classList.add("flex");
               tabArrival.className =
                 "p-space-md rounded-xl text-left transition-all flex flex-col justify-between gap-space-sm bg-secondary/10 text-secondary shadow-sm";
-              const icon = tabArrival.querySelector(
-                ".material-symbols-outlined:last-child",
-              );
-              if (icon) {
-                icon.textContent = "radio_button_checked";
-                icon.className =
-                  "material-symbols-outlined text-secondary text-xl";
-              }
+              setActiveRadio(tabArrival, "text-secondary");
+            }
+            if (window.lucide) {
+              window.lucide.createIcons();
             }
           }
 

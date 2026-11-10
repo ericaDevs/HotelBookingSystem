@@ -10,6 +10,25 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'style/output.css' %}">
+    <style>
+      /* Lucide Icon Base & Sizing to match previous font icon scales */
+      .lucide {
+        display: inline-block;
+        vertical-align: middle;
+        flex-shrink: 0;
+        width: 1em;
+        height: 1em;
+        stroke-width: 2px;
+      }
+      .lucide.text-xs { width: 0.75rem; height: 0.75rem; }
+      .lucide.text-sm { width: 0.875rem; height: 0.875rem; }
+      .lucide.text-base { width: 1rem; height: 1rem; }
+      .lucide.text-lg { width: 1.125rem; height: 1.125rem; }
+      .lucide.text-xl { width: 1.25rem; height: 1.25rem; }
+      .lucide.text-2xl { width: 1.5rem; height: 1.5rem; }
+      .lucide.text-3xl { width: 1.875rem; height: 1.875rem; }
+      .lucide.text-4xl { width: 2.25rem; height: 2.25rem; }
+    </style>
     {% block head %}{% endblock %}
   </head>
   <body class="{% block body_class %}min-h-screen bg-white font-sans text-slate-800 antialiased{% endblock %}">
@@ -91,5 +110,11 @@
         </div>
       </div>
     </footer>
+    <script src="{% static 'js/lucide.min.js' %}"></script>
+    <script>
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+    </script>
   </body>
 </html>

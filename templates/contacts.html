@@ -3,14 +3,6 @@
 {% block title %}Contact Us | Intercounty Hotels{% endblock %}
 {% block body_class %}bg-surface font-body-md text-on-surface antialiased min-h-screen{% endblock %}
 {% block head %}
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-      rel="stylesheet"
-    />
     <style>
       @layer base {
         html,
@@ -224,11 +216,7 @@
                 <div
                   class="inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-tertiary-container/15 text-tertiary font-label-sm text-label-sm tracking-widest uppercase mb-space-sm"
                 >
-                  <span
-                    class="material-symbols-outlined text-sm"
-                    style="font-variation-settings: &quot;FILL&quot; 1"
-                    >support_agent</span
-                  >
+                  <i data-lucide="headphones" class="text-sm fill-current"></i>
                   Dedicated Hospitality Desk
                 </div>
                 <h1
@@ -251,9 +239,7 @@
                 <div
                   class="w-12 h-12 rounded-full bg-tertiary-container/20 flex items-center justify-center text-tertiary"
                 >
-                  <span class="material-symbols-outlined text-2xl"
-                    >schedule</span
-                  >
+                  <i data-lucide="clock" class="text-2xl"></i>
                 </div>
                 <div>
                   <div class="flex items-center gap-2">
@@ -304,7 +290,7 @@
                 <div
                   class="hidden sm:flex items-center gap-1.5 px-space-sm py-space-xs rounded-full bg-surface-container text-primary font-label-sm text-label-sm"
                 >
-                  <span class="material-symbols-outlined text-sm">bolt</span>
+                  <i data-lucide="zap" class="text-sm"></i>
                   Fast Response
                 </div>
               </div>
@@ -325,10 +311,7 @@
                       >Full Name</label
                     >
                     <div class="relative flex items-center">
-                      <span
-                        class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg"
-                        >person</span
-                      >
+                      <i data-lucide="user" class="absolute left-3.5 text-on-surface-variant text-lg"></i>
                       <input
                         class="w-full pl-11 pr-4 py-3 bg-surface-container-low text-on-surface placeholder:text-outline font-body-md text-body-md rounded-lg focus:outline-none focus:bg-surface-container-lowest transition-all shadow-inner"
                         id="fullName"
@@ -346,10 +329,7 @@
                       >Email Address</label
                     >
                     <div class="relative flex items-center">
-                      <span
-                        class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg"
-                        >mail</span
-                      >
+                      <i data-lucide="mail" class="absolute left-3.5 text-on-surface-variant text-lg"></i>
                       <input
                         class="w-full pl-11 pr-4 py-3 bg-surface-container-low text-on-surface placeholder:text-outline font-body-md text-body-md rounded-lg focus:outline-none focus:bg-surface-container-lowest transition-all shadow-inner"
                         id="emailAddr"
@@ -369,10 +349,7 @@
                       >Phone Number (+254)</label
                     >
                     <div class="relative flex items-center">
-                      <span
-                        class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg"
-                        >call</span
-                      >
+                      <i data-lucide="phone" class="absolute left-3.5 text-on-surface-variant text-lg"></i>
                       <input
                         class="w-full pl-11 pr-4 py-3 bg-surface-container-low text-on-surface placeholder:text-outline font-body-md text-body-md rounded-lg focus:outline-none focus:bg-surface-container-lowest transition-all shadow-inner"
                         id="phoneNumber"
@@ -389,10 +366,7 @@
                       >Inquiry Type</label
                     >
                     <div class="relative flex items-center">
-                      <span
-                        class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg"
-                        >category</span
-                      >
+                      <i data-lucide="layout-grid" class="absolute left-3.5 text-on-surface-variant text-lg"></i>
                       <select
                         class="w-full pl-11 pr-8 py-3 bg-surface-container-low text-on-surface font-body-md text-body-md rounded-lg focus:outline-none focus:bg-surface-container-lowest transition-all appearance-none shadow-inner cursor-pointer"
                         id="inquiryType"
@@ -406,10 +380,7 @@
                           General Feedback & Compliments
                         </option>
                       </select>
-                      <span
-                        class="material-symbols-outlined absolute right-3 pointer-events-none text-on-surface-variant text-lg"
-                        >expand_more</span
-                      >
+                      <i data-lucide="chevron-down" class="absolute right-3 pointer-events-none text-on-surface-variant text-lg"></i>
                     </div>
                   </div>
                 </div>
@@ -421,10 +392,7 @@
                     >Subject</label
                   >
                   <div class="relative flex items-center">
-                    <span
-                      class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg"
-                      >edit_note</span
-                    >
+                    <i data-lucide="file-pen-line" class="absolute left-3.5 text-on-surface-variant text-lg"></i>
                     <input
                       class="w-full pl-11 pr-4 py-3 bg-surface-container-low text-on-surface placeholder:text-outline font-body-md text-body-md rounded-lg focus:outline-none focus:bg-surface-container-lowest transition-all shadow-inner"
                       id="inquirySubject"
@@ -456,11 +424,7 @@
                   <div
                     class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm order-2 sm:order-1"
                   >
-                    <span
-                      class="material-symbols-outlined text-tertiary text-base"
-                      style="font-variation-settings: &quot;FILL&quot; 1"
-                      >check_circle</span
-                    >
+                    <i data-lucide="check-circle-2" class="text-tertiary text-base fill-current"></i>
                     <span
                       >We reply within <strong>2 business hours</strong>.</span
                     >
@@ -471,7 +435,7 @@
                     type="submit"
                   >
                     <span>Send Message</span>
-                    <span class="material-symbols-outlined text-lg">send</span>
+                    <i data-lucide="send" class="text-lg"></i>
                   </button>
                 </div>
               </form>
@@ -480,11 +444,7 @@
                 class="hidden mt-space-md p-space-md rounded-lg bg-tertiary-fixed text-on-tertiary-fixed flex items-center gap-space-sm"
                 id="formSuccessToast"
               >
-                <span
-                  class="material-symbols-outlined text-tertiary text-xl"
-                  style="font-variation-settings: &quot;FILL&quot; 1"
-                  >done_all</span
-                >
+                <i data-lucide="check-check" class="text-tertiary text-xl fill-current"></i>
                 <div>
                   <p class="font-label-md text-label-md font-bold">
                     Message Delivered Successfully!
@@ -509,9 +469,7 @@
                   <div
                     class="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0"
                   >
-                    <span class="material-symbols-outlined text-2xl"
-                      >location_on</span
-                    >
+                    <i data-lucide="map-pin" class="text-2xl"></i>
                   </div>
                   <div class="flex flex-col">
                     <span
@@ -531,9 +489,7 @@
                     <span
                       class="inline-flex items-center gap-1 font-label-sm text-label-sm text-primary mt-1"
                     >
-                      <span class="material-symbols-outlined text-xs"
-                        >near_me</span
-                      >
+                      <i data-lucide="navigation" class="text-xs"></i>
                       Near Kitui High School / Town Centre
                     </span>
                   </div>
@@ -545,7 +501,7 @@
                   <div
                     class="w-12 h-12 rounded-lg bg-secondary/10 text-secondary flex items-center justify-center shrink-0"
                   >
-                    <span class="material-symbols-outlined text-2xl">call</span>
+                    <i data-lucide="phone" class="text-2xl"></i>
                   </div>
                   <div class="flex flex-col">
                     <span
@@ -579,9 +535,7 @@
                   <div
                     class="w-12 h-12 rounded-lg bg-tertiary/10 text-tertiary flex items-center justify-center shrink-0"
                   >
-                    <span class="material-symbols-outlined text-2xl"
-                      >mark_email_read</span
-                    >
+                    <i data-lucide="mail-check" class="text-2xl"></i>
                   </div>
                   <div class="flex flex-col">
                     <span
@@ -609,9 +563,7 @@
                   <div
                     class="w-12 h-12 rounded-lg bg-primary-container/20 text-primary-container flex items-center justify-center shrink-0"
                   >
-                    <span class="material-symbols-outlined text-2xl"
-                      >timer</span
-                    >
+                    <i data-lucide="timer" class="text-2xl"></i>
                   </div>
                   <div class="flex flex-col">
                     <span
@@ -650,9 +602,7 @@
                     <div
                       class="w-7 h-7 rounded-full bg-secondary text-on-secondary flex items-center justify-center shrink-0"
                     >
-                      <span class="material-symbols-outlined text-sm"
-                        >hotel</span
-                      >
+                      <i data-lucide="hotel" class="text-sm"></i>
                     </div>
                     <div class="truncate">
                       <p
@@ -676,10 +626,7 @@
                     <div
                       class="flex flex-col items-center text-center p-2 rounded-lg bg-surface-container-low"
                     >
-                      <span
-                        class="material-symbols-outlined text-primary text-base"
-                        >directions_bus</span
-                      >
+                      <i data-lucide="bus" class="text-primary text-base"></i>
                       <span
                         class="font-label-sm text-label-sm text-on-surface font-bold mt-1"
                         >4 mins</span
@@ -691,10 +638,7 @@
                     <div
                       class="flex flex-col items-center text-center p-2 rounded-lg bg-surface-container-low"
                     >
-                      <span
-                        class="material-symbols-outlined text-secondary text-base"
-                        >alt_route</span
-                      >
+                      <i data-lucide="git-fork" class="text-secondary text-base"></i>
                       <span
                         class="font-label-sm text-label-sm text-on-surface font-bold mt-1"
                         >200 m</span
@@ -706,10 +650,7 @@
                     <div
                       class="flex flex-col items-center text-center p-2 rounded-lg bg-surface-container-low"
                     >
-                      <span
-                        class="material-symbols-outlined text-tertiary text-base"
-                        >flight</span
-                      >
+                      <i data-lucide="plane" class="text-tertiary text-base"></i>
                       <span
                         class="font-label-sm text-label-sm text-on-surface font-bold mt-1"
                         >10 mins</span
@@ -726,9 +667,7 @@
                     rel="noopener noreferrer"
                     target="_blank"
                   >
-                    <span class="material-symbols-outlined text-lg"
-                      >explore</span
-                    >
+                    <i data-lucide="compass" class="text-lg"></i>
                     <span>Get Directions via Google Maps</span>
                   </a>
                 </div>
@@ -836,15 +775,10 @@
                   type="button"
                 >
                   <span class="flex items-center gap-3">
-                    <span class="material-symbols-outlined text-primary text-xl"
-                      >flight_takeoff</span
-                    >
+                    <i data-lucide="plane-takeoff" class="text-primary text-xl"></i>
                     Do you offer airport or town transfers?
                   </span>
-                  <span
-                    class="material-symbols-outlined text-on-surface-variant text-xl transform transition-transform duration-200 faq-icon"
-                    >expand_more</span
-                  >
+                  <i data-lucide="chevron-down" class="text-on-surface-variant text-xl transform transition-transform duration-200 faq-icon"></i>
                 </button>
                 <div
                   class="faq-content max-h-0 overflow-hidden transition-all duration-300 px-space-md"
@@ -870,15 +804,10 @@
                   type="button"
                 >
                   <span class="flex items-center gap-3">
-                    <span class="material-symbols-outlined text-primary text-xl"
-                      >payments</span
-                    >
+                    <i data-lucide="banknote" class="text-primary text-xl"></i>
                     What payment options are accepted? Can I pay via M-Pesa?
                   </span>
-                  <span
-                    class="material-symbols-outlined text-on-surface-variant text-xl transform transition-transform duration-200 faq-icon"
-                    >expand_more</span
-                  >
+                  <i data-lucide="chevron-down" class="text-on-surface-variant text-xl transform transition-transform duration-200 faq-icon"></i>
                 </button>
                 <div
                   class="faq-content max-h-0 overflow-hidden transition-all duration-300 px-space-md"
@@ -904,15 +833,10 @@
                   type="button"
                 >
                   <span class="flex items-center gap-3">
-                    <span class="material-symbols-outlined text-primary text-xl"
-                      >timelapse</span
-                    >
+                    <i data-lucide="hourglass" class="text-primary text-xl"></i>
                     What are the standard Check-in and Check-out times?
                   </span>
-                  <span
-                    class="material-symbols-outlined text-on-surface-variant text-xl transform transition-transform duration-200 faq-icon"
-                    >expand_more</span
-                  >
+                  <i data-lucide="chevron-down" class="text-on-surface-variant text-xl transform transition-transform duration-200 faq-icon"></i>
                 </button>
                 <div
                   class="faq-content max-h-0 overflow-hidden transition-all duration-300 px-space-md"
@@ -938,15 +862,10 @@
                   type="button"
                 >
                   <span class="flex items-center gap-3">
-                    <span class="material-symbols-outlined text-primary text-xl"
-                      >groups</span
-                    >
+                    <i data-lucide="users" class="text-primary text-xl"></i>
                     What is the conference and banquet capacity?
                   </span>
-                  <span
-                    class="material-symbols-outlined text-on-surface-variant text-xl transform transition-transform duration-200 faq-icon"
-                    >expand_more</span
-                  >
+                  <i data-lucide="chevron-down" class="text-on-surface-variant text-xl transform transition-transform duration-200 faq-icon"></i>
                 </button>
                 <div
                   class="faq-content max-h-0 overflow-hidden transition-all duration-300 px-space-md"
@@ -973,15 +892,10 @@
                   type="button"
                 >
                   <span class="flex items-center gap-3">
-                    <span class="material-symbols-outlined text-primary text-xl"
-                      >pool</span
-                    >
+                    <i data-lucide="waves" class="text-primary text-xl"></i>
                     Are non-residents allowed to use the swimming pool?
                   </span>
-                  <span
-                    class="material-symbols-outlined text-on-surface-variant text-xl transform transition-transform duration-200 faq-icon"
-                    >expand_more</span
-                  >
+                  <i data-lucide="chevron-down" class="text-on-surface-variant text-xl transform transition-transform duration-200 faq-icon"></i>
                 </button>
                 <div
                   class="faq-content max-h-0 overflow-hidden transition-all duration-300 px-space-md"
@@ -1006,7 +920,7 @@
                 <div
                   class="w-10 h-10 rounded-full bg-secondary text-on-secondary flex items-center justify-center shrink-0"
                 >
-                  <span class="material-symbols-outlined text-xl">help</span>
+                  <i data-lucide="help-circle" class="text-xl"></i>
                 </div>
                 <div>
                   <p class="font-label-md text-label-md text-on-surface">
@@ -1021,7 +935,7 @@
                 class="inline-flex items-center gap-1.5 px-space-md py-2.5 rounded-full bg-surface-container-lowest hover:bg-white text-secondary font-label-md text-label-md shadow-sm transition-all shrink-0"
                 href="tel:+254712345678"
               >
-                <span class="material-symbols-outlined text-base">call</span>
+                <i data-lucide="phone" class="text-base"></i>
                 Speak to Concierge
               </a>
             </div>
@@ -1067,16 +981,19 @@
           const form = document.getElementById("contactForm");
 
           btn.disabled = true;
-          btn.innerHTML = `<span class="material-symbols-outlined text-lg animate-spin">refresh</span><span>Sending...</span>`;
+          btn.innerHTML = `<i data-lucide="rotate-cw" class="text-lg animate-spin"></i><span>Sending...</span>`;
+          if (window.lucide) window.lucide.createIcons();
 
           setTimeout(() => {
-            btn.innerHTML = `<span class="material-symbols-outlined text-lg">check</span><span>Sent</span>`;
+            btn.innerHTML = `<i data-lucide="check" class="text-lg"></i><span>Sent</span>`;
+            if (window.lucide) window.lucide.createIcons();
             toast.classList.remove("hidden");
             form.reset();
 
             setTimeout(() => {
               btn.disabled = false;
-              btn.innerHTML = `<span>Send Message</span><span class="material-symbols-outlined text-lg">send</span>`;
+              btn.innerHTML = `<span>Send Message</span><i data-lucide="send" class="text-lg"></i>`;
+              if (window.lucide) window.lucide.createIcons();
             }, 4000);
           }, 800);
         }
