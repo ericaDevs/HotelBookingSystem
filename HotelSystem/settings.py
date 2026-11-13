@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'Billing',
     'Properties',
     'Reservations',
-    'Reports'
+    'Dashboard'
 ]
 
 MIDDLEWARE = [
