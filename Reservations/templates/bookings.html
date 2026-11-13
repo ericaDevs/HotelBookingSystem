@@ -690,8 +690,8 @@
                         />
                       </div>
                       <p class="font-label-sm text-label-sm text-tertiary">
-                        A secure PIN prompt of KES 22,080 will appear instantly
-                        on this phone.
+                        A secure PIN prompt for the selected room will appear
+                        instantly on this phone.
                       </p>
                     </div>
                     <!-- Simulation Graphic / Status -->
@@ -878,217 +878,32 @@
             <div
               class="lg:col-span-5 xl:col-span-4 sticky top-24 flex flex-col gap-space-md"
             >
-              <!-- Selected Suite Summary Card -->
-              <div
-                class="bg-surface-container-lowest rounded-xl shadow-lg overflow-hidden flex flex-col"
-              >
-                <!-- Room Image with Badge -->
-                <div class="relative h-48 w-full">
-                  <img
-                    class="w-full h-full object-cover"
-                    data-alt="Luxurious executive hotel bedroom suite at Intercounty Hotel Kitui featuring warm golden sunlight, plush king bed with plum purple throws, private balcony view of palm gardens, modern African wall tapestry, and a marble writing desk."
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4_YHBpJo8uOqabojpF0XTHL_3lTq-SA3kX2y1SApHKwmlO7HG1-jgcYUWIhTTLnjpbthlZeIkbTftPgmAnn2BZxVTeIOgTT-DFE8luwvpf4yjcAgYudCzFoYt_g5iEr3J7yKSj8wzL6L7iOTjtQ-xsLcKUGcJePTrud5DLK7qoD_abvBorXT28T18gkMv7A3eGBtXhYngMYbEku09S6mUxbAw0XznPQ1j1AZ-PZA"
-                  />
-                  <div
-                    class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"
-                  ></div>
-                  <span
-                    class="absolute top-space-md left-space-md px-space-md py-1 rounded-full bg-tertiary text-on-tertiary font-label-sm text-label-sm font-semibold shadow-md"
-                  >
-                    Pool & Garden View
-                  </span>
-                  <div
-                    class="absolute bottom-space-md left-space-md right-space-md text-white"
-                  >
-                    <h3
-                      class="font-headline-sm text-headline-sm font-bold text-white drop-shadow"
-                    >
-                      Executive Garden Suite
-                    </h3>
-                    <p class="font-label-sm text-label-sm opacity-90">
-                      1 King Bed • 2 Adults • Private Balcony
-                    </p>
-                  </div>
+              <!-- Selected room from the inventory -->
+              <div class="bg-surface-container-lowest rounded-xl shadow-lg p-space-md lg:p-space-lg flex flex-col gap-space-md">
+                <h2 class="font-headline-sm text-headline-sm font-bold text-on-surface">Room Selection</h2>
+                {% if rooms %}
+                <form method="get" action="{% url 'bookings' %}" class="flex flex-col gap-space-sm">
+                  <label class="font-label-sm text-label-sm text-on-surface-variant" for="selected-room">Choose an available room</label>
+                  <select class="w-full h-12 px-space-md bg-surface-container-low rounded-lg font-body-sm text-body-sm text-on-surface" id="selected-room" name="room">
+                    <option value="" disabled {% if not selected_room %}selected{% endif %}>Choose a room</option>
+                    {% for room in rooms %}
+                    <option value="{{ room.pk }}" {% if selected_room and selected_room.pk == room.pk %}selected{% endif %}>Room {{ room.room_number }} - {{ room.room_type }}</option>
+                    {% endfor %}
+                  </select>
+                  <button class="w-full py-space-sm px-space-md rounded-full bg-secondary text-on-secondary font-label-md text-label-md font-semibold" type="submit">Select Room</button>
+                </form>
+                {% if selected_room %}
+                <div class="p-space-md rounded-lg bg-surface-container-low flex flex-col gap-space-xs">
+                  <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">{{ selected_room.room_type }}</h3>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">Room {{ selected_room.room_number }}</p>
+                  <p class="font-headline-md text-headline-md font-bold text-secondary">KES {{ selected_room.price|floatformat:2 }} <span class="font-body-sm text-body-sm font-normal text-on-surface-variant">/ night</span></p>
                 </div>
-                <!-- Stay Dates & Time breakdown -->
-                <div
-                  class="p-space-md lg:p-space-lg flex flex-col gap-space-md"
-                >
-                  <div
-                    class="grid grid-cols-2 gap-space-sm p-space-sm bg-surface-container-low rounded-lg"
-                  >
-                    <div class="flex flex-col gap-0.5">
-                      <span
-                        class="font-label-sm text-label-sm uppercase tracking-wider text-outline"
-                        >Check-In</span
-                      >
-                      <span
-                        class="font-label-md text-label-md font-bold text-on-surface"
-                        >Fri, Oct 24, 2025</span
-                      >
-                      <span
-                        class="font-body-sm text-body-sm text-on-surface-variant"
-                        >From 2:00 PM</span
-                      >
-                    </div>
-                    <div class="flex flex-col gap-0.5">
-                      <span
-                        class="font-label-sm text-label-sm uppercase tracking-wider text-outline"
-                        >Check-Out</span
-                      >
-                      <span
-                        class="font-label-md text-label-md font-bold text-on-surface"
-                        >Sun, Oct 26, 2025</span
-                      >
-                      <span
-                        class="font-body-sm text-body-sm text-on-surface-variant"
-                        >Until 11:00 AM</span
-                      >
-                    </div>
-                  </div>
-                  <!-- Nights Pill and Guests -->
-                  <div
-                    class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant px-1"
-                  >
-                    <span class="flex items-center gap-1">
-                      <i data-lucide="moon" class="text-base text-primary"></i>
-                      Total Duration:
-                      <strong class="text-on-surface">2 Nights</strong>
-                    </span>
-                    <span class="flex items-center gap-1">
-                      <i data-lucide="users" class="text-base text-primary"></i>
-                      Guests: <strong class="text-on-surface">2 Adults</strong>
-                    </span>
-                  </div>
-                  <!-- Inclusive Amenities List -->
-                  <div
-                    class="p-space-sm rounded-lg bg-surface-container/60 flex flex-col gap-1.5 font-label-sm text-label-sm text-on-surface"
-                  >
-                    <div class="flex items-center gap-2">
-                      <i data-lucide="check" class="text-tertiary text-base"></i>
-                      <span>Sumptuous Buffet Breakfast included daily</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                      <i data-lucide="check" class="text-tertiary text-base"></i>
-                      <span>Olympic Swimming Pool & Sunken Lounger access</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                      <i data-lucide="check" class="text-tertiary text-base"></i>
-                      <span>High-speed Resort Fiber Wi-Fi throughout</span>
-                    </div>
-                  </div>
-                  <!-- Detailed Price Breakdown -->
-                  <div class="flex flex-col gap-2 pt-space-xs">
-                    <div
-                      class="flex justify-between font-body-sm text-body-sm text-on-surface-variant"
-                    >
-                      <span>2 Nights × KES 12,000</span>
-                      <span class="font-medium text-on-surface"
-                        >KES 24,000</span
-                      >
-                    </div>
-                    <div
-                      class="flex justify-between font-body-sm text-body-sm text-on-surface-variant"
-                    >
-                      <span>Kitui Tourism Regulatory Levy (2%)</span>
-                      <span class="font-medium text-on-surface">KES 480</span>
-                    </div>
-                    <div
-                      class="flex justify-between font-body-sm text-body-sm text-on-surface-variant"
-                    >
-                      <span>VAT (16% Included in room rates)</span>
-                      <span class="font-medium text-on-surface">KES 3,840</span>
-                    </div>
-                    <div
-                      class="flex justify-between font-body-sm text-body-sm text-on-surface-variant"
-                    >
-                      <span>Resort Amenities & Pool Access</span>
-                      <span class="font-bold text-tertiary">FREE</span>
-                    </div>
-                    <div
-                      class="flex justify-between font-body-sm text-body-sm text-tertiary"
-                    >
-                      <span class="flex items-center gap-1">
-                        <i data-lucide="image" class="text-sm"></i>
-                        Online M-Pesa Saver (-10%)
-                      </span>
-                      <span class="font-bold">-KES 2,400</span>
-                    </div>
-                    <!-- Total Row -->
-                    <div
-                      class="flex items-baseline justify-between pt-space-sm mt-space-xs bg-surface-container-low p-space-sm rounded-lg"
-                    >
-                      <div>
-                        <span
-                          class="font-headline-sm text-headline-sm font-bold text-on-surface"
-                          >Final Total</span
-                        >
-                        <p
-                          class="font-body-sm text-body-sm text-on-surface-variant"
-                        >
-                          Taxes & Levies included
-                        </p>
-                      </div>
-                      <div class="text-right">
-                        <span
-                          class="font-headline-lg text-headline-lg font-bold text-secondary"
-                          >KES 22,080</span
-                        >
-                        <p class="font-label-sm text-label-sm text-outline">
-                          Approx. $168 USD
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- Prominent Maroon CTA Button -->
-                  <button
-                    class="w-full py-space-md px-space-lg rounded-full bg-secondary hover:bg-secondary-container text-on-secondary font-label-lg text-label-lg font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-space-sm"
-                    onclick="triggerPaymentSimulation()"
-                    type="button"
-                  >
-                    <i data-lucide="lock"></i>
-                    <span>Confirm Booking & Pay KES 22,080</span>
-                  </button>
-                  <!-- Reassurance Note -->
-                  <div
-                    class="flex items-center justify-center gap-1.5 font-label-sm text-label-sm text-tertiary"
-                  >
-                    <i data-lucide="check-circle-2" class="text-base"></i>
-                    <span
-                      >Free cancellation until 48 hours before check-in</span
-                    >
-                  </div>
-                </div>
-                <!-- Direct Assistance Card Footer -->
-                <div
-                  class="bg-surface-container-low p-space-md flex items-center justify-between gap-space-sm"
-                >
-                  <div class="flex items-center gap-space-sm">
-                    <div
-                      class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary"
-                    >
-                      <i data-lucide="headset"></i>
-                    </div>
-                    <div>
-                      <p
-                        class="font-label-sm text-label-sm text-on-surface font-bold"
-                      >
-                        Need Help Reserving?
-                      </p>
-                      <p
-                        class="font-body-sm text-body-sm text-on-surface-variant"
-                      >
-                        Dedicated 24/7 Front Desk
-                      </p>
-                    </div>
-                  </div>
-                  <a
-                    class="px-space-md py-1.5 rounded-full bg-surface-container-lowest text-primary font-label-sm text-label-sm font-semibold hover:bg-primary hover:text-on-primary transition-all shadow-sm"
-                    href="tel:+254700123456"
-                  >
-                    +254 700 123 456
-                  </a>
-                </div>
+                {% else %}
+                <p class="font-body-sm text-body-sm text-on-surface-variant">Select a room to view its nightly rate.</p>
+                {% endif %}
+                {% else %}
+                <p class="font-body-sm text-body-sm text-on-surface-variant">No rooms are currently available.</p>
+                {% endif %}
               </div>
               <!-- Trust & Safety Miniature Callout -->
               <div
@@ -1166,8 +981,7 @@
               </h4>
               <p class="font-body-md text-body-md text-on-surface-variant mt-1">
                 Please check your phone (+254 722 458 912) and enter your M-Pesa
-                Secret PIN to complete payment of
-                <strong class="text-on-surface">KES 22,080</strong>.
+                Secret PIN to continue your reservation.
               </p>
             </div>
             <div

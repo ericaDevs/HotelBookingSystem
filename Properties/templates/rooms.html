@@ -272,1036 +272,82 @@
             </div>
           </div>
         </section>
-        <!-- Sticky Filter & Search Control Dock -->
-        <section
-          class="sticky top-20 z-40 w-full bg-surface-container-lowest shadow-md"
-        >
-          <div
-            class="max-w-[1280px] mx-auto px-margin-mobile lg:px-margin py-space-md"
-          >
-            <!-- Category Tabs Row -->
-            <div
-              class="flex items-center justify-between gap-space-md overflow-x-auto pb-space-xs scrollbar-none"
-            >
-              <div
-                class="flex items-center gap-space-xs shrink-0"
-                id="room-category-filter"
-              >
-                <button
-                  class="filter-tab-btn active px-space-md py-space-xs rounded-full bg-primary text-on-primary font-label-md text-label-md transition-all"
-                  data-filter="all"
-                  type="button"
-                >
-                  All Accommodations (6)
+        <!-- Inventory filters -->
+        <section class="sticky top-20 z-40 w-full bg-surface-container-lowest shadow-md">
+          <div class="max-w-[1280px] mx-auto px-margin-mobile lg:px-margin py-space-md">
+            <div class="flex items-center justify-between gap-space-md overflow-x-auto pb-space-xs">
+              <div class="flex items-center gap-space-xs shrink-0" id="room-category-filter">
+                <button class="filter-tab-btn active px-space-md py-space-xs rounded-full bg-primary text-on-primary font-label-md text-label-md" data-filter="all" type="button">
+                  All Rooms ({{ rooms|length }})
                 </button>
-                <button
-                  class="filter-tab-btn px-space-md py-space-xs rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all"
-                  data-filter="presidential"
-                  type="button"
-                >
-                  Presidential Suites
+                {% for room_type in room_types %}
+                <button class="filter-tab-btn px-space-md py-space-xs rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md" data-filter="{{ room_type|slugify }}" type="button">
+                  {{ room_type }}
                 </button>
-                <button
-                  class="filter-tab-btn px-space-md py-space-xs rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all"
-                  data-filter="executive"
-                  type="button"
-                >
-                  Executive Rooms
-                </button>
-                <button
-                  class="filter-tab-btn px-space-md py-space-xs rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all"
-                  data-filter="deluxe"
-                  type="button"
-                >
-                  Deluxe Rooms
-                </button>
-                <button
-                  class="filter-tab-btn px-space-md py-space-xs rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all"
-                  data-filter="cottage"
-                  type="button"
-                >
-                  Family Chalets
-                </button>
+                {% endfor %}
               </div>
-              <button
-                class="shrink-0 flex items-center gap-1.5 px-space-md py-space-xs rounded-full bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-all"
-                onclick="
-                  document
-                    .getElementById('advanced-filters-panel')
-                    .classList.toggle('hidden')
-                "
-                type="button"
-              >
+              <button class="shrink-0 flex items-center gap-1.5 px-space-md py-space-xs rounded-full bg-surface-container text-on-surface font-label-md text-label-md" onclick="document.getElementById('advanced-filters-panel').classList.toggle('hidden')" type="button">
                 <i data-lucide="sliders-horizontal" class="text-base"></i>
-                <span>Filters & Sort</span>
-                <span
-                  class="w-2 h-2 rounded-full bg-secondary"
-                  id="active-filter-badge"
-                ></span>
+                <span>Filters &amp; Sort</span>
               </button>
             </div>
-            <!-- Advanced Filters Dropdown / Collapsible Drawer -->
-            <div
-              class="hidden pt-space-md mt-space-sm bg-surface-container-low rounded-xl p-space-md shadow-inner flex flex-col gap-space-md"
-              id="advanced-filters-panel"
-            >
-              <div
-                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md"
-              >
-                <!-- Price Range Filter -->
+            <div class="hidden pt-space-md mt-space-sm bg-surface-container-low rounded-xl p-space-md shadow-inner" id="advanced-filters-panel">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
                 <div class="flex flex-col gap-space-xs">
-                  <label
-                    class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant"
-                    >Price Range (KES)</label
-                  >
-                  <select
-                    class="w-full bg-surface-container-lowest text-on-surface font-body-sm text-body-sm rounded-lg px-space-sm py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/20"
-                    id="price-filter"
-                  >
+                  <label class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant" for="price-filter">Price Range (KES)</label>
+                  <select class="w-full bg-surface-container-lowest text-on-surface font-body-sm text-body-sm rounded-lg px-space-sm py-2.5" id="price-filter">
                     <option value="all">Any Price</option>
                     <option value="under7">Under KES 7,000</option>
-                    <option value="7to15">KES 7,000 – KES 15,000</option>
-                    <option value="above15">KES 15,000 & Above</option>
+                    <option value="7to15">KES 7,000 to KES 15,000</option>
+                    <option value="above15">KES 15,000 &amp; Above</option>
                   </select>
                 </div>
-                <!-- Bed Arrangement -->
                 <div class="flex flex-col gap-space-xs">
-                  <label
-                    class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant"
-                    >Bed Configuration</label
-                  >
-                  <select
-                    class="w-full bg-surface-container-lowest text-on-surface font-body-sm text-body-sm rounded-lg px-space-sm py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/20"
-                    id="bed-filter"
-                  >
-                    <option value="all">All Bed Types</option>
-                    <option value="king">Super King / King Bed</option>
-                    <option value="queen">Queen Bed</option>
-                    <option value="twin">Twin Beds (Double Singles)</option>
-                    <option value="family">Family (Multi-bed)</option>
-                  </select>
-                </div>
-                <!-- Sort Selector -->
-                <div class="flex flex-col gap-space-xs">
-                  <label
-                    class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant"
-                    >Sort By</label
-                  >
-                  <select
-                    class="w-full bg-surface-container-lowest text-on-surface font-body-sm text-body-sm rounded-lg px-space-sm py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/20"
-                    id="sort-selector"
-                  >
-                    <option value="recommended">Recommended & Featured</option>
+                  <label class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant" for="sort-selector">Sort By</label>
+                  <select class="w-full bg-surface-container-lowest text-on-surface font-body-sm text-body-sm rounded-lg px-space-sm py-2.5" id="sort-selector">
+                    <option value="recommended">Room Number</option>
                     <option value="price-asc">Price: Low to High</option>
                     <option value="price-desc">Price: High to Low</option>
-                    <option value="capacity-desc">
-                      Highest Guest Capacity
-                    </option>
                   </select>
                 </div>
-                <!-- Quick Amenities Checklist -->
-                <div class="flex flex-col gap-space-xs">
-                  <label
-                    class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant"
-                    >Must-Have Amenities</label
-                  >
-                  <div class="flex flex-wrap gap-2 pt-1">
-                    <label
-                      class="inline-flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container-lowest text-on-surface font-body-sm text-body-sm cursor-pointer hover:bg-surface-bright"
-                    >
-                      <input class="accent-primary rounded" type="checkbox" />
-                      <span>Pool View</span>
-                    </label>
-                    <label
-                      class="inline-flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container-lowest text-on-surface font-body-sm text-body-sm cursor-pointer hover:bg-surface-bright"
-                    >
-                      <input class="accent-primary rounded" type="checkbox" />
-                      <span>Balcony</span>
-                    </label>
-                    <label
-                      class="inline-flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container-lowest text-on-surface font-body-sm text-body-sm cursor-pointer hover:bg-surface-bright"
-                    >
-                      <input class="accent-primary rounded" type="checkbox" />
-                      <span>Jacuzzi</span>
-                    </label>
-                  </div>
-                </div>
               </div>
-              <div
-                class="flex items-center justify-between pt-space-xs border-t border-surface-dim/40"
-              >
-                <span class="font-body-sm text-body-sm text-on-surface-variant"
-                  >Showing active curated selections</span
-                >
-                <button
-                  class="font-label-sm text-label-sm text-secondary hover:underline"
-                  onclick="resetFilters()"
-                  type="button"
-                >
-                  Reset All Filters
-                </button>
+              <div class="flex items-center justify-between pt-space-sm mt-space-sm border-t border-surface-dim/40">
+                <span class="font-body-sm text-body-sm text-on-surface-variant">Showing available rooms</span>
+                <button class="font-label-sm text-label-sm text-secondary hover:underline" onclick="resetFilters()" type="button">Reset Filters</button>
               </div>
             </div>
           </div>
         </section>
-        <!-- Room Catalog Section -->
-        <section
-          class="w-full py-space-xl px-margin-mobile lg:px-margin bg-surface"
-        >
-          <div class="max-w-[1280px] mx-auto flex flex-col gap-space-xl">
-            <!-- Catalog Grid: 6 Distinct High-Polish Room Cards -->
-            <div
-              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter"
-              id="rooms-grid"
-            >
-              <!-- Card 1: The Royal Presidential Suite -->
-              <article
-                class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
-                data-bed="king"
-                data-capacity="4"
-                data-category="presidential"
-                data-price="22000"
-              >
-                <div class="relative w-full aspect-[16/10] overflow-hidden">
-                  <img
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    data-alt="Opulent Royal Presidential Suite bedroom in Kitui luxury hotel featuring warm hardwood floors, plush king-size bed draped in fine crisp linens with deep purple and gold accents, expansive sunlit private terrace overlooking swimming pool and acacia trees, architectural Swahili carvings, soft morning golden hour ambient lighting."
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDD9LWQMiQ5T-m8RY9REsF-7S-mQ_X5gehkDmUpz1J6zIXtRCc729fyjAFz-5ZA4omxZQgWOuRRUIukrC3pbNE9XVjGC4E5oRNZr8vMqK4d2mMyUJKgt0lPYpySm1Ty27ABlvrPYHE7vXjpBGIlPAgXLWuuHgNmNdkdOzsJ6GiH2XUO2Oc8HcgDcIWBi3c6ceEs8lN6kSYMVjOw86jvVK47UkvF0Plpii31HtxVnNs"
-                  />
-                  <div class="absolute top-3 left-3 flex flex-wrap gap-1.5">
-                    <span
-                      class="px-space-sm py-0.5 rounded-full bg-secondary text-on-secondary font-label-sm text-label-sm font-semibold shadow-sm"
-                    >
-                      Most Exclusive
-                    </span>
-                    <span
-                      class="px-space-sm py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface font-label-sm text-label-sm"
-                    >
-                      Pool & Bridge View
-                    </span>
-                  </div>
-                  <div
-                    class="absolute bottom-3 right-3 px-space-sm py-0.5 rounded-md bg-inverse-surface/85 backdrop-blur text-inverse-on-surface font-label-sm text-label-sm flex items-center gap-1"
-                  >
-                    <i data-lucide="maximize-2" class="text-xs"></i>
-                    <span>85 m²</span>
-                  </div>
+        <!-- Room catalog from the inventory -->
+        <section class="w-full py-space-xl px-margin-mobile lg:px-margin bg-surface">
+          <div class="max-w-[1280px] mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter" id="rooms-grid">
+              {% for room in rooms %}
+              <article class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col" data-category="{{ room.room_type|slugify }}" data-price="{{ room.price }}" data-room="{{ room.room_number }}">
+                <div class="w-full aspect-[16/10] bg-surface-container flex items-center justify-center text-primary">
+                  <i data-lucide="bed-double" class="text-4xl"></i>
                 </div>
-                <div
-                  class="p-space-lg flex flex-col flex-1 justify-between gap-space-md"
-                >
+                <div class="p-space-lg flex flex-col flex-1 justify-between gap-space-md">
                   <div class="flex flex-col gap-space-xs">
-                    <div class="flex items-center justify-between gap-2">
-                      <span
-                        class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-bold"
-                        >Presidential Wing</span
-                      >
-                      <div
-                        class="flex items-center gap-1 text-secondary font-label-sm text-label-sm font-bold"
-                      >
-                        <i data-lucide="star" class="text-sm fill-current"></i>
-                        <span>4.98 (42)</span>
-                      </div>
-                    </div>
-                    <h2
-                      class="font-headline-md text-headline-md text-on-surface font-bold group-hover:text-primary transition-colors"
-                    >
-                      The Royal Presidential Suite
-                    </h2>
-                    <p
-                      class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2"
-                    >
-                      Expansive master quarter featuring private terrace
-                      overlooking the iconic bridge pool, executive lounge,
-                      ensuite jacuzzi, and dedicated butler pantry.
-                    </p>
-                    <!-- Room Specs Matrix -->
-                    <div
-                      class="grid grid-cols-2 gap-y-2 gap-x-4 py-space-xs my-space-xs bg-surface-container-low/60 rounded-lg p-space-sm"
-                    >
-                      <div
-                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
-                      >
-                        <i data-lucide="users" class="text-base text-primary"></i>
-                        <span>Up to 4 Guests</span>
-                      </div>
-                      <div
-                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
-                      >
-                        <i data-lucide="bed-double" class="text-base text-primary"></i>
-                        <span>Super King Bed</span>
-                      </div>
-                      <div
-                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
-                      >
-                        <i data-lucide="bath" class="text-base text-primary"></i>
-                        <span>Hydrotherapy Tub</span>
-                      </div>
-                      <div
-                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
-                      >
-                        <i data-lucide="sun-medium" class="text-base text-primary"></i>
-                        <span>Private Sun Deck</span>
-                      </div>
-                    </div>
-                    <!-- Amenity Pills -->
-                    <div class="flex flex-wrap gap-1.5 pt-1">
-                      <span
-                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
-                        >High-Speed Wi-Fi</span
-                      >
-                      <span
-                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
-                        >Nespresso Machine</span
-                      >
-                      <span
-                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
-                        >Airport Chauffeur</span
-                      >
-                    </div>
+                    <span class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-bold">Room {{ room.room_number }}</span>
+                    <h2 class="font-headline-md text-headline-md text-on-surface font-bold group-hover:text-primary transition-colors">{{ room.room_type }}</h2>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">{{ room.is_available|yesno:"Available,Unavailable" }}</p>
                   </div>
-                  <!-- Pricing & Action Row -->
-                  <div
-                    class="pt-space-md border-t border-surface-container-high/60 flex items-end justify-between gap-space-sm"
-                  >
+                  <div class="pt-space-md border-t border-surface-container-high/60 flex items-end justify-between gap-space-sm">
                     <div class="flex flex-col">
-                      <span
-                        class="font-label-sm text-label-sm text-on-surface-variant"
-                        >Nightly Retreat</span
-                      >
-                      <div class="flex items-baseline gap-1">
-                        <span
-                          class="font-headline-lg text-headline-lg font-bold text-on-surface"
-                          >KES 22,000</span
-                        >
-                        <span
-                          class="font-body-sm text-body-sm text-on-surface-variant"
-                          >/ night</span
-                        >
-                      </div>
-                      <span
-                        class="font-label-sm text-label-sm text-tertiary font-semibold flex items-center gap-1"
-                      >
-                        <i data-lucide="check" class="text-xs"></i>
-                        Taxes & Gourmet Breakfast Included
-                      </span>
+                      <span class="font-label-sm text-label-sm text-on-surface-variant">Nightly Rate</span>
+                      <span class="font-headline-lg text-headline-lg font-bold text-on-surface">KES {{ room.price|floatformat:2 }}</span>
                     </div>
-                    <a
-                      class="px-space-lg py-space-sm rounded-full bg-secondary text-on-secondary font-label-md text-label-md font-semibold hover:bg-secondary-container transition-all shadow-md shrink-0 flex items-center gap-1"
-                      data-path="booking"
-                      href="#"
-                    >
+                    <a class="px-space-lg py-space-sm rounded-full bg-secondary text-on-secondary font-label-md text-label-md font-semibold hover:bg-secondary-container transition-all shadow-md shrink-0 flex items-center gap-1" href="{% url 'bookings' %}?room={{ room.pk }}">
                       <span>Book Room</span>
                       <i data-lucide="arrow-right" class="text-sm"></i>
                     </a>
                   </div>
                 </div>
               </article>
-              <!-- Card 2: Executive Garden Suite -->
-              <article
-                class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
-                data-bed="king"
-                data-capacity="2"
-                data-category="executive"
-                data-price="14500"
-              >
-                <div class="relative w-full aspect-[16/10] overflow-hidden">
-                  <img
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    data-alt="Luxurious Executive Garden Suite inside a modern Kenyan safari hotel with teak wood furniture, rich maroon throw pillows, plush king bed, private garden balcony overlooking flowering bougainvillea and tall palm trees, warm ambient reading lights, serene afternoon ambiance."
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCS3BQYbI-qzgNP8hvfnV3YidV8G79mTMbNhQDFbsGVbu9NJNec_vgrcJFbq57Hiye0YSIA54ulwe0ePRZDIHVBfoFofrnx4AyjaeKvmBOU_PUsZs7dxqgpsSlpFPle9ebs2u3tTGMnt5Ut8CTc2FFxOmfrixgNeoINEgCrUI1GjHxrMNZiYc8kD61etoWGp2xhr-odnQRFDrj7fODObpBZOi3nrn0DXvmKtSo0dcg"
-                  />
-                  <div class="absolute top-3 left-3 flex flex-wrap gap-1.5">
-                    <span
-                      class="px-space-sm py-0.5 rounded-full bg-primary text-on-primary font-label-sm text-label-sm font-semibold shadow-sm"
-                    >
-                      Guest Favorite
-                    </span>
-                    <span
-                      class="px-space-sm py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface font-label-sm text-label-sm"
-                    >
-                      Garden Vistas
-                    </span>
-                  </div>
-                  <div
-                    class="absolute bottom-3 right-3 px-space-sm py-0.5 rounded-md bg-inverse-surface/85 backdrop-blur text-inverse-on-surface font-label-sm text-label-sm flex items-center gap-1"
-                  >
-                    <i data-lucide="maximize-2" class="text-xs"></i>
-                    <span>52 m²</span>
-                  </div>
-                </div>
-                <div
-                  class="p-space-lg flex flex-col flex-1 justify-between gap-space-md"
-                >
-                  <div class="flex flex-col gap-space-xs">
-                    <div class="flex items-center justify-between gap-2">
-                      <span
-                        class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-bold"
-                        >Executive Floor</span
-                      >
-                      <div
-                        class="flex items-center gap-1 text-secondary font-label-sm text-label-sm font-bold"
-                      >
-                        <i data-lucide="star" class="text-sm fill-current"></i>
-                        <span>4.92 (68)</span>
-                      </div>
-                    </div>
-                    <h2
-                      class="font-headline-md text-headline-md text-on-surface font-bold group-hover:text-primary transition-colors"
-                    >
-                      Executive Garden Suite
-                    </h2>
-                    <p
-                      class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2"
-                    >
-                      Designed for discerning professionals and couples. Unwind
-                      on your private balcony offering sweeping sunset views
-                      across the hotel's lush botanical gardens.
-                    </p>
-                    <!-- Room Specs Matrix -->
-                    <div
-                      class="grid grid-cols-2 gap-y-2 gap-x-4 py-space-xs my-space-xs bg-surface-container-low/60 rounded-lg p-space-sm"
-                    >
-                      <div
-                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
-                      >
-                        <i data-lucide="users" class="text-base text-primary"></i>
-                        <span>2 Guests</span>
-                      </div>
-                      <div
-                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
-                      >
-                        <i data-lucide="bed-double" class="text-base text-primary"></i>
-                        <span>King Bed</span>
-                      </div>
-                      <div
-                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
-                      >
-                        <i data-lucide="sun" class="text-base text-primary"></i>
-                        <span>Sunset Balcony</span>
-                      </div>
-                      <div
-                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
-                      >
-                        <i data-lucide="briefcase" class="text-base text-primary"></i>
-                        <span>Executive Work Desk</span>
-                      </div>
-                    </div>
-                    <!-- Amenity Pills -->
-                    <div class="flex flex-wrap gap-1.5 pt-1">
-                      <span
-                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
-                        >High-Speed Wi-Fi</span
-                      >
-                      <span
-                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
-                        >Rain Shower</span
-                      >
-                      <span
-                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
-                        >Climate AC</span
-                      >
-                    </div>
-                  </div>
-                  <!-- Pricing & Action Row -->
-                  <div
-                    class="pt-space-md border-t border-surface-container-high/60 flex items-end justify-between gap-space-sm"
-                  >
-                    <div class="flex flex-col">
-                      <span
-                        class="font-label-sm text-label-sm text-on-surface-variant"
-                        >Nightly Rate</span
-                      >
-                      <div class="flex items-baseline gap-1">
-                        <span
-                          class="font-headline-lg text-headline-lg font-bold text-on-surface"
-                          >KES 14,500</span
-                        >
-                        <span
-                          class="font-body-sm text-body-sm text-on-surface-variant"
-                          >/ night</span
-                        >
-                      </div>
-                      <span
-                        class="font-label-sm text-label-sm text-tertiary font-semibold flex items-center gap-1"
-                      >
-                        <i data-lucide="check" class="text-xs"></i>
-                        Buffet Breakfast Included
-                      </span>
-                    </div>
-                    <a
-                      class="px-space-lg py-space-sm rounded-full bg-secondary text-on-secondary font-label-md text-label-md font-semibold hover:bg-secondary-container transition-all shadow-md shrink-0 flex items-center gap-1"
-                      data-path="booking"
-                      href="#"
-                    >
-                      <span>Book Room</span>
-                      <i data-lucide="arrow-right" class="text-sm"></i>
-                    </a>
-                  </div>
-                </div>
-              </article>
-              <!-- Card 3: Deluxe Pool View Room -->
-              <article
-                class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
-                data-bed="queen"
-                data-capacity="2"
-                data-category="deluxe"
-                data-price="9800"
-              >
-                <div class="relative w-full aspect-[16/10] overflow-hidden">
-                  <img
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    data-alt="Chic deluxe resort bedroom overlooking sparkling turquoise swimming pool and iconic timber arched bridge in Kitui Kenya, large floor-to-ceiling sliding glass doors, elegant queen bed with purple and white cotton duvet, sun lounger patio directly outside room."
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhBGFm5ryaABUCQMXEIIGbA-sabaUTgMGIq76cvk7ZeEJVXLgkYIrZyoeNPsgXNolxs3MZTkf7J_W0nwe36gD0YIqwDOn0247qRpFVPDtTshW1dUXscfACWTMjo5TcjP5oTv4S6eJWr1PDcyjZUHdeJ0-tXJGfvKFlxHOSgwiUqol0BcsvBs2g5LXJTVytO9u-LJ39k3yViF0a1IkehsywKEOYn6RyqPn1yxkq1X0"
-                  />
-                  <div class="absolute top-3 left-3 flex flex-wrap gap-1.5">
-                    <span
-                      class="px-space-sm py-0.5 rounded-full bg-secondary text-on-secondary font-label-sm text-label-sm font-semibold shadow-sm"
-                    >
-                      Popular
-                    </span>
-                    <span
-                      class="px-space-sm py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface font-label-sm text-label-sm"
-                    >
-                      Pool Access
-                    </span>
-                  </div>
-                  <div
-                    class="absolute bottom-3 right-3 px-space-sm py-0.5 rounded-md bg-inverse-surface/85 backdrop-blur text-inverse-on-surface font-label-sm text-label-sm flex items-center gap-1"
-                  >
-                    <i data-lucide="maximize-2" class="text-xs"></i>
-                    <span>38 m²</span>
-                  </div>
-                </div>
-                <div
-                  class="p-space-lg flex flex-col flex-1 justify-between gap-space-md"
-                >
-                  <div class="flex flex-col gap-space-xs">
-                    <div class="flex items-center justify-between gap-2">
-                      <span
-                        class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-bold"
-                        >Poolside Wing</span
-                      >
-                      <div
-                        class="flex items-center gap-1 text-secondary font-label-sm text-label-sm font-bold"
-                      >
-                        <i data-lucide="star" class="text-sm fill-current"></i>
-                        <span>4.88 (95)</span>
-                      </div>
-                    </div>
-                    <h2
-                      class="font-headline-md text-headline-md text-on-surface font-bold group-hover:text-primary transition-colors"
-                    >
-                      Deluxe Pool View Room
-                    </h2>
-                    <p
-                      class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2"
-                    >
-                      Step directly from your personal sun patio onto the azure
-                      poolside deck. Bathed in morning sunshine with calming
-                      water reflections.
-                    </p>
-                    <!-- Room Specs Matrix -->
-                    <div
-                      class="grid grid-cols-2 gap-y-2 gap-x-4 py-space-xs my-space-xs bg-surface-container-low/60 rounded-lg p-space-sm"
-                    >
-                      <div
-                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
-                      >
-                        <i data-lucide="users" class="text-base text-primary"></i>
-                        <span>2 Guests</span>
-                      </div>
-                      <div
-                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
-                      >
-                        <i data-lucide="bed-single" class="text-base text-primary"></i>
-                        <span>Queen Bed</span>
-                      </div>
-                      <div
-                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
-                      >
-                        <i data-lucide="waves" class="text-base text-primary"></i>
-                        <span>Poolfront Terrace</span>
-                      </div>
-                      <div
-                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
-                      >
-                        <i data-lucide="snowflake" class="text-base text-primary"></i>
-                        <span>Dual Zone A/C</span>
-                      </div>
-                    </div>
-                    <!-- Amenity Pills -->
-                    <div class="flex flex-wrap gap-1.5 pt-1">
-                      <span
-                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
-                        >High-Speed Wi-Fi</span
-                      >
-                      <span
-                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
-                        >Smart TV</span
-                      >
-                      <span
-                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
-                        >Mini Bar</span
-                      >
-                    </div>
-                  </div>
-                  <!-- Pricing & Action Row -->
-                  <div
-                    class="pt-space-md border-t border-surface-container-high/60 flex items-end justify-between gap-space-sm"
-                  >
-                    <div class="flex flex-col">
-                      <span
-                        class="font-label-sm text-label-sm text-on-surface-variant"
-                        >Nightly Rate</span
-                      >
-                      <div class="flex items-baseline gap-1">
-                        <span
-                          class="font-headline-lg text-headline-lg font-bold text-on-surface"
-                          >KES 9,800</span
-                        >
-                        <span
-                          class="font-body-sm text-body-sm text-on-surface-variant"
-                          >/ night</span
-                        >
-                      </div>
-                      <span
-                        class="font-label-sm text-label-sm text-tertiary font-semibold flex items-center gap-1"
-                      >
-                        <i data-lucide="check" class="text-xs"></i>
-                        Free Cancellation 48h
-                      </span>
-                    </div>
-                    <a
-                      class="px-space-lg py-space-sm rounded-full bg-secondary text-on-secondary font-label-md text-label-md font-semibold hover:bg-secondary-container transition-all shadow-md shrink-0 flex items-center gap-1"
-                      data-path="booking"
-                      href="#"
-                    >
-                      <span>Book Room</span>
-                      <i data-lucide="arrow-right" class="text-sm"></i>
-                    </a>
-                  </div>
-                </div>
-              </article>
-              <!-- Card 4: Classic Twin Deluxe -->
-              <article
-                class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
-                data-bed="twin"
-                data-capacity="2"
-                data-category="deluxe"
-                data-price="8000"
-              >
-                <div class="relative w-full aspect-[16/10] overflow-hidden">
-                  <img
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    data-alt="Modern spacious twin bedroom in Intercounty Hotel Kitui with two separate deluxe twin beds, artisanal wood headboards, bright airy window facing tranquil courtyard, clean contemporary workspace, warm neutral tones with soft violet runners, professional hospitality ambiance."
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVdpwv1XYBboyaURsSXFtX598Wru0cReB-Cv7UIy9gpPKf3GtxpC95BX7hAdwf6pgXj017fgnBI7z3rycmtPByYRCPpyDshm2xPsI9esMKrxL8np_bn9HoPiYxcy1Xc0aM_g05Ab6hLReXuDezAzMhoWKKESwRETk0SQc-0A6I9lurzVaS1B1iSITzNmkiwfZik3jl3XnxCMOTPFW_wGhsEjcQyhmGXweDfc_Bt14"
-                  />
-                  <div class="absolute top-3 left-3 flex flex-wrap gap-1.5">
-                    <span
-                      class="px-space-sm py-0.5 rounded-full bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm font-semibold shadow-sm"
-                    >
-                      Corporate Choice
-                    </span>
-                  </div>
-                  <div
-                    class="absolute bottom-3 right-3 px-space-sm py-0.5 rounded-md bg-inverse-surface/85 backdrop-blur text-inverse-on-surface font-label-sm text-label-sm flex items-center gap-1"
-                  >
-                    <i data-lucide="maximize-2" class="text-xs"></i>
-                    <span>36 m²</span>
-                  </div>
-                </div>
-                <div
-                  class="p-space-lg flex flex-col flex-1 justify-between gap-space-md"
-                >
-                  <div class="flex flex-col gap-space-xs">
-                    <div class="flex items-center justify-between gap-2">
-                      <span
-                        class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-bold"
-                        >Standard Deluxe</span
-                      >
-                      <div
-                        class="flex items-center gap-1 text-secondary font-label-sm text-label-sm font-bold"
-                      >
-                        <i data-lucide="star" class="text-sm fill-current"></i>
-                        <span>4.85 (51)</span>
-                      </div>
-                    </div>
-                    <h2
-                      class="font-headline-md text-headline-md text-on-surface font-bold group-hover:text-primary transition-colors"
-                    >
-                      Classic Twin Deluxe
-                    </h2>
-                    <p
-                      class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2"
-                    >
-                      Tailored for traveling colleagues and friends. Two plush
-                      individual beds, individual bedside charging stations, and
-                      sound-insulated partition windows.
-                    </p>
-                    <!-- Room Specs Matrix -->
-                    <div
-                      class="grid grid-cols-2 gap-y-2 gap-x-4 py-space-xs my-space-xs bg-surface-container-low/60 rounded-lg p-space-sm"
-                    >
-                      <div
-                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
-                      >
-                        <i data-lucide="users" class="text-base text-primary"></i>
-                        <span>2 Guests</span>
-                      </div>
-                      <div
-                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
-                      >
-                        <i data-lucide="bed" class="text-base text-primary"></i>
-                        <span>2 Twin Beds</span>
-                      </div>
-                      <div
-                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
-                      >
-                        <i data-lucide="wifi" class="text-base text-primary"></i>
-                        <span>Fiber Wi-Fi</span>
-                      </div>
-                      <div
-                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
-                      >
-                        <i data-lucide="coffee" class="text-base text-primary"></i>
-                        <span>Tea & Coffee Setup</span>
-                      </div>
-                    </div>
-                    <!-- Amenity Pills -->
-                    <div class="flex flex-wrap gap-1.5 pt-1">
-                      <span
-                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
-                        >High-Speed Wi-Fi</span
-                      >
-                      <span
-                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
-                        >Work Desk</span
-                      >
-                      <span
-                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
-                        >Climate AC</span
-                      >
-                    </div>
-                  </div>
-                  <!-- Pricing & Action Row -->
-                  <div
-                    class="pt-space-md border-t border-surface-container-high/60 flex items-end justify-between gap-space-sm"
-                  >
-                    <div class="flex flex-col">
-                      <span
-                        class="font-label-sm text-label-sm text-on-surface-variant"
-                        >Nightly Rate</span
-                      >
-                      <div class="flex items-baseline gap-1">
-                        <span
-                          class="font-headline-lg text-headline-lg font-bold text-on-surface"
-                          >KES 8,000</span
-                        >
-                        <span
-                          class="font-body-sm text-body-sm text-on-surface-variant"
-                          >/ night</span
-                        >
-                      </div>
-                      <span
-                        class="font-label-sm text-label-sm text-tertiary font-semibold flex items-center gap-1"
-                      >
-                        <i data-lucide="check" class="text-xs"></i>
-                        Full English Breakfast
-                      </span>
-                    </div>
-                    <a
-                      class="px-space-lg py-space-sm rounded-full bg-secondary text-on-secondary font-label-md text-label-md font-semibold hover:bg-secondary-container transition-all shadow-md shrink-0 flex items-center gap-1"
-                      data-path="booking"
-                      href="#"
-                    >
-                      <span>Book Room</span>
-                      <i data-lucide="arrow-right" class="text-sm"></i>
-                    </a>
-                  </div>
-                </div>
-              </article>
-              <!-- Card 5: Family Garden Cottage -->
-              <article
-                class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
-                data-bed="family"
-                data-capacity="5"
-                data-category="cottage"
-                data-price="16000"
-              >
-                <div class="relative w-full aspect-[16/10] overflow-hidden">
-                  <img
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    data-alt="Charming detached Family Garden Cottage nestled in a green landscaped lawn in Kitui Kenya, stone and timber architecture, wide open veranda with family outdoor table, cozy living room visible through panoramic French windows, warm twilight garden lanterns glowing softly."
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeAX9WFb3xfRml5aWjOMdqP3fRLh9z-ZfdWMmKf6Y1nUP-vlWDpFUnyj2LHuPXwOSZ604767LA_3gZoov42dSRRc3xsM6eW-W6Y6dJ325iqQ52s_lFfdav4AxKuGUMBF5AHedFeu_xREABE6DEeLHZNJ46i0jkuO6Ti7CUy3r8y1LLe2gpZuUmkZKXl2i_xrKLEE5WOja6LOrp-lXw-nf-DKdPXCe3r5GdIQbmZBw"
-                  />
-                  <div class="absolute top-3 left-3 flex flex-wrap gap-1.5">
-                    <span
-                      class="px-space-sm py-0.5 rounded-full bg-secondary text-on-secondary font-label-sm text-label-sm font-semibold shadow-sm"
-                    >
-                      Spacious Retreat
-                    </span>
-                    <span
-                      class="px-space-sm py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface font-label-sm text-label-sm"
-                    >
-                      Private Cottage
-                    </span>
-                  </div>
-                  <div
-                    class="absolute bottom-3 right-3 px-space-sm py-0.5 rounded-md bg-inverse-surface/85 backdrop-blur text-inverse-on-surface font-label-sm text-label-sm flex items-center gap-1"
-                  >
-                    <i data-lucide="maximize-2" class="text-xs"></i>
-                    <span>76 m²</span>
-                  </div>
-                </div>
-                <div
-                  class="p-space-lg flex flex-col flex-1 justify-between gap-space-md"
-                >
-                  <div class="flex flex-col gap-space-xs">
-                    <div class="flex items-center justify-between gap-2">
-                      <span
-                        class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-bold"
-                        >Chalet & Cottages</span
-                      >
-                      <div
-                        class="flex items-center gap-1 text-secondary font-label-sm text-label-sm font-bold"
-                      >
-                        <i data-lucide="star" class="text-sm fill-current"></i>
-                        <span>4.95 (39)</span>
-                      </div>
-                    </div>
-                    <h2
-                      class="font-headline-md text-headline-md text-on-surface font-bold group-hover:text-primary transition-colors"
-                    >
-                      Family Garden Cottage
-                    </h2>
-                    <p
-                      class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2"
-                    >
-                      Detached sanctuary with interconnected bedrooms, sunlit
-                      central living lounge, dining corner, and a secluded lawn
-                      patio perfect for children.
-                    </p>
-                    <!-- Room Specs Matrix -->
-                    <div
-                      class="grid grid-cols-2 gap-y-2 gap-x-4 py-space-xs my-space-xs bg-surface-container-low/60 rounded-lg p-space-sm"
-                    >
-                      <div
-                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
-                      >
-                        <i data-lucide="baby" class="text-base text-primary"></i>
-                        <span>Up to 5 Guests</span>
-                      </div>
-                      <div
-                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
-                      >
-                        <i data-lucide="bed" class="text-base text-primary"></i>
-                        <span>1 King + 2 Singles</span>
-                      </div>
-                      <div
-                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
-                      >
-                        <i data-lucide="sofa" class="text-base text-primary"></i>
-                        <span>Private Living Room</span>
-                      </div>
-                      <div
-                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
-                      >
-                        <i data-lucide="flower-2" class="text-base text-primary"></i>
-                        <span>Enclosed Lawn</span>
-                      </div>
-                    </div>
-                    <!-- Amenity Pills -->
-                    <div class="flex flex-wrap gap-1.5 pt-1">
-                      <span
-                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
-                        >High-Speed Wi-Fi</span
-                      >
-                      <span
-                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
-                        >Kitchenette</span
-                      >
-                      <span
-                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
-                        >2 Bathrooms</span
-                      >
-                    </div>
-                  </div>
-                  <!-- Pricing & Action Row -->
-                  <div
-                    class="pt-space-md border-t border-surface-container-high/60 flex items-end justify-between gap-space-sm"
-                  >
-                    <div class="flex flex-col">
-                      <span
-                        class="font-label-sm text-label-sm text-on-surface-variant"
-                        >Nightly Cottage</span
-                      >
-                      <div class="flex items-baseline gap-1">
-                        <span
-                          class="font-headline-lg text-headline-lg font-bold text-on-surface"
-                          >KES 16,000</span
-                        >
-                        <span
-                          class="font-body-sm text-body-sm text-on-surface-variant"
-                          >/ night</span
-                        >
-                      </div>
-                      <span
-                        class="font-label-sm text-label-sm text-tertiary font-semibold flex items-center gap-1"
-                      >
-                        <i data-lucide="check" class="text-xs"></i>
-                        Full Family Breakfast
-                      </span>
-                    </div>
-                    <a
-                      class="px-space-lg py-space-sm rounded-full bg-secondary text-on-secondary font-label-md text-label-md font-semibold hover:bg-secondary-container transition-all shadow-md shrink-0 flex items-center gap-1"
-                      data-path="booking"
-                      href="#"
-                    >
-                      <span>Book Room</span>
-                      <i data-lucide="arrow-right" class="text-sm"></i>
-                    </a>
-                  </div>
-                </div>
-              </article>
-              <!-- Card 6: Standard Comfort Room -->
-              <article
-                class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
-                data-bed="queen"
-                data-capacity="2"
-                data-category="executive"
-                data-price="6500"
-              >
-                <div class="relative w-full aspect-[16/10] overflow-hidden">
-                  <img
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    data-alt="Clean and welcoming Standard Comfort Room in Intercounty Hotel Kitui Kenya, queen bed with plush pillows and crisp white duvet, ergonomic work desk with modern task lamp, high-speed Wi-Fi, understated Swahili wall tapestry, bright clean bathroom with glass walk-in shower."
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQZ7YcirzcNDsh99yjl_m6NfJQ2xAqs6wfYsVHqoIR46JLue2lW6j1uTdLRzjSYejZZzuEOTz-PFN76pfnPt9JEkYQxnGoanxSTCOC-60c7iZ0hF5zxLfKShDsa1-tHb9qRucxgCWiU9rSfMVrSfL8MPsYjDEfY2hbRSuHcRK8CkDsDGi_wqxtE_f91WEh2F964cMcM4D9WudWTRUFBy8KiwTSWdrie2wnvt2Q3hA"
-                  />
-                  <div class="absolute top-3 left-3 flex flex-wrap gap-1.5">
-                    <span
-                      class="px-space-sm py-0.5 rounded-full bg-tertiary text-on-tertiary font-label-sm text-label-sm font-semibold shadow-sm"
-                    >
-                      Best Value
-                    </span>
-                  </div>
-                  <div
-                    class="absolute bottom-3 right-3 px-space-sm py-0.5 rounded-md bg-inverse-surface/85 backdrop-blur text-inverse-on-surface font-label-sm text-label-sm flex items-center gap-1"
-                  >
-                    <i data-lucide="maximize-2" class="text-xs"></i>
-                    <span>28 m²</span>
-                  </div>
-                </div>
-                <div
-                  class="p-space-lg flex flex-col flex-1 justify-between gap-space-md"
-                >
-                  <div class="flex flex-col gap-space-xs">
-                    <div class="flex items-center justify-between gap-2">
-                      <span
-                        class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-bold"
-                        >Smart Traveler</span
-                      >
-                      <div
-                        class="flex items-center gap-1 text-secondary font-label-sm text-label-sm font-bold"
-                      >
-                        <i data-lucide="star" class="text-sm fill-current"></i>
-                        <span>4.81 (112)</span>
-                      </div>
-                    </div>
-                    <h2
-                      class="font-headline-md text-headline-md text-on-surface font-bold group-hover:text-primary transition-colors"
-                    >
-                      Standard Comfort Room
-                    </h2>
-                    <p
-                      class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2"
-                    >
-                      Exceptional utility and quiet serenity. Designed with a
-                      double plush mattress, streamlined work counter, and
-                      high-speed Wi-Fi for efficient solo or duo stays.
-                    </p>
-                    <!-- Room Specs Matrix -->
-                    <div
-                      class="grid grid-cols-2 gap-y-2 gap-x-4 py-space-xs my-space-xs bg-surface-container-low/60 rounded-lg p-space-sm"
-                    >
-                      <div
-                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
-                      >
-                        <i data-lucide="users" class="text-base text-primary"></i>
-                        <span>2 Guests</span>
-                      </div>
-                      <div
-                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
-                      >
-                        <i data-lucide="hotel" class="text-base text-primary"></i>
-                        <span>Double Bed</span>
-                      </div>
-                      <div
-                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
-                      >
-                        <i data-lucide="wifi" class="text-base text-primary"></i>
-                        <span>High-speed Wi-Fi</span>
-                      </div>
-                      <div
-                        class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm"
-                      >
-                        <i data-lucide="shower-head" class="text-base text-primary"></i>
-                        <span>Walk-in Shower</span>
-                      </div>
-                    </div>
-                    <!-- Amenity Pills -->
-                    <div class="flex flex-wrap gap-1.5 pt-1">
-                      <span
-                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
-                        >High-Speed Wi-Fi</span
-                      >
-                      <span
-                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
-                        >Work Counter</span
-                      >
-                      <span
-                        class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
-                        >Daily Housekeeping</span
-                      >
-                    </div>
-                  </div>
-                  <!-- Pricing & Action Row -->
-                  <div
-                    class="pt-space-md border-t border-surface-container-high/60 flex items-end justify-between gap-space-sm"
-                  >
-                    <div class="flex flex-col">
-                      <span
-                        class="font-label-sm text-label-sm text-on-surface-variant"
-                        >Nightly Rate</span
-                      >
-                      <div class="flex items-baseline gap-1">
-                        <span
-                          class="font-headline-lg text-headline-lg font-bold text-on-surface"
-                          >KES 6,500</span
-                        >
-                        <span
-                          class="font-body-sm text-body-sm text-on-surface-variant"
-                          >/ night</span
-                        >
-                      </div>
-                      <span
-                        class="font-label-sm text-label-sm text-tertiary font-semibold flex items-center gap-1"
-                      >
-                        <i data-lucide="check" class="text-xs"></i>
-                        Complimentary Breakfast
-                      </span>
-                    </div>
-                    <a
-                      class="px-space-lg py-space-sm rounded-full bg-secondary text-on-secondary font-label-md text-label-md font-semibold hover:bg-secondary-container transition-all shadow-md shrink-0 flex items-center gap-1"
-                      data-path="booking"
-                      href="#"
-                    >
-                      <span>Book Room</span>
-                      <i data-lucide="arrow-right" class="text-sm"></i>
-                    </a>
-                  </div>
-                </div>
-              </article>
+              {% empty %}
+              <p class="col-span-full text-center font-body-md text-body-md text-on-surface-variant">No rooms are currently available.</p>
+              {% endfor %}
             </div>
           </div>
         </section>
@@ -1470,114 +516,67 @@
         </section>
       </div>
       <script>
-        // Simple client-side category filtering & sorting logic
         document.addEventListener("DOMContentLoaded", () => {
           const categoryButtons = document.querySelectorAll(".filter-tab-btn");
-          const cards = Array.from(
-            document.querySelectorAll("#rooms-grid article"),
-          );
+          const cards = Array.from(document.querySelectorAll("#rooms-grid article"));
           const priceFilter = document.getElementById("price-filter");
-          const bedFilter = document.getElementById("bed-filter");
           const sortSelector = document.getElementById("sort-selector");
           const roomsGrid = document.getElementById("rooms-grid");
-
           let currentCategory = "all";
 
           function applyFilters() {
             const selectedPrice = priceFilter.value;
-            const selectedBed = bedFilter.value;
-
             cards.forEach((card) => {
-              const cat = card.dataset.category;
-              const price = parseInt(card.dataset.price, 10);
-              const bed = card.dataset.bed;
-
-              let matchesCat =
-                currentCategory === "all" || cat === currentCategory;
-              let matchesPrice = true;
-              if (selectedPrice === "under7") matchesPrice = price < 7000;
-              else if (selectedPrice === "7to15")
-                matchesPrice = price >= 7000 && price <= 15000;
-              else if (selectedPrice === "above15")
-                matchesPrice = price > 15000;
-
-              let matchesBed = selectedBed === "all" || bed === selectedBed;
-
-              if (matchesCat && matchesPrice && matchesBed) {
-                card.classList.remove("hidden");
-              } else {
-                card.classList.add("hidden");
-              }
+              const price = Number(card.dataset.price);
+              const matchesCategory = currentCategory === "all" || card.dataset.category === currentCategory;
+              const matchesPrice = selectedPrice === "all"
+                || (selectedPrice === "under7" && price < 7000)
+                || (selectedPrice === "7to15" && price >= 7000 && price <= 15000)
+                || (selectedPrice === "above15" && price > 15000);
+              card.classList.toggle("hidden", !(matchesCategory && matchesPrice));
             });
-
             applySorting();
           }
 
           function applySorting() {
             const sortBy = sortSelector.value;
             const sortedCards = [...cards].sort((a, b) => {
-              const priceA = parseInt(a.dataset.price, 10);
-              const priceB = parseInt(b.dataset.price, 10);
-              const capA = parseInt(a.dataset.capacity, 10);
-              const capB = parseInt(b.dataset.capacity, 10);
-
-              if (sortBy === "price-asc") return priceA - priceB;
-              if (sortBy === "price-desc") return priceB - priceA;
-              if (sortBy === "capacity-desc") return capB - capA;
-              return 0; // Default/recommended
+              if (sortBy === "price-asc") return Number(a.dataset.price) - Number(b.dataset.price);
+              if (sortBy === "price-desc") return Number(b.dataset.price) - Number(a.dataset.price);
+              return Number(a.dataset.room) - Number(b.dataset.room);
             });
-
-            sortedCards.forEach((c) => roomsGrid.appendChild(c));
+            sortedCards.forEach((card) => roomsGrid.appendChild(card));
           }
 
-          categoryButtons.forEach((btn) => {
-            btn.addEventListener("click", () => {
-              categoryButtons.forEach((b) => {
-                b.classList.remove("bg-primary", "text-on-primary");
-                b.classList.add(
-                  "bg-surface-container",
-                  "text-on-surface-variant",
-                );
+          categoryButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+              categoryButtons.forEach((item) => {
+                item.classList.remove("bg-primary", "text-on-primary");
+                item.classList.add("bg-surface-container", "text-on-surface-variant");
               });
-              btn.classList.remove(
-                "bg-surface-container",
-                "text-on-surface-variant",
-              );
-              btn.classList.add("bg-primary", "text-on-primary");
-
-              currentCategory = btn.dataset.filter;
+              button.classList.remove("bg-surface-container", "text-on-surface-variant");
+              button.classList.add("bg-primary", "text-on-primary");
+              currentCategory = button.dataset.filter;
               applyFilters();
             });
           });
 
           priceFilter.addEventListener("change", applyFilters);
-          bedFilter.addEventListener("change", applyFilters);
           sortSelector.addEventListener("change", applySorting);
 
           window.resetFilters = function () {
             priceFilter.value = "all";
-            bedFilter.value = "all";
             sortSelector.value = "recommended";
             currentCategory = "all";
-
-            categoryButtons.forEach((b, idx) => {
-              if (idx === 0) {
-                b.classList.remove(
-                  "bg-surface-container",
-                  "text-on-surface-variant",
-                );
-                b.classList.add("bg-primary", "text-on-primary");
-              } else {
-                b.classList.remove("bg-primary", "text-on-primary");
-                b.classList.add(
-                  "bg-surface-container",
-                  "text-on-surface-variant",
-                );
-              }
+            categoryButtons.forEach((button, index) => {
+              button.classList.toggle("bg-primary", index === 0);
+              button.classList.toggle("text-on-primary", index === 0);
+              button.classList.toggle("bg-surface-container", index !== 0);
+              button.classList.toggle("text-on-surface-variant", index !== 0);
             });
             applyFilters();
           };
         });
-      </script>
+      </script>      </script>
     </main>
 {% endblock %}

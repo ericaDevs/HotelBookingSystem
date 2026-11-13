@@ -76,10 +76,11 @@
             ROOM SUITE
           </label>
 <select class="w-full h-12 px-space-md bg-surface-container-low rounded-lg font-body-sm text-body-sm text-on-surface focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer appearance-none" id="room-type">
-<option value="presidential">Presidential Penthouse Suite</option>
-<option selected="" value="executive">Executive Garden Suite</option>
-<option value="deluxe">Deluxe Poolside Room</option>
-<option value="twin">Deluxe Twin Bed Suite</option>
+{% for room in rooms %}
+<option value="{{ room.pk }}">Room {{ room.room_number }} - {{ room.room_type }}</option>
+{% empty %}
+<option value="" disabled>No rooms available</option>
+{% endfor %}
 </select>
 </div>
 <!-- Guests Selector -->
@@ -187,150 +188,33 @@
             Handcrafted Spaces for Restful Slumber
           </h2>
 <p class="font-body-md text-body-md text-on-surface-variant max-w-xl mt-space-xs">
-            Every room blends warm African mahogany textures, deep-pocket mattresses, ergonomic writing desks, and panoramic balcony views.
+            Browse available rooms and nightly rates from our current inventory.
           </p>
 </div>
-<a class="inline-flex items-center gap-2 font-label-lg text-label-lg text-primary hover:text-primary-container transition-colors shrink-0" href="#">
-<span>View All 42 Rooms</span>
+<a class="inline-flex items-center gap-2 font-label-lg text-label-lg text-primary hover:text-primary-container transition-colors shrink-0" href="{% url 'rooms' %}">
+<span>View All Rooms ({{ rooms|length }})</span>
 <i data-lucide="arrow-right"></i>
 </a>
 </div>
-<!-- 3-Column Rooms Grid -->
+<!-- Featured rooms from the inventory -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
-<!-- Room Card 1: Presidential Penthouse -->
-<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col group">
-<div class="relative h-64 overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Opulent Presidential Penthouse suite bedroom at Intercounty Hotel Kitui with grand king bed crisp white linens mahogany accents private lounge area and French doors opening onto pool view balcony" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9JwxjbDS8hLEHjEfcMYik6s1ztH7e7ca8UYavydo9wpXJxez57MsnwVJWAkbvpGTsBcj0k14fx1zMYnJNgv0tt-TgZLmFjOoG3OELyLe9TyZ9bJa-_HNd_x39pdrbVHyAJdcfaM0Rbh_P3hAGYTi0_tNJfSCSmuwhTkW-VuUcZHMrvyu5tNPgj8bRIVoDoDSyYR9_y-oEfQJgqPNiEPr0eL_3TvoRc-vRy51PAz8"/>
-<span class="absolute top-space-sm left-space-sm px-space-sm py-1 rounded-full bg-secondary text-on-secondary font-label-sm text-label-sm uppercase tracking-wider font-bold shadow-md">
-              Top Tier Luxury
-            </span>
-<div class="absolute bottom-space-sm right-space-sm px-space-sm py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-sm font-label-sm text-label-sm text-on-surface flex items-center gap-1">
-<i data-lucide="users" class="text-sm text-primary"></i>
-              2-4 Guests
-            </div>
-</div>
-<div class="p-space-lg flex flex-col flex-1">
-<div class="flex items-baseline justify-between mb-space-xs">
-<h3 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">Presidential Penthouse</h3>
-</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-space-md">
-              Top-floor panoramic vistas, private marble Jacuzzi tub, dedicated dining suite, and personalized butler service.
-            </p>
-<!-- Amenities Chips -->
-<div class="flex flex-wrap gap-1.5 mb-space-lg">
-<span class="px-space-sm py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-[11px]">King Bed</span>
-<span class="px-space-sm py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-[11px]">Private Balcony</span>
-<span class="px-space-sm py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-[11px]">Pool View</span>
-<span class="px-space-sm py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-[11px]">Jacuzzi</span>
-<span class="px-space-sm py-0.5 rounded-full bg-tertiary-container/15 text-tertiary font-label-sm text-[11px] font-semibold">Free Breakfast</span>
-</div>
-<!-- Price and CTA -->
-<div class="mt-auto pt-space-md flex items-center justify-between">
-<div>
-<span class="font-label-sm text-label-sm text-on-surface-variant block">From</span>
-<div class="flex items-baseline gap-1">
-<span class="font-headline-md text-headline-md text-on-surface font-bold">KES 18,500</span>
-<span class="font-body-sm text-body-sm text-on-surface-variant">/ night</span>
-</div>
-<span class="font-label-sm text-[11px] text-outline">Approx. $140 USD</span>
-</div>
-<button class="px-space-lg py-space-sm rounded-full bg-secondary text-on-secondary hover:bg-secondary-container font-label-md text-label-md transition-all shadow-sm">
-                Book Suite
-              </button>
-</div>
-</div>
-</div>
-<!-- Room Card 2: Executive Garden Suite -->
-<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col group">
-<div class="relative h-64 overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Modern Executive Garden Suite at Intercounty Hotel Kitui with queen bed polished wooden floor dedicated executive desk and wide windows looking out into green landscaped tropical flora" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlzR0hT8WREROGU_CSmhkr2CNBzu6wxxo5pGsszi0UjoabrkhXIHVOC-v2gMA-L6WeV82pt5iGtyRsXOkW_P8vxGjHyNAFypNZzEPLK3uczY5vFlZ7cGMavmexoXy9a1ovHcWG7E6uIqowDPnK8n-bbDpnOSn_-twS3Gl_ja8kxhV8cib418-9XEZxg9X8pa8Y2oHUk9mxbqGVpQeJCMXbuMs1i-UmHA5tlg0gvTc"/>
-<span class="absolute top-space-sm left-space-sm px-space-sm py-1 rounded-full bg-primary text-on-primary font-label-sm text-label-sm uppercase tracking-wider font-bold shadow-md">
-              Most Popular
-            </span>
-<div class="absolute bottom-space-sm right-space-sm px-space-sm py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-sm font-label-sm text-label-sm text-on-surface flex items-center gap-1">
-<i data-lucide="users" class="text-sm text-primary"></i>
-              2 Guests
-            </div>
-</div>
-<div class="p-space-lg flex flex-col flex-1">
-<div class="flex items-baseline justify-between mb-space-xs">
-<h3 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">Executive Garden Suite</h3>
-</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-space-md">
-              Spacious private veranda surrounded by birdsong and acacia trees, outfitted with a full business workstation.
-            </p>
-<!-- Amenities Chips -->
-<div class="flex flex-wrap gap-1.5 mb-space-lg">
-<span class="px-space-sm py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-[11px]">Queen Bed</span>
-<span class="px-space-sm py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-[11px]">Workstation</span>
-<span class="px-space-sm py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-[11px]">Garden Balcony</span>
-<span class="px-space-sm py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-[11px]">Rain Shower</span>
-<span class="px-space-sm py-0.5 rounded-full bg-tertiary-container/15 text-tertiary font-label-sm text-[11px] font-semibold">Free Breakfast</span>
-</div>
-<!-- Price and CTA -->
-<div class="mt-auto pt-space-md flex items-center justify-between">
-<div>
-<span class="font-label-sm text-label-sm text-on-surface-variant block">From</span>
-<div class="flex items-baseline gap-1">
-<span class="font-headline-md text-headline-md text-on-surface font-bold">KES 12,000</span>
-<span class="font-body-sm text-body-sm text-on-surface-variant">/ night</span>
-</div>
-<span class="font-label-sm text-[11px] text-outline">Approx. $90 USD</span>
-</div>
-<button class="px-space-lg py-space-sm rounded-full bg-secondary text-on-secondary hover:bg-secondary-container font-label-md text-label-md transition-all shadow-sm">
-                Book Suite
-              </button>
-</div>
-</div>
-</div>
-<!-- Room Card 3: Deluxe Poolside Room -->
-<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col group">
-<div class="relative h-64 overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Cozy sunlit Deluxe Poolside Room with direct terrace access to the hotel swimming pool luxury queen size bed modern lighting and stylish vanity room in Kitui Kenya" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHkrsitF2XuAJKtmH1WygB8yRz0OfDFwnYsk-Sx5A0A-IAPUIHY1e_ZB6MGW7yuwnnkGD2giSoAs9zixjtPjKpLpMnATOMFFR_hzCmD1jvXhRzPUw_rX7MwfL5EL33nxokKq9eiC2jzWkwfGuPrVbD9xBZqwa0ZN84Z20fUTtV8-DHCVck_CE4RFGAn1Bs8vpOSNFaJMCUemWDFSz_ODm47sGJaGcIi7ZCwBVRF_o"/>
-<span class="absolute top-space-sm left-space-sm px-space-sm py-1 rounded-full bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm uppercase tracking-wider font-bold shadow-md">
-              Direct Pool Access
-            </span>
-<div class="absolute bottom-space-sm right-space-sm px-space-sm py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-sm font-label-sm text-label-sm text-on-surface flex items-center gap-1">
-<i data-lucide="users" class="text-sm text-primary"></i>
-              2 Guests
-            </div>
-</div>
-<div class="p-space-lg flex flex-col flex-1">
-<div class="flex items-baseline justify-between mb-space-xs">
-<h3 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">Deluxe Poolside Room</h3>
-</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-space-md">
-              Step straight from your ground-floor patio to the refreshing waters of our resort pool. Perfect for couples.
-            </p>
-<!-- Amenities Chips -->
-<div class="flex flex-wrap gap-1.5 mb-space-lg">
-<span class="px-space-sm py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-[11px]">Queen Bed</span>
-<span class="px-space-sm py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-[11px]">Pool Walkout</span>
-<span class="px-space-sm py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-[11px]">High-Speed Wi-Fi</span>
-<span class="px-space-sm py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-[11px]">Mini-Bar</span>
-<span class="px-space-sm py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-[11px]">Smart TV</span>
-</div>
-<!-- Price and CTA -->
-<div class="mt-auto pt-space-md flex items-center justify-between">
-<div>
-<span class="font-label-sm text-label-sm text-on-surface-variant block">From</span>
-<div class="flex items-baseline gap-1">
-<span class="font-headline-md text-headline-md text-on-surface font-bold">KES 8,500</span>
-<span class="font-body-sm text-body-sm text-on-surface-variant">/ night</span>
-</div>
-<span class="font-label-sm text-[11px] text-outline">Approx. $65 USD</span>
-</div>
-<button class="px-space-lg py-space-sm rounded-full bg-secondary text-on-secondary hover:bg-secondary-container font-label-md text-label-md transition-all shadow-sm">
-                Book Suite
-              </button>
-</div>
-</div>
-</div>
-</div>
+{% for room in rooms|slice:":3" %}
+<article class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-md flex flex-col">
+  <div class="h-48 bg-surface-container flex items-center justify-center text-primary">
+    <i data-lucide="bed-double" class="text-4xl"></i>
+  </div>
+  <div class="p-space-lg flex flex-col flex-1 gap-space-sm">
+    <h3 class="font-headline-sm text-headline-sm text-on-surface">{{ room.room_type }}</h3>
+    <p class="font-body-sm text-body-sm text-on-surface-variant">Room {{ room.room_number }}</p>
+    <p class="font-headline-md text-headline-md text-on-surface font-bold">KES {{ room.price|floatformat:2 }} <span class="font-body-sm text-body-sm font-normal text-on-surface-variant">/ night</span></p>
+    <a class="mt-auto inline-flex justify-center px-space-lg py-space-sm rounded-full bg-secondary text-on-secondary font-label-md text-label-md" href="{% url 'bookings' %}?room={{ room.pk }}">Book Room</a>
+  </div>
+</article>
+{% empty %}
+<p class="col-span-full text-center font-body-md text-body-md text-on-surface-variant">No rooms are currently available.</p>
+{% endfor %}
 </div>
 </section>
-
-
 
 <!-- SIGNATURE AMENITIES GRID SECTION -->
 <section class="max-w-[1280px] mx-auto px-margin-mobile lg:px-margin py-24 w-full">
@@ -612,12 +496,15 @@
 </div>
 <script>
   function checkBooking() {
-    var checkin = document.getElementById('checkin').value;
-    var checkout = document.getElementById('checkout').value;
-    var alertBox = document.getElementById('booking-alert');
-    if (alertBox) {
-      alertBox.classList.remove('hidden');
-      alertBox.textContent = "Checking rates for " + checkin + " to " + checkout + "... Direct booking discount applied!";
+    var roomId = document.getElementById('room-type').value;
+    if (roomId) {
+      window.location.href = "{% url 'bookings' %}?room=" + encodeURIComponent(roomId);
+    } else {
+      var alertBox = document.getElementById('booking-alert');
+      if (alertBox) {
+        alertBox.classList.remove('hidden');
+        alertBox.textContent = 'No rooms are currently available.';
+      }
     }
   }
 </script>
