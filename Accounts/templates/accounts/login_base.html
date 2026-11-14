@@ -1,0 +1,40 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#8C519A">
+  <title>{% block title %}Team sign in{% endblock %} | Intercounty Gardens</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'style/portal.css' %}">
+</head>
+<body>
+  <main class="login-page">
+    <section class="login-story" aria-label="Intercounty Gardens">
+      <a class="portal-brand" href="{% url 'home' %}">
+        <span class="portal-brand-mark"><i data-lucide="hotel"></i></span>
+        <span>
+          <span class="portal-brand-name">INTERCOUNTY GARDENS</span>
+          <span class="portal-brand-caption">HOTEL &amp; KITUI</span>
+        </span>
+      </a>
+      <div class="story-copy">
+        <span class="story-eyebrow"><i data-lucide="sparkles"></i> Thoughtful hospitality, made simple</span>
+        <h1>Every great stay starts with a great team.</h1>
+        <p>Welcome to your dedicated workspace for creating seamless guest experiences at Intercounty Gardens.</p>
+      </div>
+      <p class="story-foot">A thoughtful escape where East African hospitality meets timeless comfort.</p>
+    </section>
+    <section class="login-main">
+      <div class="login-card">
+        {% block form_content %}{% endblock %}
+      </div>
+    </section>
+  </main>
+  <script src="{% static 'js/lucide.min.js' %}"></script>
+  <script>if (window.lucide) window.lucide.createIcons();</script>
+</body>
+</html>

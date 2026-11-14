@@ -1,0 +1,75 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Admin dashboard{% endblock %}
+{% block dashboard_content %}
+  <section class="page-heading">
+    <div>
+      <h1>Good morning, Admin <span aria-hidden="true">✦</span></h1>
+      <p>Here is what is happening at your hotel today.</p>
+    </div>
+    <span class="date-pill"><i data-lucide="calendar-days"></i> Friday, 14 November 2026</span>
+  </section>
+
+  <section class="metrics-grid" aria-label="Hotel performance summary">
+    <article class="metric-card">
+      <div class="metric-top"><span class="metric-label">Total reservations</span><span class="metric-icon"><i data-lucide="calendar-check"></i></span></div>
+      <p class="metric-value">248</p><span class="metric-change"><i data-lucide="trending-up"></i> 12.8% <span class="metric-change neutral">vs last month</span></span>
+    </article>
+    <article class="metric-card">
+      <div class="metric-top"><span class="metric-label">Room occupancy</span><span class="metric-icon"><i data-lucide="bed-double"></i></span></div>
+      <p class="metric-value">78%</p><span class="metric-change"><i data-lucide="trending-up"></i> 5.2% <span class="metric-change neutral">vs last month</span></span>
+    </article>
+    <article class="metric-card">
+      <div class="metric-top"><span class="metric-label">Revenue this month</span><span class="metric-icon"><i data-lucide="banknote"></i></span></div>
+      <p class="metric-value">KES 1.24M</p><span class="metric-change"><i data-lucide="trending-up"></i> 8.4% <span class="metric-change neutral">vs last month</span></span>
+    </article>
+    <article class="metric-card">
+      <div class="metric-top"><span class="metric-label">Guest satisfaction</span><span class="metric-icon"><i data-lucide="heart"></i></span></div>
+      <p class="metric-value">4.8 <span style="font-size:15px;color:#dda848">★</span></p><span class="metric-change neutral">Based on recent guest feedback</span>
+    </article>
+  </section>
+
+  <div class="dashboard-grid">
+    <section class="panel" id="reservations">
+      <header class="panel-header">
+        <div><h2>Recent reservations</h2><p>Keep an eye on the latest guest bookings.</p></div>
+        <a class="panel-link" href="#reservations">View all <i data-lucide="arrow-up-right"></i></a>
+      </header>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Guest</th><th>Booking ID</th><th>Check-in</th><th>Room</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td><span class="guest-cell"><span class="mini-avatar">AM</span><strong>Amara Mwende</strong></span></td><td>#IC-2048</td><td>Nov 16, 2026</td><td>Deluxe Suite</td><td><span class="status">Confirmed</span></td></tr>
+            <tr><td><span class="guest-cell"><span class="mini-avatar">DK</span><strong>David Kamau</strong></span></td><td>#IC-2047</td><td>Nov 16, 2026</td><td>Garden Room</td><td><span class="status pending">Pending</span></td></tr>
+            <tr><td><span class="guest-cell"><span class="mini-avatar">GN</span><strong>Grace Njeri</strong></span></td><td>#IC-2046</td><td>Nov 17, 2026</td><td>Family Suite</td><td><span class="status">Confirmed</span></td></tr>
+            <tr><td><span class="guest-cell"><span class="mini-avatar">JO</span><strong>James Otieno</strong></span></td><td>#IC-2045</td><td>Nov 18, 2026</td><td>Garden Room</td><td><span class="status pending">Pending</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <div>
+      <section class="panel" id="rooms">
+        <header class="panel-header"><div><h2>Room availability</h2><p>Today's occupancy overview</p></div><i data-lucide="ellipsis" style="color:#918a96"></i></header>
+        <div class="occupancy">
+          <div class="occupancy-row"><strong>Rooms occupied</strong><strong>31 / 40</strong></div>
+          <div class="progress-track"><div class="progress-value" style="width:78%"></div></div>
+          <div class="occupancy-row" style="margin:12px 0 0"><span>9 rooms available</span><a class="panel-link" href="#rooms">Manage rooms</a></div>
+        </div>
+      </section>
+      <section class="panel" id="revenue">
+        <header class="panel-header"><div><h2>Recent activity</h2><p>Updates from across your hotel</p></div></header>
+        <div class="activity-list">
+          <div class="activity-item"><span class="activity-icon"><i data-lucide="calendar-plus"></i></span><div class="activity-text"><strong>New reservation</strong> from Amara Mwende.<span class="activity-time">12 minutes ago</span></div></div>
+          <div class="activity-item"><span class="activity-icon"><i data-lucide="user-round-check"></i></span><div class="activity-text"><strong>Guest checked in</strong> to Garden Room 08.<span class="activity-time">48 minutes ago</span></div></div>
+          <div class="activity-item"><span class="activity-icon"><i data-lucide="badge-check"></i></span><div class="activity-text"><strong>Room 12 marked ready</strong> by housekeeping.<span class="activity-time">1 hour ago</span></div></div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <section class="quick-actions" id="team" aria-label="Quick actions">
+    <a class="quick-action" href="#reservations"><span class="metric-icon"><i data-lucide="plus"></i></span> Review reservations</a>
+    <a class="quick-action" href="#rooms"><span class="metric-icon"><i data-lucide="bed-double"></i></span> Manage room availability</a>
+    <a class="quick-action" href="#team"><span class="metric-icon"><i data-lucide="users-round"></i></span> View your team</a>
+  </section>
+{% endblock %}

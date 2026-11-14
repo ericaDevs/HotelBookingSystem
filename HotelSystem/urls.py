@@ -24,6 +24,8 @@ app_name = 'public'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('Accounts.urls')),
+    path('dashboard/', include('Dashboard.urls')),
     path('', views.home, name='home'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
