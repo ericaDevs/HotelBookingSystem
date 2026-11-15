@@ -1,0 +1,160 @@
+{% extends "admin_portal/layout.html" %}
+
+{% block title %}Rooms{% endblock %}
+{% block dashboard_content %}
+  <section class="page-heading">
+    <div>
+      <h1>Room management</h1>
+      <p>Manage room details, availability and attributed room revenue.</p>
+    </div>
+    <button class="dashboard-button" type="button" data-modal-open="room-modal">
+      <i data-lucide="plus"></i> Add room
+    </button>
+  </section>
+
+  <section class="metrics-grid" aria-label="Room metrics">
+    <article class="metric-card">
+      <div class="metric-top"><span class="metric-label">Total rooms</span><span class="metric-icon"><i data-lucide="bed-double"></i></span></div>
+      <p class="metric-value">{{ total_rooms }}</p><span class="metric-change neutral">Rooms in inventory</span>
+    </article>
+    <article class="metric-card">
+      <div class="metric-top"><span class="metric-label">Available</span><span class="metric-icon"><i data-lucide="door-open"></i></span></div>
+      <p class="metric-value">{{ available_rooms }}</p><span class="metric-change neutral">Marked ready to book</span>
+    </article>
+    <article class="metric-card">
+      <div class="metric-top"><span class="metric-label">Unavailable</span><span class="metric-icon"><i data-lucide="door-closed"></i></span></div>
+      <p class="metric-value">{{ unavailable_rooms }}</p><span class="metric-change neutral">Marked out of service</span>
+    </article>
+    <article class="metric-card">
+      <div class="metric-top"><span class="metric-label">Room revenue</span><span class="metric-icon"><i data-lucide="banknote"></i></span></div>
+      <p class="metric-value">KES {{ total_room_revenue|floatformat:2 }}</p>
+      <span class="metric-change neutral">KES {{ unassigned_room_revenue|floatformat:2 }} unassigned</span>
+    </article>
+  </section>
+
+  {% if unassigned_room_revenue %}
+    <p class="info-note"><i data-lucide="info"></i><span>Some room payments are not attributed to a room because their guest reservation has no room assignment. Edit the reservation to include a room; new room-category payments will then appear in that room's revenue.</span></p>
+  {% endif %}
+
+  <section class="panel" style="margin-top:16px">
+    <header class="panel-header">
+      <div><h2>Room inventory</h2><p>Nightly rates and payments linked through guest reservations.</p></div>
+      <span class="metric-label">{{ total_rooms }} rooms</span>
+    </header>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr><th>Room</th><th>Category</th><th>Nightly rate</th><th>Reservations</th><th>Room revenue</th><th>Availability</th><th>Actions</th></tr></thead>
+        <tbody>
+          {% for room in rooms %}
+            <tr>
+              <td><strong>#{{ room.room_number }}</strong></td>
+              <td>{{ room.room_type }}</td>
+              <td>KES {{ room.price|floatformat:2 }}</td>
+              <td>{{ room.reservation_count }}</td>
+              <td><span class="room-revenue-value">KES {{ room.room_revenue|default_if_none:"0.00"|floatformat:2 }}</span></td>
+              <td>{% if room.is_available %}<span class="status">Available</span>{% else %}<span class="status cancelled">Unavailable</span>{% endif %}</td>
+              <td>
+                <div class="table-actions">
+                  <button class="table-action" type="button" data-edit-room
+                    data-id="{{ room.pk }}" data-number="{{ room.room_number }}"
+                    data-type="{{ room.room_type }}" data-price="{{ room.price }}"
+                    data-available="{{ room.is_available|yesno:'true,false' }}">
+                    <i data-lucide="pencil"></i> Edit
+                  </button>
+                  <button class="table-action danger" type="button" data-delete-room
+                    data-id="{{ room.pk }}" data-number="{{ room.room_number }}">
+                    <i data-lucide="trash-2"></i> Remove
+                  </button>
+                </div>
+              </td>
+            </tr>
+          {% empty %}
+            <tr><td class="empty-table" colspan="7">No rooms have been added yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <dialog class="portal-dialog" id="room-modal" aria-labelledby="room-modal-title">
+    <form class="modal-form" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="create_room">
+      <input type="hidden" name="room_id">
+      <header class="modal-header">
+        <div><h2 id="room-modal-title">Add a room</h2><p>Set the room number, category and nightly rate.</p></div>
+        <button class="icon-button" type="button" aria-label="Close dialog" data-modal-close><i data-lucide="x"></i></button>
+      </header>
+      <div class="modal-body">
+        <div class="modal-fields">
+          <label class="modal-field">Room number<input type="number" name="room_number" min="1" required></label>
+          <label class="modal-field">Room category<input name="room_type" maxlength="50" required></label>
+          <label class="modal-field full">Nightly rate (KES)<input type="number" name="price" min="0.01" step="0.01" required></label>
+          <label class="checkbox-field modal-field full"><input type="checkbox" name="is_available" checked> Available for booking</label>
+        </div>
+      </div>
+      <footer class="modal-actions">
+        <button class="dashboard-button secondary" type="button" data-modal-close>Cancel</button>
+        <button class="dashboard-button" type="submit">Save room</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <dialog class="portal-dialog" id="delete-room-modal" aria-labelledby="delete-room-title">
+    <form class="modal-form" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="delete_room">
+      <input type="hidden" name="room_id">
+      <header class="modal-header">
+        <div><h2 id="delete-room-title">Remove room?</h2><p id="delete-room-copy">This cannot be undone.</p></div>
+        <button class="icon-button" type="button" aria-label="Close dialog" data-modal-close><i data-lucide="x"></i></button>
+      </header>
+      <footer class="modal-actions">
+        <button class="dashboard-button secondary" type="button" data-modal-close>Keep room</button>
+        <button class="dashboard-button danger" type="submit">Remove room</button>
+      </footer>
+    </form>
+  </dialog>
+{% endblock %}
+
+{% block page_scripts %}
+  <script>
+    const roomDialog = document.getElementById('room-modal');
+    const roomForm = roomDialog.querySelector('form');
+    const roomTitle = document.getElementById('room-modal-title');
+    const roomSubmit = roomForm.querySelector('button[type="submit"]');
+
+    document.querySelectorAll('[data-edit-room]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const data = button.dataset;
+        roomForm.elements.action.value = 'update_room';
+        roomForm.elements.room_id.value = data.id;
+        roomForm.elements.room_number.value = data.number;
+        roomForm.elements.room_type.value = data.type;
+        roomForm.elements.price.value = data.price;
+        roomForm.elements.is_available.checked = data.available === 'true';
+        roomTitle.textContent = `Edit room #${data.number}`;
+        roomSubmit.textContent = 'Save changes';
+        roomDialog.showModal();
+      });
+    });
+
+    document.querySelector('[data-modal-open="room-modal"]').addEventListener('click', () => {
+      roomForm.reset();
+      roomForm.elements.action.value = 'create_room';
+      roomForm.elements.room_id.value = '';
+      roomTitle.textContent = 'Add a room';
+      roomSubmit.textContent = 'Save room';
+    });
+
+    const deleteRoomForm = document.querySelector('#delete-room-modal form');
+    const deleteRoomCopy = document.getElementById('delete-room-copy');
+    document.querySelectorAll('[data-delete-room]').forEach((button) => {
+      button.addEventListener('click', () => {
+        deleteRoomForm.elements.room_id.value = button.dataset.id;
+        deleteRoomCopy.textContent = `Room #${button.dataset.number} will be removed. Linked reservations will remain but lose their room assignment.`;
+        document.getElementById('delete-room-modal').showModal();
+      });
+    });
+  </script>
+{% endblock %}

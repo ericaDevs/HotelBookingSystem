@@ -1,0 +1,153 @@
+{% extends "admin_portal/layout.html" %}
+
+{% block title %}Reservations{% endblock %}
+{% block dashboard_content %}
+  <section class="page-heading">
+    <div>
+      <h1>Reservations</h1>
+      <p>Track guest stays, arrivals and room assignments.</p>
+    </div>
+    <div class="page-actions">
+      <span class="date-pill"><i data-lucide="calendar-days"></i> {% now "D, d M Y" %}</span>
+      <button class="dashboard-button" type="button" data-modal-open="reservation-modal">
+        <i data-lucide="plus"></i> Add reservation
+      </button>
+    </div>
+  </section>
+
+  <section class="metrics-grid" aria-label="Reservation metrics">
+    <article class="metric-card">
+      <div class="metric-top"><span class="metric-label">All reservations</span><span class="metric-icon"><i data-lucide="calendar-check"></i></span></div>
+      <p class="metric-value">{{ total_reservations }}</p><span class="metric-change neutral">Guest stays on record</span>
+    </article>
+    <article class="metric-card">
+      <div class="metric-top"><span class="metric-label">Arriving today</span><span class="metric-icon"><i data-lucide="log-in"></i></span></div>
+      <p class="metric-value">{{ arrivals_today }}</p><span class="metric-change neutral">Scheduled check-ins</span>
+    </article>
+    <article class="metric-card">
+      <div class="metric-top"><span class="metric-label">Currently in house</span><span class="metric-icon"><i data-lucide="hotel"></i></span></div>
+      <p class="metric-value">{{ in_house }}</p><span class="metric-change neutral">Based on stay dates</span>
+    </article>
+    <article class="metric-card">
+      <div class="metric-top"><span class="metric-label">Upcoming</span><span class="metric-icon"><i data-lucide="calendar-clock"></i></span></div>
+      <p class="metric-value">{{ upcoming }}</p><span class="metric-change neutral">Future check-ins</span>
+    </article>
+  </section>
+
+  <section class="panel">
+    <header class="panel-header">
+      <div><h2>Guest stays</h2><p>Room assignments and reservation dates.</p></div>
+      <span class="metric-label">{{ total_reservations }} records</span>
+    </header>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr><th>Guest</th><th>Room</th><th>Check-in</th><th>Check-out</th><th>Contact</th><th>Status</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+          {% for row in reservations %}
+            {% with reservation=row.reservation %}
+              <tr>
+                <td><span class="guest-cell"><span class="mini-avatar">{{ reservation.full_name|slice:":1"|upper }}</span><strong>{{ reservation.full_name }}</strong></span></td>
+                <td>{% if reservation.room %}{{ reservation.room.room_number }} · {{ reservation.room.room_type }}{% else %}<span class="metric-label">Not assigned</span>{% endif %}</td>
+                <td>{{ reservation.check_in_date|date:"d M Y" }}</td>
+                <td>{{ reservation.check_out_date|date:"d M Y" }}</td>
+                <td>{{ reservation.email }}</td>
+                <td><span class="status {{ row.status_class }}">{{ row.status }}</span></td>
+                <td>
+                  <button class="table-action" type="button" data-edit-reservation
+                    data-id="{{ reservation.pk }}"
+                    data-full-name="{{ reservation.full_name }}"
+                    data-email="{{ reservation.email }}"
+                    data-phone="{{ reservation.phone_number }}"
+                    data-id-no="{{ reservation.Id_no }}"
+                    data-county="{{ reservation.county_of_origin }}"
+                    data-country="{{ reservation.country }}"
+                    data-check-in="{{ reservation.check_in_date|date:'Y-m-d' }}"
+                    data-check-out="{{ reservation.check_out_date|date:'Y-m-d' }}"
+                    data-room="{% if reservation.room %}{{ reservation.room_id }}{% endif %}">
+                    <i data-lucide="pencil"></i> Edit
+                  </button>
+                </td>
+              </tr>
+            {% endwith %}
+          {% empty %}
+            <tr><td class="empty-table" colspan="7">No reservations yet. Add a guest stay to get started.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <dialog class="portal-dialog" id="reservation-modal" aria-labelledby="reservation-modal-title">
+    <form class="modal-form" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="create_reservation">
+      <input type="hidden" name="reservation_id">
+      <header class="modal-header">
+        <div><h2 id="reservation-modal-title">Add reservation</h2><p>Guest details and dates are used for stay reporting and room revenue attribution.</p></div>
+        <button class="icon-button" type="button" aria-label="Close dialog" data-modal-close><i data-lucide="x"></i></button>
+      </header>
+      <div class="modal-body">
+        <div class="modal-fields">
+          <label class="modal-field">Guest name<input name="full_name" maxlength="50" required></label>
+          <label class="modal-field">Email<input type="email" name="email" maxlength="254" required></label>
+          <label class="modal-field">Phone number<input name="phone_number" maxlength="15" required></label>
+          <label class="modal-field">ID / passport number<input name="id_no" maxlength="12" required></label>
+          <label class="modal-field">County of origin<input name="county_of_origin" maxlength="50" required></label>
+          <label class="modal-field">Country<input name="country" maxlength="50" required></label>
+          <label class="modal-field">Check-in<input type="date" name="check_in_date" required></label>
+          <label class="modal-field">Check-out<input type="date" name="check_out_date" required></label>
+          <label class="modal-field full">Room
+            <select name="room" required>
+              <option value="">Select a room</option>
+              {% for room in rooms %}<option value="{{ room.pk }}">Room {{ room.room_number }} · {{ room.room_type }} · KES {{ room.price|floatformat:2 }}</option>{% endfor %}
+            </select>
+          </label>
+        </div>
+        <p class="modal-hint">The selected room cannot be assigned to overlapping dates.</p>
+      </div>
+      <footer class="modal-actions">
+        <button class="dashboard-button secondary" type="button" data-modal-close>Cancel</button>
+        <button class="dashboard-button" type="submit">Save reservation</button>
+      </footer>
+    </form>
+  </dialog>
+{% endblock %}
+
+{% block page_scripts %}
+  <script>
+    const reservationDialog = document.getElementById('reservation-modal');
+    const reservationForm = reservationDialog.querySelector('form');
+    const reservationTitle = document.getElementById('reservation-modal-title');
+    const reservationSubmit = reservationForm.querySelector('button[type="submit"]');
+
+    document.querySelectorAll('[data-edit-reservation]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const data = button.dataset;
+        reservationForm.elements.action.value = 'update_reservation';
+        reservationForm.elements.reservation_id.value = data.id;
+        reservationForm.elements.full_name.value = data.fullName;
+        reservationForm.elements.email.value = data.email;
+        reservationForm.elements.phone_number.value = data.phone;
+        reservationForm.elements.id_no.value = data.idNo;
+        reservationForm.elements.county_of_origin.value = data.county;
+        reservationForm.elements.country.value = data.country;
+        reservationForm.elements.check_in_date.value = data.checkIn;
+        reservationForm.elements.check_out_date.value = data.checkOut;
+        reservationForm.elements.room.value = data.room;
+        reservationTitle.textContent = 'Update reservation';
+        reservationSubmit.textContent = 'Save changes';
+        reservationDialog.showModal();
+      });
+    });
+
+    document.querySelector('[data-modal-open="reservation-modal"]').addEventListener('click', () => {
+      reservationForm.reset();
+      reservationForm.elements.action.value = 'create_reservation';
+      reservationForm.elements.reservation_id.value = '';
+      reservationTitle.textContent = 'Add reservation';
+      reservationSubmit.textContent = 'Save reservation';
+    });
+  </script>
+{% endblock %}

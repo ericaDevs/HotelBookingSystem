@@ -1,4 +1,5 @@
 from django.db import models
+from Properties.models import Rooms
 
 # Create your models here.
 class Guests(models.Model):
@@ -10,6 +11,13 @@ class Guests(models.Model):
     country = models.CharField(max_length=50)
     check_in_date = models.DateField()
     check_out_date = models.DateField()
+    room = models.ForeignKey(
+        Rooms,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='reservations',
+    )
 
 
     def __str__(self):

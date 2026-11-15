@@ -23,15 +23,16 @@
       </a>
       <span class="sidebar-label">Workspace</span>
       <nav class="sidebar-nav">
-        <a class="sidebar-link active" href="{% url 'admin_portal:dashboard' %}"><i data-lucide="layout-dashboard"></i> Overview</a>
-        <a class="sidebar-link" href="#reservations"><i data-lucide="calendar-check"></i> Reservations</a>
-        <a class="sidebar-link" href="#rooms"><i data-lucide="bed-double"></i> Rooms</a>
-        <a class="sidebar-link" href="#team"><i data-lucide="users-round"></i> Team</a>
-        <a class="sidebar-link" href="#revenue"><i data-lucide="chart-no-axes-combined"></i> Revenue</a>
+        <a class="sidebar-link{% if request.resolver_match.url_name == 'overview' %} active{% endif %}" href="{% url 'admin_portal:overview' %}"><i data-lucide="layout-dashboard"></i> Overview</a>
+        <a class="sidebar-link{% if request.resolver_match.url_name == 'reservations' %} active{% endif %}" href="{% url 'admin_portal:reservations' %}"><i data-lucide="calendar-check"></i> Reservations</a>
+        <a class="sidebar-link{% if request.resolver_match.url_name == 'rooms' %} active{% endif %}" href="{% url 'admin_portal:rooms' %}"><i data-lucide="bed-double"></i> Rooms</a>
+        <a class="sidebar-link{% if request.resolver_match.url_name == 'staff' %} active{% endif %}" href="{% url 'admin_portal:staff' %}"><i data-lucide="users-round"></i> Staff</a>
+        <a class="sidebar-link{% if request.resolver_match.url_name == 'revenue' %} active{% endif %}" href="{% url 'admin_portal:revenue' %}"><i data-lucide="chart-no-axes-combined"></i> Revenue</a>
       </nav>
+
       <span class="sidebar-label">Account</span>
       <nav class="sidebar-nav">
-        <a class="sidebar-link" href="#settings"><i data-lucide="settings-2"></i> Settings</a>
+        <a class="sidebar-link cursor-no-drop" href="#settings"><i data-lucide="settings-2"></i> Settings</a>
         <a class="sidebar-link" href="{% url 'admin_portal:login' %}"><i data-lucide="log-out"></i> Sign out</a>
       </nav>
       <div class="sidebar-spacer"></div>
@@ -61,6 +62,13 @@
         </div>
       </header>
       <div class="dashboard-content">
+        {% if messages %}
+          <div class="portal-messages" role="status" aria-live="polite">
+            {% for message in messages %}
+              <p class="portal-message {{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
         {% block dashboard_content %}{% endblock %}
       </div>
     </main>
@@ -97,6 +105,21 @@
         menuToggle.focus();
       }
     });
+    document.querySelectorAll('[data-modal-open]').forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        const dialog = document.getElementById(trigger.dataset.modalOpen);
+        if (dialog && !dialog.open) dialog.showModal();
+      });
+    });
+    document.querySelectorAll('[data-modal-close]').forEach((trigger) => {
+      trigger.addEventListener('click', () => trigger.closest('dialog')?.close());
+    });
+    document.querySelectorAll('dialog.portal-dialog').forEach((dialog) => {
+      dialog.addEventListener('click', (event) => {
+        if (event.target === dialog) dialog.close();
+      });
+    });
   </script>
+  {% block page_scripts %}{% endblock %}
 </body>
 </html>

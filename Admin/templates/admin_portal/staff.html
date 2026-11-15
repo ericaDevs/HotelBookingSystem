@@ -1,0 +1,162 @@
+{% extends "admin_portal/layout.html" %}
+
+{% block title %}Staff{% endblock %}
+{% block dashboard_content %}
+  <section class="page-heading">
+    <div>
+      <h1>Staff management</h1>
+      <p>Manage team profiles, roles and contact information.</p>
+    </div>
+    <button class="dashboard-button" type="button" data-modal-open="staff-modal">
+      <i data-lucide="user-plus"></i> Add staff member
+    </button>
+  </section>
+
+  <section class="metrics-grid" aria-label="Staff metrics">
+    <article class="metric-card">
+      <div class="metric-top"><span class="metric-label">Team profiles</span><span class="metric-icon"><i data-lucide="users-round"></i></span></div>
+      <p class="metric-value">{{ total_staff }}</p><span class="metric-change neutral">Staff records</span>
+    </article>
+    <article class="metric-card">
+      <div class="metric-top"><span class="metric-label">Roles represented</span><span class="metric-icon"><i data-lucide="briefcase-business"></i></span></div>
+      <p class="metric-value">{{ roles_count }}</p><span class="metric-change neutral">Distinct team roles</span>
+    </article>
+    <article class="metric-card">
+      <div class="metric-top"><span class="metric-label">Profiles with email</span><span class="metric-icon"><i data-lucide="mail-check"></i></span></div>
+      <p class="metric-value">{{ staff_with_email }}</p><span class="metric-change neutral">Staff records with email</span>
+    </article>
+    <article class="metric-card">
+      <div class="metric-top"><span class="metric-label">Management</span><span class="metric-icon"><i data-lucide="shield-check"></i></span></div>
+      <p class="metric-value">{{ staff_with_phone }}</p><span class="metric-change neutral">Staff records with phone</span>
+    </article>
+  </section>
+
+  <section class="panel">
+    <header class="panel-header">
+      <div><h2>Team directory</h2><p>Staff profile and contact details.</p></div>
+      <span class="metric-label">{{ total_staff }} members</span>
+    </header>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr><th>Staff member</th><th>Username</th><th>Role</th><th>Email</th><th>Phone</th><th>Actions</th></tr></thead>
+        <tbody>
+          {% for member in staff_members %}
+            <tr>
+              <td><span class="guest-cell"><span class="mini-avatar">{{ member.fullname|slice:":1"|upper }}</span><strong>{{ member.fullname }}</strong></span></td>
+              <td>{{ member.username }}</td>
+              <td><span class="status room">{{ member.role }}</span></td>
+              <td>{{ member.email }}</td>
+              <td>{{ member.phone }}</td>
+              <td>
+                <div class="table-actions">
+                  <button class="table-action" type="button" data-edit-staff
+                    data-id="{{ member.pk }}" data-fullname="{{ member.fullname }}"
+                    data-username="{{ member.username }}" data-email="{{ member.email }}"
+                    data-phone="{{ member.phone }}" data-role="{{ member.role }}">
+                    <i data-lucide="pencil"></i> Edit
+                  </button>
+                  <button class="table-action danger" type="button" data-delete-staff
+                    data-id="{{ member.pk }}" data-name="{{ member.fullname }}">
+                    <i data-lucide="trash-2"></i> Remove
+                  </button>
+                </div>
+              </td>
+            </tr>
+          {% empty %}
+            <tr><td class="empty-table" colspan="6">No staff profiles yet. Add your first team member.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <dialog class="portal-dialog" id="staff-modal" aria-labelledby="staff-modal-title">
+    <form class="modal-form" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="create_staff">
+      <input type="hidden" name="staff_id">
+      <header class="modal-header">
+        <div><h2 id="staff-modal-title">Add staff member</h2><p>Use a unique username and set an initial password.</p></div>
+        <button class="icon-button" type="button" aria-label="Close dialog" data-modal-close><i data-lucide="x"></i></button>
+      </header>
+      <div class="modal-body">
+        <div class="modal-fields">
+          <label class="modal-field">Full name<input name="fullname" maxlength="100" required></label>
+          <label class="modal-field">Username<input name="username" maxlength="100" autocomplete="username" required></label>
+          <label class="modal-field">Email<input type="email" name="email" maxlength="254" required></label>
+          <label class="modal-field">Phone<input name="phone" maxlength="10" inputmode="tel" required></label>
+          <label class="modal-field full">Role<input name="role" maxlength="100" placeholder="e.g. Front desk, Housekeeping" required></label>
+          <label class="modal-field full">Initial password<input type="password" name="password" minlength="8" maxlength="72" autocomplete="new-password"></label>
+        </div>
+        <p class="modal-hint">The password is stored as a hash and is never displayed. Leave it blank when editing to keep the current password.</p>
+      </div>
+      <footer class="modal-actions">
+        <button class="dashboard-button secondary" type="button" data-modal-close>Cancel</button>
+        <button class="dashboard-button" type="submit">Save staff member</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <dialog class="portal-dialog" id="delete-staff-modal" aria-labelledby="delete-staff-title">
+    <form class="modal-form" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="delete_staff">
+      <input type="hidden" name="staff_id">
+      <header class="modal-header">
+        <div><h2 id="delete-staff-title">Remove staff profile?</h2><p id="delete-staff-copy">This cannot be undone.</p></div>
+        <button class="icon-button" type="button" aria-label="Close dialog" data-modal-close><i data-lucide="x"></i></button>
+      </header>
+      <footer class="modal-actions">
+        <button class="dashboard-button secondary" type="button" data-modal-close>Keep profile</button>
+        <button class="dashboard-button danger" type="submit">Remove profile</button>
+      </footer>
+    </form>
+  </dialog>
+{% endblock %}
+
+{% block page_scripts %}
+  <script>
+    const staffDialog = document.getElementById('staff-modal');
+    const staffForm = staffDialog.querySelector('form');
+    const staffTitle = document.getElementById('staff-modal-title');
+    const staffPassword = staffForm.elements.password;
+    const staffSubmit = staffForm.querySelector('button[type="submit"]');
+
+    document.querySelectorAll('[data-edit-staff]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const data = button.dataset;
+        staffForm.elements.action.value = 'update_staff';
+        staffForm.elements.staff_id.value = data.id;
+        staffForm.elements.fullname.value = data.fullname;
+        staffForm.elements.username.value = data.username;
+        staffForm.elements.email.value = data.email;
+        staffForm.elements.phone.value = data.phone;
+        staffForm.elements.role.value = data.role;
+        staffPassword.value = '';
+        staffPassword.required = false;
+        staffTitle.textContent = `Edit ${data.fullname}`;
+        staffSubmit.textContent = 'Save changes';
+        staffDialog.showModal();
+      });
+    });
+
+    document.querySelector('[data-modal-open="staff-modal"]').addEventListener('click', () => {
+      staffForm.reset();
+      staffForm.elements.action.value = 'create_staff';
+      staffForm.elements.staff_id.value = '';
+      staffPassword.required = true;
+      staffTitle.textContent = 'Add staff member';
+      staffSubmit.textContent = 'Save staff member';
+    });
+
+    const deleteStaffForm = document.querySelector('#delete-staff-modal form');
+    const deleteStaffCopy = document.getElementById('delete-staff-copy');
+    document.querySelectorAll('[data-delete-staff]').forEach((button) => {
+      button.addEventListener('click', () => {
+        deleteStaffForm.elements.staff_id.value = button.dataset.id;
+        deleteStaffCopy.textContent = `Remove ${button.dataset.name} from the team directory?`;
+        document.getElementById('delete-staff-modal').showModal();
+      });
+    });
+  </script>
+{% endblock %}
