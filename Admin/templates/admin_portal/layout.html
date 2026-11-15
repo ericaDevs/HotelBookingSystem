@@ -1,0 +1,102 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#8C519A">
+  <title>{% block title %}Admin dashboard{% endblock %} | Intercounty Gardens</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'style/portal.css' %}">
+</head>
+<body class="dashboard-page">
+  <div class="dashboard-shell" id="dashboard-shell">
+    <aside class="dashboard-sidebar" id="dashboard-sidebar" aria-label="Admin navigation">
+      <a class="portal-brand" href="{% url 'home' %}">
+        <span class="portal-brand-mark"><i data-lucide="hotel"></i></span>
+        <span>
+          <span class="portal-brand-name">INTERCOUNTY GARDENS</span>
+          <span class="portal-brand-caption">ADMIN CONSOLE</span>
+        </span>
+      </a>
+      <span class="sidebar-label">Workspace</span>
+      <nav class="sidebar-nav">
+        <a class="sidebar-link active" href="{% url 'admin_portal:dashboard' %}"><i data-lucide="layout-dashboard"></i> Overview</a>
+        <a class="sidebar-link" href="#reservations"><i data-lucide="calendar-check"></i> Reservations</a>
+        <a class="sidebar-link" href="#rooms"><i data-lucide="bed-double"></i> Rooms</a>
+        <a class="sidebar-link" href="#team"><i data-lucide="users-round"></i> Team</a>
+        <a class="sidebar-link" href="#revenue"><i data-lucide="chart-no-axes-combined"></i> Revenue</a>
+      </nav>
+      <span class="sidebar-label">Account</span>
+      <nav class="sidebar-nav">
+        <a class="sidebar-link" href="#settings"><i data-lucide="settings-2"></i> Settings</a>
+        <a class="sidebar-link" href="{% url 'admin_portal:login' %}"><i data-lucide="log-out"></i> Sign out</a>
+      </nav>
+      <div class="sidebar-spacer"></div>
+      <div class="sidebar-help">
+        <i data-lucide="circle-help" style="color:var(--portal-plum)"></i>
+        <strong>Need a hand?</strong>
+        <p>Our support team is ready to help with your workspace.</p>
+      </div>
+      <div class="sidebar-user">
+        <span class="user-avatar">AD</span>
+        <span class="user-meta"><strong>Hotel Administrator</strong><span>Administrator</span></span>
+        <i data-lucide="chevron-down" style="color:#9c95a1"></i>
+      </div>
+    </aside>
+    <main class="dashboard-main">
+      <header class="dashboard-topbar">
+        <div class="topbar-start">
+          <button class="icon-button menu-toggle" type="button" aria-label="Open navigation menu" aria-controls="dashboard-sidebar" aria-expanded="false" data-menu-toggle>
+            <i data-lucide="menu"></i>
+          </button>
+          <div class="topbar-heading"><strong>Admin console</strong><span>Intercounty Gardens Hotel &amp; Kitui</span></div>
+        </div>
+        <div class="topbar-actions">
+          <label class="topbar-search"><i data-lucide="search"></i><input aria-label="Search dashboard" placeholder="Search anything..."></label>
+          <button class="icon-button notification-dot" type="button" aria-label="Notifications"><i data-lucide="bell"></i></button>
+          <span class="user-avatar">AD</span>
+        </div>
+      </header>
+      <div class="dashboard-content">
+        {% block dashboard_content %}{% endblock %}
+      </div>
+    </main>
+  </div>
+  <script src="{% static 'js/lucide.min.js' %}"></script>
+  <script>
+    if (window.lucide) window.lucide.createIcons();
+    const shell = document.getElementById('dashboard-shell');
+    const menuToggle = document.querySelector('[data-menu-toggle]');
+    menuToggle.addEventListener('click', () => {
+      const isOpen = shell.classList.toggle('menu-open');
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+      menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+    });
+    document.querySelectorAll('.sidebar-link').forEach((link) => {
+      link.addEventListener('click', () => {
+        shell.classList.remove('menu-open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.setAttribute('aria-label', 'Open navigation menu');
+      });
+    });
+    shell.addEventListener('click', (event) => {
+      if (event.target === shell && shell.classList.contains('menu-open')) {
+        shell.classList.remove('menu-open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.setAttribute('aria-label', 'Open navigation menu');
+      }
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && shell.classList.contains('menu-open')) {
+        shell.classList.remove('menu-open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.setAttribute('aria-label', 'Open navigation menu');
+        menuToggle.focus();
+      }
+    });
+  </script>
+</body>
+</html>

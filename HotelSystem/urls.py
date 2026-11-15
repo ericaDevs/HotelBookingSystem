@@ -17,15 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path, include
+from django.conf import settings
 from . import views
 from Properties import views as properties_views
 
 app_name = 'public'
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('accounts/', include('Accounts.urls')),
-    path('dashboard/', include('Dashboard.urls')),
+    path(settings.ADMIN_URL, include('Admin.urls'), name = 'admin'),
+    path(settings.STAFF_URL, include('Staff.urls'), name = 'staff'),
     path('', views.home, name='home'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),

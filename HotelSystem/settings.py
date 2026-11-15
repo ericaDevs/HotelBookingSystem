@@ -11,25 +11,34 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
 from pathlib import Path
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-e+#jbo!dg(25x!0^+#ltdgmp#$6m(5h-5(jl*y+^j4r+&ff38!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+env = environ.Env(DEBUG = (bool, False))
+environ.Env.read_env(BASE_DIR / '.env')
 
-ALLOWED_HOSTS = []
+
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
+DEBUG = env('DEBUG')
+ALLOWED_HOSTS = [host.strip() for host in env.list('ALLOWED_HOSTS', default = [])]
+
+
+# Hidden prefixes for admin and staff URLs
+ADMIN_URL = env('ADMIN_URL', default = 'admin/')
+STAFF_URL = env('STAFF_URL', default = 'staff/')
+
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = env('SECRET_KEY')
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,11 +46,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Accounts',
+    'Staff.apps.StaffConfig',
     'Billing',
     'Properties',
     'Reservations',
-    'Dashboard'
+    'Admin',
 ]
 
 MIDDLEWARE = [
