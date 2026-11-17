@@ -24,8 +24,7 @@ from Properties import views as properties_views
 app_name = 'public'
 
 urlpatterns = [
-    path(settings.ADMIN_URL, include('Admin.urls'), name = 'admin'),
-    path(settings.STAFF_URL, include('Staff.urls'), name = 'staff'),
+    path(settings.LOGIN_URL, include('Admin.urls'), name = 'admin'),
     path('', views.home, name='home'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),

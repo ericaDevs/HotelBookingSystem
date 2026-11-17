@@ -21,22 +21,22 @@ def admin_login(request):
         role = request.POST.get("role", "").strip().casefold()
         password = request.POST.get("password", "")
 
-        if not username or role not in {"admin", "agent"} or not password:
+        if not username or role not in {"Admin", "Staff"} or not password:
             messages.error(request, "Enter your username, role, and password.")
         else:
             user = Users.objects.filter(username__iexact=username).first()
-            admin_roles = {"admin", "administrator"}
+            admin_roles = {"Admin", "Administrator"}
             is_admin_user = bool(
                 user and user.role.strip().casefold() in admin_roles
             )
             if (
                 user
                 and check_password(password, user.password)
-                and ((role == "admin") == is_admin_user)
+                and ((role == "Admin") == is_admin_user)
             ):
                 request.session.pop("admin_user_id", None)
                 request.session.pop("staff_user_id", None)
-                if role == "admin":
+                if role == "Admin":
                     request.session["admin_user_id"] = user.id
                     destination = "admin_portal:overview"
                 else:
@@ -56,6 +56,8 @@ def overview(request):
     return render(request, 'admin_portal/overview.html')
 
 
+
+# RESERVATION VIEW
 def reservation_management(request):
     if request.method == 'POST':
         action = request.POST.get('action')

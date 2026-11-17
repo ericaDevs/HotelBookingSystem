@@ -1,9 +1,0 @@
-{% extends "staff_auth/login_base.html" %}
-
-{% block title %}Team sign in{% endblock %}
-{% block form_content %}
-  <span class="login-kicker">Team portal</span>
-  <h2>Use the shared sign-in</h2>
-  <p class="login-intro">The separate staff sign-in has been replaced. Admins and agents use the same login form.</p>
-  <a class="login-submit" href="{% url 'admin_portal:login' %}">Go to team sign in <i data-lucide="arrow-right"></i></a>
-{% endblock %}

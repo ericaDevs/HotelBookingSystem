@@ -30,8 +30,7 @@ ALLOWED_HOSTS = [host.strip() for host in env.list('ALLOWED_HOSTS', default = []
 
 
 # Hidden prefixes for admin and staff URLs
-ADMIN_URL = env('ADMIN_URL', default = 'admin/')
-STAFF_URL = env('STAFF_URL', default = 'staff/')
+LOGIN_URL = env('LOGIN_URL', default = 'login/')
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
