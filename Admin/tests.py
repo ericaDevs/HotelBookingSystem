@@ -1,7 +1,7 @@
 from datetime import date
 from decimal import Decimal
 
-from django.contrib.auth.hashers import check_password
+from django.contrib.auth.hashers import check_password, make_password
 from django.test import TestCase
 from django.urls import reverse
 
@@ -17,7 +17,59 @@ class AdminPortalPageTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Welcome back')
-        self.assertContains(response, 'Administrator portal')
+        self.assertContains(response, 'Team portal')
+        self.assertContains(response, 'name="username"')
+        self.assertContains(response, 'name="role"')
+        self.assertContains(response, 'name="password"')
+
+    def test_admin_login_authenticates_and_redirects_by_role(self):
+        admin = Users.objects.create(
+            fullname='Portal Admin',
+            username='portal-admin',
+            email='admin@example.com',
+            phone='0712345678',
+            role='Admin',
+            password=make_password('admin-pass-123'),
+        )
+        response = self.client.post(reverse('admin_portal:login'), {
+            'username': 'portal-admin',
+            'role': 'admin',
+            'password': 'admin-pass-123',
+        })
+
+        self.assertRedirects(response, reverse('admin_portal:overview'))
+        self.assertEqual(self.client.session['admin_user_id'], admin.pk)
+
+    def test_agent_login_authenticates_and_rejects_admin_role_mismatch(self):
+        agent = Users.objects.create(
+            fullname='Portal Agent',
+            username='portal-agent',
+            email='agent@example.com',
+            phone='0712345678',
+            role='Front desk',
+            password=make_password('agent-pass-123'),
+        )
+        response = self.client.post(reverse('admin_portal:login'), {
+            'username': 'portal-agent',
+            'role': 'agent',
+            'password': 'agent-pass-123',
+        })
+
+        self.assertRedirects(response, reverse('staff:dashboard'))
+        self.assertEqual(self.client.session['staff_user_id'], agent.pk)
+
+        response = self.client.post(reverse('admin_portal:login'), {
+            'username': 'portal-agent',
+            'role': 'admin',
+            'password': 'agent-pass-123',
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn('admin_user_id', self.client.session)
+
+    def test_staff_login_redirects_to_shared_login(self):
+        response = self.client.get(reverse('staff:login'))
+
+        self.assertRedirects(response, reverse('admin_portal:login'))
 
     def test_admin_dashboard_renders(self):
         response = self.client.get(reverse('admin_portal:dashboard'))

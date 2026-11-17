@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 
 def staff_login(request):
-    return render(request, 'staff_auth/login.html')
+    return redirect('admin_portal:login')
 
 
 def staff_dashboard(request):

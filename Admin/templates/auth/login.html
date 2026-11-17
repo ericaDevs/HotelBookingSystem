@@ -1,32 +1,49 @@
 {% extends "staff_auth/login_base.html" %}
 
-{% block title %}Administrator sign in{% endblock %}
+{% block title %}Team sign in{% endblock %}
 {% block form_content %}
-  <span class="login-kicker">Administrator portal</span>
+  <span class="login-kicker">Team portal</span>
   <h2>Welcome back</h2>
-  <p class="login-intro">Sign in to manage your hotel operations, team, and guest experience.</p>
-  <form class="login-fields">
+  <p class="login-intro">Admins and agents can sign in to their workspace here.</p>
+
+  {% if messages %}
+    <div class="portal-messages" aria-live="polite">
+      {% for message in messages %}
+        <p class="portal-message{% if message.tags %} {{ message.tags }}{% endif %}">{{ message }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <form class="login-fields" action="{% url 'admin_portal:login' %}" method="post">
+    {% csrf_token %}
     <div>
-      <label class="field-label" for="admin-email">Work email</label>
+      <label class="field-label" for="login-username">Username</label>
       <div class="field-wrap">
-        <i class="field-icon" data-lucide="mail"></i>
-        <input class="login-input" id="admin-email" type="email" placeholder="you@intercountyhotels.com" autocomplete="username">
+        <i class="field-icon" data-lucide="user-round"></i>
+        <input class="login-input" id="login-username" name="username" type="text" placeholder="Enter your username" autocomplete="username" required>
       </div>
     </div>
+
     <div>
-      <label class="field-label" for="admin-password">Password</label>
+      <label class="field-label" for="login-role">Role</label>
+      <div class="field-wrap">
+        <i class="field-icon" data-lucide="badge-check"></i>
+        <select class="login-input" id="login-role" name="role" autocomplete="organization-title" required>
+          <option value="" selected disabled>Select your role</option>
+          <option value="admin">Admin</option>
+          <option value="agent">Agent</option>
+        </select>
+      </div>
+    </div>
+
+    <div>
+      <label class="field-label" for="login-password">Password</label>
       <div class="field-wrap">
         <i class="field-icon" data-lucide="lock-keyhole"></i>
-        <input class="login-input" id="admin-password" type="password" placeholder="Enter your password" autocomplete="current-password">
+        <input class="login-input" id="login-password" name="password" type="password" placeholder="Enter your password" autocomplete="current-password" required>
       </div>
     </div>
-    <div class="login-options">
-      <label class="remember-option"><input type="checkbox"> Keep me signed in</label>
-      <a class="login-link" href="#help">Forgot password?</a>
-    </div>
-    <button class="login-submit" type="button">Sign in to admin <i data-lucide="arrow-right"></i></button>
+    <button class="login-submit" type="submit">Sign in <i data-lucide="arrow-right"></i></button>
   </form>
-  <div class="login-divider">TEAM ACCESS</div>
-  <p class="login-switch">Working as a staff member? <a href="{% url 'staff:login' %}">Go to staff sign in</a></p>
-  <p class="login-security"><i data-lucide="shield-check"></i> Secure access for authorized hotel staff</p>
+  <p class="login-security"><i data-lucide="shield-check"></i> Secure access for authorized hotel team members</p>
 {% endblock %}

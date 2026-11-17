@@ -1,7 +1,7 @@
 from decimal import Decimal, InvalidOperation
 
 from django.contrib import messages
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import check_password, make_password
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.db.models import Count, Q, Sum
@@ -14,9 +14,42 @@ from Properties.models import Rooms
 from Reservations.models import Guests
 from Staff.models import Users
 
-
+# LOGIN VALIDATION VIEW
 def admin_login(request):
+    if request.method == "POST":
+        username = request.POST.get("username", "").strip()
+        role = request.POST.get("role", "").strip().casefold()
+        password = request.POST.get("password", "")
+
+        if not username or role not in {"admin", "agent"} or not password:
+            messages.error(request, "Enter your username, role, and password.")
+        else:
+            user = Users.objects.filter(username__iexact=username).first()
+            admin_roles = {"admin", "administrator"}
+            is_admin_user = bool(
+                user and user.role.strip().casefold() in admin_roles
+            )
+            if (
+                user
+                and check_password(password, user.password)
+                and ((role == "admin") == is_admin_user)
+            ):
+                request.session.pop("admin_user_id", None)
+                request.session.pop("staff_user_id", None)
+                if role == "admin":
+                    request.session["admin_user_id"] = user.id
+                    destination = "admin_portal:overview"
+                else:
+                    request.session["staff_user_id"] = user.id
+                    destination = "staff:dashboard"
+                messages.success(request, f"Welcome back, {user.fullname}!")
+                return redirect(destination)
+            else:
+                messages.error(request, "Invalid username, role, or password.")
+        
     return render(request, 'auth/login.html')
+
+
 
 
 def overview(request):
@@ -186,11 +219,13 @@ def room_management(request):
 def team_management(request):
     if request.method == 'POST':
         action = request.POST.get('action')
+        # DELETING STAFF
         if action == 'delete_staff':
             staff_member = get_object_or_404(Users, pk=request.POST.get('staff_id'))
             staff_member.delete()
             messages.success(request, 'Staff profile removed.')
             return redirect('admin_portal:staff')
+
 
         if action in ('create_staff', 'update_staff'):
             staff_id = request.POST.get('staff_id')
@@ -208,8 +243,11 @@ def team_management(request):
 
             if not all((fullname, username, email, phone, role)):
                 messages.error(request, 'Complete all staff profile fields.')
-            elif len(fullname) > 100 or len(username) > 100 or len(phone) > 10 or len(role) > 100:
-                messages.error(request, 'One or more staff details exceed the allowed length.')
+            # elif len(fullname) > 100 or len(username) > 100 or len(phone) > 10 or len(role) > 100:
+            #     messages.error(request, 'One or more staff details exceed the allowed length.')
+            
+            
+            # VALIDATION OF USERNAME AND PASSWORD LENGTH
             elif Users.objects.filter(username__iexact=username).exclude(pk=staff_member.pk).exists():
                 messages.error(request, 'That username is already in use.')
             else:
