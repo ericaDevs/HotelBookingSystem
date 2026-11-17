@@ -25,6 +25,7 @@ app_name = 'public'
 
 urlpatterns = [
     path(settings.LOGIN_URL, include('Admin.urls'), name = 'admin'),
+    path('staff/', include('Staff.urls'), name='staff'),
     path('', views.home, name='home'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),

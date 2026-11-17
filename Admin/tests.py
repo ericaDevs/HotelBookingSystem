@@ -33,35 +33,35 @@ class AdminPortalPageTests(TestCase):
         )
         response = self.client.post(reverse('admin_portal:login'), {
             'username': 'portal-admin',
-            'role': 'admin',
+            'role': 'Admin',
             'password': 'admin-pass-123',
         })
 
         self.assertRedirects(response, reverse('admin_portal:overview'))
         self.assertEqual(self.client.session['admin_user_id'], admin.pk)
 
-    def test_agent_login_authenticates_and_rejects_admin_role_mismatch(self):
-        agent = Users.objects.create(
-            fullname='Portal Agent',
-            username='portal-agent',
-            email='agent@example.com',
+    def test_staff_login_authenticates_and_rejects_admin_role_mismatch(self):
+        staff_member = Users.objects.create(
+            fullname='Portal Staff',
+            username='portal-staff',
+            email='staff@example.com',
             phone='0712345678',
             role='Front desk',
-            password=make_password('agent-pass-123'),
+            password=make_password('staff-pass-123'),
         )
         response = self.client.post(reverse('admin_portal:login'), {
-            'username': 'portal-agent',
-            'role': 'agent',
-            'password': 'agent-pass-123',
+            'username': 'portal-staff',
+            'role': 'Staff',
+            'password': 'staff-pass-123',
         })
 
         self.assertRedirects(response, reverse('staff:dashboard'))
-        self.assertEqual(self.client.session['staff_user_id'], agent.pk)
+        self.assertEqual(self.client.session['staff_user_id'], staff_member.pk)
 
         response = self.client.post(reverse('admin_portal:login'), {
-            'username': 'portal-agent',
-            'role': 'admin',
-            'password': 'agent-pass-123',
+            'username': 'portal-staff',
+            'role': 'Admin',
+            'password': 'staff-pass-123',
         })
         self.assertEqual(response.status_code, 200)
         self.assertNotIn('admin_user_id', self.client.session)
