@@ -14,6 +14,9 @@ from Properties.models import Rooms
 from Reservations.models import Guests
 from Staff.models import Users
 
+import JsonResponse
+
+
 # LOGIN VALIDATION VIEW
 def admin_login(request):
     if request.method == "POST":
@@ -47,6 +50,45 @@ def admin_login(request):
             else:
                 messages.error(request, "Invalid username, role, or password.")
         
+    return render(request, 'auth/login.html')
+
+
+# API END-POINT VIEW
+def api_endpoint(request):
+    if request.method == "POST":
+        username = request.POST.get("username", "").strip()
+        role = request.POST.get("role", "").strip().casefold()
+        password = request.POST.get("password", "")
+        
+        
+        if not username or not role or not password:
+            messages.error(request, "Enter your username, role, and password.")
+        else:
+            user = Users.objects.filter(username__iexact=username).first()
+            admin_roles = {"admin", "administrator"}
+            is_admin_user = bool(
+                user and user.role.strip().casefold() in admin_roles
+            )
+        
+        # API RESPONSE
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            if (
+                user
+                and check_password(password, user.password)
+                and ((role == "admin") == is_admin_user)
+            ):
+                response_data = {
+                    'success': True,
+                    'message': f"Welcome back, {user.fullname}!",
+                    'redirect_url': '/admin/overview/' if role == "admin" else '/staff/dashboard/',
+                }
+            else:
+                response_data = {
+                    'success': False,
+                    'message': "Invalid credentials!",
+                }
+            return JsonResponse(response_data)
+
     return render(request, 'auth/login.html')
 
 
