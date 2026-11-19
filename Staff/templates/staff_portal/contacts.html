@@ -1,0 +1,140 @@
+{% extends "staff_portal/layout.html" %}
+
+{% block title %}Guest contacts{% endblock %}
+{% block dashboard_content %}
+  <div class="staff-module staff-contacts">
+    <header class="staff-module-heading">
+      <div>
+        <div class="staff-eyebrow"><span></span> GUEST SERVICES <b>·</b> Contact directory</div>
+        <h1>Guest Contacts</h1>
+        <p>Find saved guest contact details and check each guest's current stay status.</p>
+      </div>
+      <span class="staff-shift-pill"><i data-lucide="contact-round"></i> Guest directory</span>
+    </header>
+
+    <section class="staff-metrics" aria-label="Guest directory summary">
+      <article class="staff-metric">
+        <div><span>Total contacts</span><i data-lucide="users-round"></i></div>
+        <strong>{{ total_contacts }}</strong>
+        <small>Saved guest records</small>
+      </article>
+      <article class="staff-metric metric-inhouse">
+        <div><span>In-house guests</span><i data-lucide="hotel"></i></div>
+        <strong>{{ in_house }}</strong>
+        <small>Active stays today</small>
+      </article>
+      <article class="staff-metric metric-arrivals">
+        <div><span>Upcoming guests</span><i data-lucide="calendar-clock"></i></div>
+        <strong>{{ upcoming }}</strong>
+        <small>Future check-ins</small>
+      </article>
+      <article class="staff-metric metric-departures">
+        <div><span>Room unassigned</span><i data-lucide="circle-help"></i></div>
+        <strong>{{ unassigned }}</strong>
+        <small>Current or future stays</small>
+      </article>
+    </section>
+
+    <section class="staff-directory">
+      <div class="staff-filter-panel">
+        <div class="staff-filter-row">
+          <label class="staff-search"><i data-lucide="search"></i><input id="staff-contact-search" type="search" placeholder="Search guest name, phone, email, ID, or room..."></label>
+          <span class="staff-live-indicator"><i></i> Guest records</span>
+        </div>
+        <nav class="staff-status-tabs" aria-label="Filter guests by stay status">
+          <button type="button" class="active" data-contact-status="all">All guests ({{ total_contacts }})</button>
+          <button type="button" data-contact-status="in-house">In house ({{ in_house }})</button>
+          <button type="button" data-contact-status="upcoming">Upcoming ({{ upcoming }})</button>
+          <button type="button" data-contact-status="checked-out">Checked out ({{ checked_out }})</button>
+        </nav>
+      </div>
+      <div class="staff-table-wrap">
+        <table class="staff-table staff-contact-table">
+          <thead><tr><th>Guest</th><th>Phone</th><th>Email</th><th>Room</th><th>Stay dates</th><th>Status</th></tr></thead>
+          <tbody id="staff-contact-rows">
+            {% for row in contacts %}
+              {% with guest=row.guest %}
+                <tr class="staff-contact-row"
+                    data-status="{{ row.status_key }}"
+                    data-search="{{ guest.full_name|lower }} {{ guest.phone_number|lower }} {{ guest.email|lower }} {{ guest.Id_no|lower }} {{ guest.room.room_type|default:''|lower }} {{ guest.room.room_number|default:'' }}">
+                  <td><span class="staff-guest-cell"><span class="staff-avatar">{{ guest.full_name|slice:":1"|upper }}</span><span><strong>{{ guest.full_name }}</strong><small>#RES-{{ guest.pk }}</small></span></span></td>
+                  <td><a class="staff-contact-link" href="tel:{{ guest.phone_number }}">{{ guest.phone_number }}</a></td>
+                  <td><a class="staff-contact-link" href="mailto:{{ guest.email }}">{{ guest.email }}</a></td>
+                  <td>{% if guest.room %}<strong>Room {{ guest.room.room_number }}</strong><small>{{ guest.room.room_type }}</small>{% else %}<span class="staff-unassigned">Not assigned</span>{% endif %}</td>
+                  <td><strong>{{ guest.check_in_date|date:"M d, Y" }}</strong><small>to {{ guest.check_out_date|date:"M d, Y" }}</small></td>
+                  <td><span class="staff-status {{ row.status_key }}">{{ row.status }}</span></td>
+                </tr>
+              {% endwith %}
+            {% empty %}
+              <tr><td class="staff-empty-cell" colspan="6">No guest contacts have been saved yet.</td></tr>
+            {% endfor %}
+            <tr id="staff-contact-empty" hidden><td class="staff-empty-cell" colspan="6">No guests match these filters.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <footer class="staff-table-footer">
+        <span id="staff-contact-count">Showing {{ total_contacts }} contacts</span>
+        <nav class="staff-pagination" id="staff-contact-pagination" aria-label="Guest contact pages"></nav>
+      </footer>
+    </section>
+  </div>
+{% endblock %}
+
+{% block page_scripts %}
+  <script>
+    (() => {
+      const rows = Array.from(document.querySelectorAll('.staff-contact-row'));
+      const search = document.getElementById('staff-contact-search');
+      const count = document.getElementById('staff-contact-count');
+      const pagination = document.getElementById('staff-contact-pagination');
+      const empty = document.getElementById('staff-contact-empty');
+      const pageSize = 10;
+      let activeStatus = 'all';
+      let currentPage = 1;
+
+      function render() {
+        const term = search.value.trim().toLowerCase();
+        const filteredRows = rows.filter((row) =>
+          (activeStatus === 'all' || row.dataset.status === activeStatus)
+          && row.dataset.search.includes(term));
+        const pageCount = Math.ceil(filteredRows.length / pageSize);
+        currentPage = Math.min(currentPage, Math.max(pageCount, 1));
+        rows.forEach((row) => { row.hidden = true; });
+        filteredRows.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+          .forEach((row) => { row.hidden = false; });
+        empty.hidden = filteredRows.length !== 0 || rows.length === 0;
+        count.textContent = filteredRows.length
+          ? `Showing ${(currentPage - 1) * pageSize + 1}–${Math.min(currentPage * pageSize, filteredRows.length)} of ${filteredRows.length} contacts`
+          : 'Showing 0 contacts';
+        pagination.replaceChildren();
+        if (pageCount > 1) {
+          const addButton = (label, page, disabled, active) => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.textContent = label;
+            button.disabled = disabled;
+            if (active) button.classList.add('active');
+            button.addEventListener('click', () => { currentPage = page; render(); });
+            pagination.append(button);
+          };
+          addButton('Previous', currentPage - 1, currentPage === 1, false);
+          for (let page = 1; page <= pageCount; page += 1) {
+            addButton(String(page), page, false, page === currentPage);
+          }
+          addButton('Next', currentPage + 1, currentPage === pageCount, false);
+        }
+      }
+
+      search.addEventListener('input', () => { currentPage = 1; render(); });
+      document.querySelectorAll('[data-contact-status]').forEach((button) => {
+        button.addEventListener('click', () => {
+          activeStatus = button.dataset.contactStatus;
+          document.querySelectorAll('[data-contact-status]').forEach((tab) => tab.classList.toggle('active', tab === button));
+          currentPage = 1;
+          render();
+        });
+      });
+      render();
+    })();
+  </script>
+{% endblock %}

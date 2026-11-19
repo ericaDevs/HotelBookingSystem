@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'style/portal.css' %}">
 </head>
-<body class="dashboard-page">
+<body class="dashboard-page staff-dashboard-page">
   <div class="dashboard-shell" id="dashboard-shell">
     <aside class="dashboard-sidebar" id="dashboard-sidebar" aria-label="Staff navigation">
       <a class="portal-brand" href="{% url 'home' %}">
@@ -21,27 +21,27 @@
           <span class="portal-brand-caption">STAFF WORKSPACE</span>
         </span>
       </a>
-      <span class="sidebar-label">Workspace</span>
+      <span class="sidebar-label">Staff workspace</span>
       <nav class="sidebar-nav">
-        <a class="sidebar-link active" href="{% url 'staff:dashboard' %}"><i data-lucide="layout-dashboard"></i> Overview</a>
-        <a class="sidebar-link" href="#reservations"><i data-lucide="calendar-check"></i> My reservations</a>
-        <a class="sidebar-link" href="#rooms"><i data-lucide="bed-double"></i> Room availability</a>
-        <a class="sidebar-link" href="#contacts"><i data-lucide="contact-round"></i> Guest contacts</a>
+        <a class="sidebar-link{% if active_nav == 'dashboard' %} active{% endif %}" href="{% url 'staff:dashboard' %}"{% if active_nav == 'dashboard' %} aria-current="page"{% endif %}><i data-lucide="layout-dashboard"></i> Overview</a>
+        <a class="sidebar-link{% if active_nav == 'reservations' %} active{% endif %}" href="{% url 'staff:reservations' %}"{% if active_nav == 'reservations' %} aria-current="page"{% endif %}><i data-lucide="calendar-check"></i> Reservations</a>
+        <a class="sidebar-link{% if active_nav == 'rooms' %} active{% endif %}" href="{% url 'staff:rooms' %}"{% if active_nav == 'rooms' %} aria-current="page"{% endif %}><i data-lucide="bed-double"></i> Room availability</a>
+        <a class="sidebar-link{% if active_nav == 'contacts' %} active{% endif %}" href="{% url 'staff:contacts' %}"{% if active_nav == 'contacts' %} aria-current="page"{% endif %}><i data-lucide="contact-round"></i> Guest contacts</a>
       </nav>
       <span class="sidebar-label">Account</span>
       <nav class="sidebar-nav">
-        <a class="sidebar-link" href="#help"><i data-lucide="circle-help"></i> Help center</a>
+        <a class="sidebar-link" href="{% url 'staff:dashboard' %}#front-desk-guide"><i data-lucide="circle-help"></i> Front desk guide</a>
         <a class="sidebar-link" href="{% url 'staff:login' %}"><i data-lucide="log-out"></i> Sign out</a>
       </nav>
       <div class="sidebar-spacer"></div>
       <div class="sidebar-help">
         <i data-lucide="heart-handshake"></i>
-        <strong>Here for your guests</strong>
-        <p>Find a quick overview of today's arrivals and guest requests.</p>
+        <strong>Front desk at a glance</strong>
+        <p>Check guest stays, contact details, and current room status.</p>
       </div>
       <div class="sidebar-user">
-        <span class="user-avatar">JA</span>
-        <span class="user-meta"><strong>Jordan Agent</strong><span>Guest services</span></span>
+        <span class="user-avatar">{{ staff_initials }}</span>
+        <span class="user-meta"><strong>{{ staff_name }}</strong><span>{{ staff_role }}</span></span>
         <i data-lucide="chevron-down"></i>
       </div>
     </aside>
@@ -54,9 +54,13 @@
           <div class="topbar-heading"><strong>Staff workspace</strong><span>Intercounty Gardens Hotel &amp; Kitui</span></div>
         </div>
         <div class="topbar-actions">
-          <label class="topbar-search"><i data-lucide="search"></i><input aria-label="Search dashboard" placeholder="Find a reservation..."></label>
+          <form class="topbar-search" method="get" action="{% url 'staff:reservations' %}">
+            <i data-lucide="search"></i>
+            <input aria-label="Search reservations" name="q" value="{{ search_query|default:'' }}" placeholder="Find a reservation...">
+          </form>
+          <span class="staff-topbar-date"><i data-lucide="calendar-days"></i> {{ today|date:"D, d M Y" }}</span>
           <button class="icon-button notification-dot" type="button" aria-label="Notifications"><i data-lucide="bell"></i></button>
-          <span class="user-avatar">JA</span>
+          <span class="user-avatar">{{ staff_initials }}</span>
         </div>
       </header>
       <div class="dashboard-content">
@@ -97,5 +101,6 @@
       }
     });
   </script>
+  {% block page_scripts %}{% endblock %}
 </body>
 </html>

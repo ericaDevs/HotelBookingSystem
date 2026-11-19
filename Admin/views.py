@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.hashers import check_password, make_password
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
-from django.db.models import Count, Q, Sum
+from django.db.models import Avg, Count, Q, Sum
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
@@ -297,6 +297,35 @@ def reservation_management(request):
 def room_management(request):
     if request.method == 'POST':
         action = request.POST.get('action')
+        if action == 'bulk_availability':
+            raw_room_ids = request.POST.getlist('room_ids')
+            availability = request.POST.get('bulk_availability')
+            try:
+                room_ids = {int(room_id) for room_id in raw_room_ids}
+            except ValueError:
+                messages.error(request, 'Choose valid rooms for the bulk update.')
+                return redirect('admin_portal:rooms')
+
+            if not room_ids or availability not in {'available', 'unavailable'}:
+                messages.error(request, 'Select rooms and choose an availability status.')
+                return redirect('admin_portal:rooms')
+
+            existing_room_ids = set(
+                Rooms.objects.filter(pk__in=room_ids).values_list('pk', flat=True)
+            )
+            if existing_room_ids != room_ids:
+                messages.error(request, 'One or more selected rooms no longer exist.')
+                return redirect('admin_portal:rooms')
+
+            updated_count = Rooms.objects.filter(pk__in=room_ids).update(
+                is_available=availability == 'available'
+            )
+            messages.success(
+                request,
+                f'{updated_count} room{"s" if updated_count != 1 else ""} marked {availability}.',
+            )
+            return redirect('admin_portal:rooms')
+
         if action == 'delete_room':
             room = get_object_or_404(Rooms, pk=request.POST.get('room_id'))
             room.delete()
@@ -354,6 +383,27 @@ def room_management(request):
         category='room',
         guest__room__isnull=True,
     ).aggregate(total=Sum('amount'))['total'] or Decimal('0.00')
+    room_categories = list(Rooms.objects.values('room_type').annotate(
+        room_count=Count('pk')
+    ).order_by('-room_count', 'room_type'))
+    category_colors = ['#b9344a', '#8c519a', '#246b4a', '#d781dc', '#d69a36']
+    category_total = sum(category['room_count'] for category in room_categories)
+    gradient_segments = []
+    current_percent = 0
+    for index, category in enumerate(room_categories):
+        category['color'] = category_colors[index % len(category_colors)]
+        next_percent = current_percent + (
+            category['room_count'] / category_total * 100
+            if category_total else 0
+        )
+        gradient_segments.append(
+            f'{category["color"]} {current_percent:.2f}% {next_percent:.2f}%'
+        )
+        current_percent = next_percent
+    category_gradient = (
+        f'conic-gradient({", ".join(gradient_segments)})'
+        if gradient_segments else '#eeeaf0'
+    )
 
     return render(request, 'admin_portal/rooms.html', {
         'rooms': rooms,
@@ -362,6 +412,13 @@ def room_management(request):
         'unavailable_rooms': Rooms.objects.filter(is_available=False).count(),
         'total_room_revenue': total_room_revenue,
         'unassigned_room_revenue': unassigned_room_revenue,
+        'room_reservation_count': Guests.objects.filter(room__isnull=False).count(),
+        'average_nightly_rate': Rooms.objects.aggregate(
+            average=Avg('price')
+        )['average'] or Decimal('0.00'),
+        'room_categories': room_categories,
+        'category_gradient': category_gradient,
+        'availability_board': rooms.order_by('is_available', 'room_number')[:4],
     })
 
 

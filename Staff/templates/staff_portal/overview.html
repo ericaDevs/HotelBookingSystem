@@ -1,75 +1,109 @@
 {% extends "staff_portal/layout.html" %}
+{% load static %}
 
-{% block title %}Staff dashboard{% endblock %}
+{% block title %}Staff overview{% endblock %}
 {% block dashboard_content %}
-  <section class="page-heading">
-    <div>
-      <h1>Good morning, Jordan <span aria-hidden="true">✦</span></h1>
-      <p>Your guest itinerary at a glance. Thanks for making every stay special.</p>
-    </div>
-    <span class="date-pill"><i data-lucide="calendar-days"></i> Friday, 14 November 2026</span>
-  </section>
-
-  <section class="metrics-grid" aria-label="Your daily summary">
-    <article class="metric-card">
-      <div class="metric-top"><span class="metric-label">Today's arrivals</span><span class="metric-icon"><i data-lucide="log-in"></i></span></div>
-      <p class="metric-value">6</p><span class="metric-change neutral">2 guests arriving before noon</span>
-    </article>
-    <article class="metric-card">
-      <div class="metric-top"><span class="metric-label">Today's departures</span><span class="metric-icon"><i data-lucide="log-out"></i></span></div>
-      <p class="metric-value">4</p><span class="metric-change neutral">Next checkout at 10:30 AM</span>
-    </article>
-    <article class="metric-card">
-      <div class="metric-top"><span class="metric-label">My reservations</span><span class="metric-icon"><i data-lucide="calendar-check"></i></span></div>
-      <p class="metric-value">18</p><span class="metric-change"><i data-lucide="trending-up"></i> 3 <span class="metric-change neutral">new this week</span></span>
-    </article>
-    <article class="metric-card">
-      <div class="metric-top"><span class="metric-label">Guest requests</span><span class="metric-icon"><i data-lucide="message-circle"></i></span></div>
-      <p class="metric-value">3</p><span class="metric-change neutral">1 request needs your attention</span>
-    </article>
-  </section>
-
-  <div class="dashboard-grid">
-    <section class="panel" id="reservations">
-      <header class="panel-header">
-        <div><h2>Today's guest schedule</h2><p>Your arrivals, departures, and upcoming stays.</p></div>
-        <a class="panel-link" href="#reservations">All reservations <i data-lucide="arrow-up-right"></i></a>
-      </header>
-      <div class="table-wrap">
-        <table class="data-table">
-          <thead><tr><th>Guest</th><th>Booking</th><th>Schedule</th><th>Room</th><th>Status</th></tr></thead>
-          <tbody>
-            <tr><td><span class="guest-cell"><span class="mini-avatar">EW</span><strong>Elizabeth Wanjiku</strong></span></td><td>#IC-2042</td><td>Arrives · 9:30 AM</td><td>Deluxe 04</td><td><span class="status pending">Check-in</span></td></tr>
-            <tr><td><span class="guest-cell"><span class="mini-avatar">MN</span><strong>Michael Nduati</strong></span></td><td>#IC-2039</td><td>Arrives · 11:15 AM</td><td>Garden 08</td><td><span class="status pending">Check-in</span></td></tr>
-            <tr><td><span class="guest-cell"><span class="mini-avatar">SM</span><strong>Sarah Mutua</strong></span></td><td>#IC-2014</td><td>Departs · 10:30 AM</td><td>Suite 02</td><td><span class="status">Check-out</span></td></tr>
-            <tr><td><span class="guest-cell"><span class="mini-avatar">PK</span><strong>Peter Kiptoo</strong></span></td><td>#IC-2008</td><td>Departs · 12:00 PM</td><td>Garden 11</td><td><span class="status">Check-out</span></td></tr>
-          </tbody>
-        </table>
+  <div class="staff-module staff-overview">
+    <header class="staff-module-heading">
+      <div>
+        <div class="staff-eyebrow"><span></span> STAFF DUTY DESK <b>·</b> {{ today|date:"l, d F Y" }}</div>
+        <h1>Staff Shift Overview</h1>
+        <p>Today's arrivals, departures, in-house guests, and room availability.</p>
       </div>
-    </section>
-    <div>
-      <section class="panel" id="rooms">
-        <header class="panel-header"><div><h2>Room availability</h2><p>For today's arrivals</p></div><i data-lucide="ellipsis" style="color:#918a96"></i></header>
-        <div class="occupancy">
-          <div class="occupancy-row"><strong>Ready for check-in</strong><strong>5 rooms</strong></div>
-          <div class="progress-track"><div class="progress-value" style="width:68%"></div></div>
-          <div class="occupancy-row" style="margin:12px 0 0"><span>2 rooms being prepared</span><a class="panel-link" href="#rooms">Room list</a></div>
-        </div>
-      </section>
-      <section class="panel" id="contacts">
-        <header class="panel-header"><div><h2>Guest requests</h2><p>Follow up with these guests</p></div><span class="status pending">3 new</span></header>
-        <div class="activity-list">
-          <div class="activity-item"><span class="activity-icon"><i data-lucide="utensils"></i></span><div class="activity-text"><strong>Amara Mwende</strong> · Confirm a vegetarian breakfast.<span class="activity-time">Today · 8:42 AM</span></div></div>
-          <div class="activity-item"><span class="activity-icon"><i data-lucide="clock-3"></i></span><div class="activity-text"><strong>David Kamau</strong> · Early check-in request.<span class="activity-time">Today · 8:10 AM</span></div></div>
-          <div class="activity-item"><span class="activity-icon"><i data-lucide="car-front"></i></span><div class="activity-text"><strong>Grace Njeri</strong> · Arrange airport transfer.<span class="activity-time">Yesterday · 6:20 PM</span></div></div>
-        </div>
-      </section>
-    </div>
-  </div>
+      <span class="staff-shift-pill"><i data-lucide="concierge-bell"></i> Guest services</span>
+    </header>
 
-  <section class="quick-actions" id="help" aria-label="Quick actions">
-    <a class="quick-action" href="#reservations"><span class="metric-icon"><i data-lucide="calendar-plus"></i></span> View reservations</a>
-    <a class="quick-action" href="#rooms"><span class="metric-icon"><i data-lucide="bed-double"></i></span> Check room availability</a>
-    <a class="quick-action" href="#contacts"><span class="metric-icon"><i data-lucide="message-square-text"></i></span> Follow up on requests</a>
-  </section>
+    <section class="staff-metrics" aria-label="Today's staff overview">
+      <article class="staff-metric metric-arrivals">
+        <div><span>Today's arrivals</span><i data-lucide="log-in"></i></div>
+        <strong>{{ arrivals_today }}</strong>
+        <small>Guest check-ins scheduled</small>
+      </article>
+      <article class="staff-metric metric-departures">
+        <div><span>Today's departures</span><i data-lucide="log-out"></i></div>
+        <strong>{{ departures_today }}</strong>
+        <small>Guest check-outs scheduled</small>
+      </article>
+      <article class="staff-metric metric-inhouse">
+        <div><span>Currently in-house</span><i data-lucide="bed-double"></i></div>
+        <strong>{{ in_house }}</strong>
+        <small>Stays active today</small>
+      </article>
+      <article class="staff-metric metric-available">
+        <div><span>Rooms available</span><i data-lucide="door-open"></i></div>
+        <strong>{{ available_rooms }}</strong>
+        <small>{{ room_count }} room{{ room_count|pluralize }} in inventory</small>
+      </article>
+    </section>
+
+    <div class="staff-overview-grid">
+      <section class="staff-panel">
+        <header class="staff-panel-header">
+          <div><span>FRONT DESK</span><h2>Today's guest movement</h2><p>Scheduled check-ins and check-outs.</p></div>
+          <a class="staff-text-link" href="{% url 'staff:reservations' %}">All reservations <i data-lucide="arrow-up-right"></i></a>
+        </header>
+        <div class="staff-table-wrap">
+          <table class="staff-table">
+            <thead><tr><th>Movement</th><th>Guest</th><th>Stay</th><th>Room</th><th>Status</th></tr></thead>
+            <tbody>
+              {% for row in schedule_rows %}
+                {% with guest=row.guest %}
+                  <tr>
+                    <td><span class="staff-movement {{ row.movement_key }}"><i></i>{{ row.movement }}</span></td>
+                    <td><span class="staff-guest-cell"><span class="staff-avatar">{{ guest.full_name|slice:":1"|upper }}</span><span><strong>{{ guest.full_name }}</strong><small>#RES-{{ guest.pk }}</small></span></span></td>
+                    <td><strong>{{ guest.check_in_date|date:"M d" }} – {{ guest.check_out_date|date:"M d" }}</strong></td>
+                    <td>{% if guest.room %}<strong>Room {{ guest.room.room_number }}</strong><small>{{ guest.room.room_type }}</small>{% else %}<span class="staff-unassigned">Not assigned</span>{% endif %}</td>
+                    <td><span class="staff-status {% if guest.check_out_date <= today %}checked-out{% elif guest.check_in_date <= today %}in-house{% else %}upcoming{% endif %}">{% if guest.check_out_date <= today %}Checked out{% elif guest.check_in_date <= today %}In house{% else %}Upcoming{% endif %}</span></td>
+                  </tr>
+                {% endwith %}
+              {% empty %}
+                <tr><td class="staff-empty-cell" colspan="5">No arrivals or departures are scheduled for today.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <footer class="staff-panel-footer">
+          <span>{{ upcoming_reservations }} upcoming reservation{{ upcoming_reservations|pluralize }}</span>
+          <a href="{% url 'staff:reservations' %}">Open reservation desk <i data-lucide="arrow-right"></i></a>
+        </footer>
+      </section>
+
+      <div class="staff-side-stack">
+        <section class="staff-panel">
+          <header class="staff-panel-header">
+            <div><span>ROOM STATUS</span><h2>Availability at a glance</h2><p>Occupied status is based on active stays.</p></div>
+            <a class="staff-icon-link" href="{% url 'staff:rooms' %}" aria-label="View all rooms"><i data-lucide="arrow-up-right"></i></a>
+          </header>
+          <div class="staff-status-summary">
+            <div><span class="staff-status-dot available"></span><span>Available</span><strong>{{ available_rooms }}</strong></div>
+            <div><span class="staff-status-dot occupied"></span><span>Occupied</span><strong>{{ occupied_rooms }}</strong></div>
+            <div><span class="staff-status-dot unavailable"></span><span>Unavailable</span><strong>{{ unavailable_rooms }}</strong></div>
+          </div>
+          <div class="staff-category-list">
+            {% for category in room_categories %}
+              <span>{{ category.name }}<strong>{{ category.count }}</strong></span>
+            {% empty %}
+              <p>No rooms have been added to the inventory.</p>
+            {% endfor %}
+          </div>
+        </section>
+
+        <section class="staff-panel">
+          <header class="staff-panel-header">
+            <div><span>QUICK LINKS</span><h2>Guest service modules</h2></div>
+          </header>
+          <div class="staff-quick-links">
+            <a href="{% url 'staff:contacts' %}"><i data-lucide="contact-round"></i><span><strong>Guest contacts</strong><small>Find guest details</small></span><i data-lucide="chevron-right"></i></a>
+            <a href="{% url 'staff:rooms' %}"><i data-lucide="bed-double"></i><span><strong>Room availability</strong><small>Review the room board</small></span><i data-lucide="chevron-right"></i></a>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <section class="staff-property-note" id="front-desk-guide">
+      <img src="{% static 'images/hero one.webp' %}" alt="Hotel grounds at Intercounty Gardens">
+      <div><span><i data-lucide="sparkles"></i> FRONT DESK REFERENCE</span><h2>Guest information, in one place</h2><p>Use the reservation, contact, and room modules to review current records. Stay statuses are derived from saved check-in and check-out dates.</p></div>
+      <a href="{% url 'staff:contacts' %}">Open contacts <i data-lucide="arrow-right"></i></a>
+    </section>
+  </div>
 {% endblock %}

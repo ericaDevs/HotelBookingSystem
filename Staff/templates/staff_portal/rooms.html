@@ -1,0 +1,173 @@
+{% extends "staff_portal/layout.html" %}
+{% load static %}
+
+{% block title %}Room availability{% endblock %}
+{% block dashboard_content %}
+  <div class="staff-module staff-rooms">
+    <header class="staff-module-heading">
+      <div>
+        <div class="staff-eyebrow"><span></span> PROPERTY OPERATIONS <b>·</b> Room board</div>
+        <h1>Room Availability</h1>
+        <p>Review saved room status and identify rooms with an active guest stay.</p>
+      </div>
+      <span class="staff-shift-pill"><i data-lucide="door-open"></i> {{ today|date:"l, d F" }}</span>
+    </header>
+
+    <section class="staff-metrics" aria-label="Room availability summary">
+      <article class="staff-metric">
+        <div><span>Total inventory</span><i data-lucide="panels-top-left"></i></div>
+        <strong>{{ room_count }}</strong>
+        <small>Rooms in the register</small>
+      </article>
+      <article class="staff-metric metric-available">
+        <div><span>Available</span><i data-lucide="circle-check"></i></div>
+        <strong>{{ available_rooms }}</strong>
+        <small>Available with no active stay</small>
+      </article>
+      <article class="staff-metric metric-inhouse">
+        <div><span>Occupied</span><i data-lucide="bed-double"></i></div>
+        <strong>{{ occupied_rooms }}</strong>
+        <small>Active reservation today</small>
+      </article>
+      <article class="staff-metric metric-departures">
+        <div><span>Unavailable</span><i data-lucide="circle-slash"></i></div>
+        <strong>{{ unavailable_rooms }}</strong>
+        <small>Marked unavailable in records</small>
+      </article>
+    </section>
+
+    <section class="staff-room-feature">
+      <img src="{% static 'images/hero two.webp' %}" alt="Intercounty Gardens hotel and pool">
+      <div><span><i data-lucide="sparkles"></i> ROOM INVENTORY</span><h2>Room status, at a glance</h2><p>Availability combines the saved room flag with current reservation dates. Room details reflect the inventory records.</p></div>
+      <div class="staff-rate-card"><small>Average nightly rate</small><strong>KES {{ average_rate|floatformat:0 }}</strong><small>Across saved rooms</small></div>
+    </section>
+
+    <section class="staff-directory">
+      <div class="staff-filter-panel">
+        <div class="staff-filter-row">
+          <label class="staff-search"><i data-lucide="search"></i><input id="staff-room-search" type="search" placeholder="Search room number, category, or guest..."></label>
+          <label class="staff-select"><span class="sr-only">Filter by room category</span>
+            <select id="staff-room-category"><option value="">All categories</option>{% for category in room_categories %}<option value="{{ category.name|lower }}">{{ category.name }}</option>{% endfor %}</select>
+          </label>
+          <label class="staff-select"><span class="sr-only">Filter by current status</span>
+            <select id="staff-room-status"><option value="">All statuses</option><option value="available">Available</option><option value="occupied">Occupied</option><option value="unavailable">Unavailable</option></select>
+          </label>
+          <span class="staff-live-indicator"><i></i> Current room records</span>
+        </div>
+      </div>
+      <div class="staff-table-wrap">
+        <table class="staff-table staff-room-table">
+          <thead><tr><th>Room</th><th>Category</th><th>Nightly rate</th><th>Current guest</th><th>Stored flag</th><th>Current status</th></tr></thead>
+          <tbody id="staff-room-rows">
+            {% for row in rooms %}
+              {% with room=row.room %}
+                <tr class="staff-room-row"
+                    data-status="{{ row.status_key }}"
+                    data-category="{{ room.room_type|lower }}"
+                    data-search="{{ room.room_number }} {{ room.room_type|lower }} {{ row.guest.full_name|default:''|lower }}">
+                  <td><strong>Room {{ room.room_number }}</strong><small>Inventory record</small></td>
+                  <td><strong>{{ room.room_type }}</strong></td>
+                  <td><strong>KES {{ room.price|floatformat:0 }}</strong><small>Per night</small></td>
+                  <td>{% if row.guest %}<strong>{{ row.guest.full_name }}</strong><small>Checks out {{ row.guest.check_out_date|date:"M d" }}</small>{% else %}<span class="staff-no-guest">No active guest</span>{% endif %}</td>
+                  <td><span class="staff-flag {% if room.is_available %}is-available{% else %}is-unavailable{% endif %}"><i></i>{% if room.is_available %}Available{% else %}Unavailable{% endif %}</span></td>
+                  <td><span class="staff-status {{ row.status_key }}">{{ row.status }}</span></td>
+                </tr>
+              {% endwith %}
+            {% empty %}
+              <tr><td class="staff-empty-cell" colspan="6">No rooms have been added to the inventory.</td></tr>
+            {% endfor %}
+            <tr id="staff-room-empty" hidden><td class="staff-empty-cell" colspan="6">No rooms match these filters.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <footer class="staff-table-footer">
+        <span id="staff-room-count">Showing {{ room_count }} rooms</span>
+        <nav class="staff-pagination" id="staff-room-pagination" aria-label="Room pages"></nav>
+      </footer>
+    </section>
+
+    <div class="staff-room-lower-grid">
+      <section class="staff-panel staff-category-panel">
+        <header class="staff-panel-header"><div><span>ROOM CATEGORIES</span><h2>Inventory by type</h2></div><i data-lucide="chart-no-axes-column"></i></header>
+        <div class="staff-category-list">
+          {% for category in room_categories %}
+            <div class="staff-category-row"><span><i></i>{{ category.name }}</span><strong>{{ category.count }}</strong></div>
+          {% empty %}
+            <p>No room categories yet.</p>
+          {% endfor %}
+        </div>
+      </section>
+      <section class="staff-panel staff-room-board">
+        <header class="staff-panel-header"><div><span>FRONT DESK AVAILABILITY BOARD</span><h2>Current room status</h2><p>Based on saved flags and active reservation dates.</p></div></header>
+        <div class="staff-room-cards">
+          {% for row in rooms|slice:":8" %}
+            <article class="{{ row.status_key }}">
+              <i></i><strong>{{ row.room.room_number }}</strong><small>{{ row.room.room_type }}</small>
+              <span>{{ row.status }}</span>
+            </article>
+          {% empty %}
+            <p>No rooms to display.</p>
+          {% endfor %}
+        </div>
+      </section>
+    </div>
+  </div>
+{% endblock %}
+
+{% block page_scripts %}
+  <script>
+    (() => {
+      const rows = Array.from(document.querySelectorAll('.staff-room-row'));
+      const search = document.getElementById('staff-room-search');
+      const category = document.getElementById('staff-room-category');
+      const status = document.getElementById('staff-room-status');
+      const count = document.getElementById('staff-room-count');
+      const pagination = document.getElementById('staff-room-pagination');
+      const empty = document.getElementById('staff-room-empty');
+      const pageSize = 10;
+      let currentPage = 1;
+
+      function render() {
+        const term = search.value.trim().toLowerCase();
+        const filteredRows = rows.filter((row) =>
+          row.dataset.search.includes(term)
+          && (!category.value || row.dataset.category === category.value)
+          && (!status.value || row.dataset.status === status.value));
+        const pageCount = Math.ceil(filteredRows.length / pageSize);
+        currentPage = Math.min(currentPage, Math.max(pageCount, 1));
+        rows.forEach((row) => { row.hidden = true; });
+        filteredRows.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+          .forEach((row) => { row.hidden = false; });
+        empty.hidden = filteredRows.length !== 0 || rows.length === 0;
+        count.textContent = filteredRows.length
+          ? `Showing ${(currentPage - 1) * pageSize + 1}–${Math.min(currentPage * pageSize, filteredRows.length)} of ${filteredRows.length} rooms`
+          : 'Showing 0 rooms';
+        pagination.replaceChildren();
+        if (pageCount > 1) {
+          const addButton = (label, page, disabled, active) => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.textContent = label;
+            button.disabled = disabled;
+            if (active) button.classList.add('active');
+            button.addEventListener('click', () => { currentPage = page; render(); });
+            pagination.append(button);
+          };
+          addButton('Previous', currentPage - 1, currentPage === 1, false);
+          for (let page = 1; page <= pageCount; page += 1) {
+            addButton(String(page), page, false, page === currentPage);
+          }
+          addButton('Next', currentPage + 1, currentPage === pageCount, false);
+        }
+      }
+
+      [search, category, status].forEach((control) => {
+        control.addEventListener(control === search ? 'input' : 'change', () => {
+          currentPage = 1;
+          render();
+        });
+      });
+      render();
+    })();
+  </script>
+{% endblock %}

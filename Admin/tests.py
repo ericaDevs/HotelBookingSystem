@@ -203,6 +203,35 @@ class AdminPortalPageTests(TestCase):
         self.client.post(url, {'action': 'delete_room', 'room_id': room.pk})
         self.assertFalse(Rooms.objects.filter(pk=room.pk).exists())
 
+    def test_room_bulk_availability_updates_only_selected_rooms(self):
+        selected = [
+            Rooms.objects.create(
+                room_number=61 + index,
+                room_type='Garden suite',
+                price=Decimal('12000.00'),
+            )
+            for index in range(2)
+        ]
+        other = Rooms.objects.create(
+            room_number=63,
+            room_type='Garden suite',
+            price=Decimal('12000.00'),
+        )
+        url = reverse('admin_portal:rooms')
+
+        response = self.client.post(url, {
+            'action': 'bulk_availability',
+            'room_ids': [room.pk for room in selected],
+            'bulk_availability': 'unavailable',
+        })
+
+        self.assertRedirects(response, url)
+        for room in selected:
+            room.refresh_from_db()
+            self.assertFalse(room.is_available)
+        other.refresh_from_db()
+        self.assertTrue(other.is_available)
+
     def test_reservation_create_links_room_and_rejects_overlaps(self):
         room = Rooms.objects.create(
             room_number=3,

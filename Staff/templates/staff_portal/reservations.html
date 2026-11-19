@@ -1,15 +1,193 @@
 {% extends "staff_portal/layout.html" %}
 
 {% block title %}Reservations{% endblock %}
-
 {% block dashboard_content %}
-  <section class="page-heading">
-    <div>
-      <h1>My Reservations</h1>
-      <p>Overview of your upcoming reservations.</p>
-    </div>
-  </section>
-  <div class="dashboard-content">
-    <p>(Reservation data will be displayed here.)</p>
+  <div class="staff-module staff-reservations">
+    <header class="staff-module-heading">
+      <div>
+        <div class="staff-eyebrow"><span></span> FRONT DESK OPERATIONS <b>·</b> Reservation register</div>
+        <h1>Guest Reservations</h1>
+        <p>Review guest contacts, stay dates, room assignments, and current stay status.</p>
+      </div>
+      <div class="staff-heading-actions">
+        <details class="staff-date-filter">
+          <summary><i data-lucide="calendar-days"></i> Filter dates</summary>
+          <div class="staff-date-popover">
+            <label>From<input type="date" id="staff-date-from"></label>
+            <label>To<input type="date" id="staff-date-to"></label>
+            <button type="button" id="staff-clear-dates">Clear dates</button>
+          </div>
+        </details>
+        <button class="staff-outline-button" type="button" id="staff-export-reservations"><i data-lucide="download"></i> Download roster</button>
+      </div>
+    </header>
+
+    <section class="staff-metrics" aria-label="Reservation summary">
+      <article class="staff-metric">
+        <div><span>All reservations</span><i data-lucide="clipboard-list"></i></div>
+        <strong>{{ total_reservations }}</strong>
+        <small>Saved guest records</small>
+      </article>
+      <article class="staff-metric metric-arrivals">
+        <div><span>Arrivals today</span><i data-lucide="log-in"></i></div>
+        <strong>{{ arrivals_today }}</strong>
+        <small>Check-ins scheduled today</small>
+      </article>
+      <article class="staff-metric metric-departures">
+        <div><span>Departures today</span><i data-lucide="log-out"></i></div>
+        <strong>{{ departures_today }}</strong>
+        <small>Check-outs scheduled today</small>
+      </article>
+      <article class="staff-metric metric-inhouse">
+        <div><span>In-house guests</span><i data-lucide="hotel"></i></div>
+        <strong>{{ in_house }}</strong>
+        <small>Active stays today</small>
+      </article>
+    </section>
+
+    <section class="staff-directory">
+      <div class="staff-filter-panel">
+        <div class="staff-filter-row">
+          <label class="staff-search"><i data-lucide="search"></i><input id="staff-reservation-search" type="search" value="{{ search_query }}" placeholder="Search name, phone, email, ID, or room..."></label>
+          <span class="staff-live-indicator"><i></i> Saved reservation records</span>
+        </div>
+        <nav class="staff-status-tabs" aria-label="Filter reservations by status">
+          <button type="button" class="active" data-reservation-status="all">All ({{ total_reservations }})</button>
+          <button type="button" data-reservation-status="in-house">In house ({{ in_house }})</button>
+          <button type="button" data-reservation-status="upcoming">Upcoming ({{ upcoming }})</button>
+          <button type="button" data-reservation-status="checked-out">Checked out ({{ checked_out }})</button>
+        </nav>
+      </div>
+      <div class="staff-table-wrap">
+        <table class="staff-table staff-reservation-table">
+          <thead><tr><th>Guest</th><th>Contact</th><th>Identity</th><th>Stay dates</th><th>Assigned room</th><th>Stay status</th></tr></thead>
+          <tbody id="staff-reservation-rows">
+            {% for row in reservations %}
+              {% with guest=row.guest %}
+                <tr class="staff-reservation-row"
+                    data-status="{{ row.status_key }}"
+                    data-search="{{ guest.full_name|lower }} {{ guest.phone_number|lower }} {{ guest.email|lower }} {{ guest.Id_no|lower }} {{ guest.room.room_type|default:''|lower }} {{ guest.room.room_number|default:'' }}"
+                    data-check-in="{{ guest.check_in_date|date:'Y-m-d' }}"
+                    data-check-out="{{ guest.check_out_date|date:'Y-m-d' }}">
+                  <td><span class="staff-guest-cell"><span class="staff-avatar">{{ guest.full_name|slice:":1"|upper }}</span><span><strong>{{ guest.full_name }}</strong><small>#RES-{{ guest.pk }}</small></span></span></td>
+                  <td><strong>{{ guest.phone_number }}</strong><small>{{ guest.email }}</small></td>
+                  <td><span class="staff-identity-chip">{{ guest.Id_no }}</span></td>
+                  <td><strong>{{ guest.check_in_date|date:"M d, Y" }}</strong><small>to {{ guest.check_out_date|date:"M d, Y" }}</small></td>
+                  <td>{% if guest.room %}<strong>Room {{ guest.room.room_number }}</strong><small>{{ guest.room.room_type }}</small>{% else %}<span class="staff-unassigned">Not assigned</span>{% endif %}</td>
+                  <td><span class="staff-status {{ row.status_key }}">{{ row.status }}</span></td>
+                </tr>
+              {% endwith %}
+            {% empty %}
+              <tr><td class="staff-empty-cell" colspan="6">No reservation records have been saved yet.</td></tr>
+            {% endfor %}
+            <tr id="staff-reservation-empty" hidden><td class="staff-empty-cell" colspan="6">No reservations match these filters.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <footer class="staff-table-footer">
+        <span id="staff-reservation-count">Showing {{ total_reservations }} records</span>
+        <nav class="staff-pagination" id="staff-reservation-pagination" aria-label="Reservation pages"></nav>
+      </footer>
+    </section>
   </div>
+{% endblock %}
+
+{% block page_scripts %}
+  <script>
+    (() => {
+      const rows = Array.from(document.querySelectorAll('.staff-reservation-row'));
+      const search = document.getElementById('staff-reservation-search');
+      const dateFrom = document.getElementById('staff-date-from');
+      const dateTo = document.getElementById('staff-date-to');
+      const count = document.getElementById('staff-reservation-count');
+      const pagination = document.getElementById('staff-reservation-pagination');
+      const empty = document.getElementById('staff-reservation-empty');
+      const pageSize = 8;
+      let activeStatus = 'all';
+      let currentPage = 1;
+      let filteredRows = rows;
+
+      function render() {
+        const term = search.value.trim().toLowerCase();
+        filteredRows = rows.filter((row) => {
+          const overlapsStart = !dateFrom.value || row.dataset.checkOut >= dateFrom.value;
+          const overlapsEnd = !dateTo.value || row.dataset.checkIn <= dateTo.value;
+          return (activeStatus === 'all' || row.dataset.status === activeStatus)
+            && row.dataset.search.includes(term)
+            && overlapsStart && overlapsEnd;
+        });
+        const pageCount = Math.ceil(filteredRows.length / pageSize);
+        currentPage = Math.min(currentPage, Math.max(pageCount, 1));
+        rows.forEach((row) => { row.hidden = true; });
+        filteredRows.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+          .forEach((row) => { row.hidden = false; });
+        empty.hidden = filteredRows.length !== 0 || rows.length === 0;
+        count.textContent = filteredRows.length
+          ? `Showing ${(currentPage - 1) * pageSize + 1}–${Math.min(currentPage * pageSize, filteredRows.length)} of ${filteredRows.length} reservations`
+          : 'Showing 0 reservations';
+        pagination.replaceChildren();
+        if (pageCount > 1) {
+          const addButton = (label, page, disabled, active) => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.textContent = label;
+            button.disabled = disabled;
+            if (active) button.classList.add('active');
+            button.addEventListener('click', () => { currentPage = page; render(); });
+            pagination.append(button);
+          };
+          addButton('Previous', currentPage - 1, currentPage === 1, false);
+          for (let page = 1; page <= pageCount; page += 1) {
+            addButton(String(page), page, false, page === currentPage);
+          }
+          addButton('Next', currentPage + 1, currentPage === pageCount, false);
+        }
+      }
+
+      search.addEventListener('input', () => { currentPage = 1; render(); });
+      [dateFrom, dateTo].forEach((input) => input.addEventListener('change', () => { currentPage = 1; render(); }));
+      document.getElementById('staff-clear-dates').addEventListener('click', () => {
+        dateFrom.value = '';
+        dateTo.value = '';
+        currentPage = 1;
+        render();
+      });
+      document.querySelectorAll('[data-reservation-status]').forEach((button) => {
+        button.addEventListener('click', () => {
+          activeStatus = button.dataset.reservationStatus;
+          document.querySelectorAll('[data-reservation-status]').forEach((tab) => tab.classList.toggle('active', tab === button));
+          currentPage = 1;
+          render();
+        });
+      });
+      document.getElementById('staff-export-reservations').addEventListener('click', () => {
+        const csvValue = (value) => {
+          const safe = /^[=+\-@\t\r]/.test(value) ? `'${value}` : value;
+          return `"${safe.replaceAll('"', '""')}"`;
+        };
+        const header = ['Guest', 'Phone', 'Email', 'Identity', 'Check-in', 'Check-out', 'Room', 'Status'];
+        const records = filteredRows.map((row) => {
+          const cells = row.querySelectorAll('td');
+          return [
+            cells[0].innerText.trim(),
+            cells[1].querySelector('strong').innerText.trim(),
+            cells[1].querySelector('small').innerText.trim(),
+            cells[2].innerText.trim(),
+            row.dataset.checkIn,
+            row.dataset.checkOut,
+            cells[4].innerText.trim(),
+            cells[5].innerText.trim(),
+          ];
+        });
+        const csv = [header, ...records].map((record) => record.map(csvValue).join(',')).join('\r\n');
+        const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'staff-reservation-roster.csv';
+        link.click();
+        URL.revokeObjectURL(url);
+      });
+      render();
+    })();
+  </script>
 {% endblock %}

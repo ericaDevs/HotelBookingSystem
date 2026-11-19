@@ -1,80 +1,153 @@
 {% extends "admin_portal/layout.html" %}
+{% load static %}
 
-{% block title %}Rooms{% endblock %}
+{% block title %}Rooms &amp; Inventory{% endblock %}
 {% block dashboard_content %}
-  <section class="page-heading">
-    <div>
-      <h1>Room management</h1>
-      <p>Manage room details, availability and attributed room revenue.</p>
-    </div>
-    <button class="dashboard-button" type="button" data-modal-open="room-modal">
-      <i data-lucide="plus"></i> Add room
-    </button>
-  </section>
+  <div class="rooms-management">
+    <div class="rooms-eyebrow"><span></span> PROPERTY MANAGEMENT SYSTEM <b>·</b> WING KITUI</div>
+    <section class="rooms-heading">
+      <div>
+        <h1>Rooms &amp; Inventory Management</h1>
+        <p>Manage hotel rooms, nightly rates in KES, stored availability flags, reservation load, and attributed room revenue.</p>
+      </div>
+      <div class="rooms-heading-actions">
+        <button class="rooms-secondary-button" type="button" id="bulk-availability-trigger"><i data-lucide="sliders-horizontal"></i> Bulk Availability Toggle</button>
+        <button class="rooms-primary-button" type="button" data-modal-open="room-modal"><i data-lucide="plus-circle"></i> Add New Room</button>
+      </div>
+    </section>
 
-  <section class="metrics-grid" aria-label="Room metrics">
-    <article class="metric-card">
-      <div class="metric-top"><span class="metric-label">Total rooms</span><span class="metric-icon"><i data-lucide="bed-double"></i></span></div>
-      <p class="metric-value">{{ total_rooms }}</p><span class="metric-change neutral">Rooms in inventory</span>
-    </article>
-    <article class="metric-card">
-      <div class="metric-top"><span class="metric-label">Available</span><span class="metric-icon"><i data-lucide="door-open"></i></span></div>
-      <p class="metric-value">{{ available_rooms }}</p><span class="metric-change neutral">Marked ready to book</span>
-    </article>
-    <article class="metric-card">
-      <div class="metric-top"><span class="metric-label">Unavailable</span><span class="metric-icon"><i data-lucide="door-closed"></i></span></div>
-      <p class="metric-value">{{ unavailable_rooms }}</p><span class="metric-change neutral">Marked out of service</span>
-    </article>
-    <article class="metric-card">
-      <div class="metric-top"><span class="metric-label">Room revenue</span><span class="metric-icon"><i data-lucide="banknote"></i></span></div>
-      <p class="metric-value">KES {{ total_room_revenue|floatformat:2 }}</p>
-      <span class="metric-change neutral">KES {{ unassigned_room_revenue|floatformat:2 }} unassigned</span>
-    </article>
-  </section>
+    <section class="rooms-metrics" aria-label="Room inventory metrics">
+      <article class="rooms-metric rooms-metric-purple">
+        <div><span>Total inventory</span><i data-lucide="archive"></i></div>
+        <strong>{{ total_rooms }}</strong>
+        <small>Active units</small>
+        <span class="rooms-metric-foot">{{ room_categories|length }} room categor{{ room_categories|length|pluralize:"y,ies" }}</span>
+      </article>
+      <article class="rooms-metric rooms-metric-green">
+        <div><span>Currently available</span><i data-lucide="door-open"></i></div>
+        <strong>{{ available_rooms }}</strong>
+        <small>Rooms marked available</small>
+        <span class="rooms-status-pill is-available"><i></i> Ready to book</span>
+      </article>
+      <article class="rooms-metric rooms-metric-red">
+        <div><span>Unavailable</span><i data-lucide="ban"></i></div>
+        <strong>{{ unavailable_rooms }}</strong>
+        <small>Stored availability flags</small>
+        <span class="rooms-status-pill is-unavailable"><i></i> Out of service</span>
+      </article>
+      <article class="rooms-metric rooms-metric-pink">
+        <div><span>Total attributed revenue</span><i data-lucide="wallet"></i></div>
+        <strong class="rooms-revenue-value">KES {{ total_room_revenue|floatformat:0 }}</strong>
+        <small>Linked room payments</small>
+        <span class="rooms-metric-foot">KES {{ unassigned_room_revenue|floatformat:0 }} unassigned</span>
+      </article>
+    </section>
 
-  {% if unassigned_room_revenue %}
-    <p class="info-note"><i data-lucide="info"></i><span>Some room payments are not attributed to a room because their guest reservation has no room assignment. Edit the reservation to include a room; new room-category payments will then appear in that room's revenue.</span></p>
-  {% endif %}
+    {% if unassigned_room_revenue %}
+      <p class="info-note rooms-info-note"><i data-lucide="info"></i><span>Some room payments are not attributed because their guest reservation has no room assignment. Edit the reservation to include a room.</span></p>
+    {% endif %}
 
-  <section class="panel" style="margin-top:16px">
-    <header class="panel-header">
-      <div><h2>Room inventory</h2><p>Nightly rates and payments linked through guest reservations.</p></div>
-      <span class="metric-label">{{ total_rooms }} rooms</span>
-    </header>
-    <div class="table-wrap">
-      <table class="data-table">
-        <thead><tr><th>Room</th><th>Category</th><th>Nightly rate</th><th>Reservations</th><th>Room revenue</th><th>Availability</th><th>Actions</th></tr></thead>
-        <tbody>
-          {% for room in rooms %}
-            <tr>
-              <td><strong>#{{ room.room_number }}</strong></td>
-              <td>{{ room.room_type }}</td>
-              <td>KES {{ room.price|floatformat:2 }}</td>
-              <td>{{ room.reservation_count }}</td>
-              <td><span class="room-revenue-value">KES {{ room.room_revenue|default_if_none:"0.00"|floatformat:2 }}</span></td>
-              <td>{% if room.is_available %}<span class="status">Available</span>{% else %}<span class="status cancelled">Unavailable</span>{% endif %}</td>
-              <td>
-                <div class="table-actions">
-                  <button class="table-action" type="button" data-edit-room
-                    data-id="{{ room.pk }}" data-number="{{ room.room_number }}"
-                    data-type="{{ room.room_type }}" data-price="{{ room.price }}"
-                    data-available="{{ room.is_available|yesno:'true,false' }}">
-                    <i data-lucide="pencil"></i> Edit
-                  </button>
-                  <button class="table-action danger" type="button" data-delete-room
-                    data-id="{{ room.pk }}" data-number="{{ room.room_number }}">
-                    <i data-lucide="trash-2"></i> Remove
-                  </button>
-                </div>
-              </td>
-            </tr>
+    <section class="rooms-feature">
+      <img src="{% static 'images/hero two.webp' %}" alt="Intercounty Gardens hotel and pool">
+      <div class="rooms-feature-copy">
+        <span><i data-lucide="sparkles"></i> INVENTORY SNAPSHOT <b>·</b> HOTEL OPERATIONS</span>
+        <h2>Room rates and availability in one place</h2>
+        <p>Track stored availability, linked stays, and room payments from the inventory below.</p>
+      </div>
+      <div class="rooms-feature-stats">
+        <span><small>Average nightly rate</small><strong>KES {{ average_nightly_rate|floatformat:0 }}</strong></span>
+        <span><small>Linked reservations</small><strong>{{ room_reservation_count }}</strong></span>
+      </div>
+    </section>
+
+    <section class="rooms-inventory">
+      <div class="rooms-filter-panel">
+        <label class="rooms-search"><i data-lucide="search"></i><input id="room-search" type="search" placeholder="Search room number, category..."></label>
+        <label><span class="sr-only">Filter by room category</span>
+          <select id="room-category-filter"><option value="">All Categories</option>{% for category in room_categories %}<option value="{{ category.room_type|lower }}">{{ category.room_type }}</option>{% endfor %}</select>
+        </label>
+        <label><span class="sr-only">Filter by availability</span>
+          <select id="room-availability-filter"><option value="">All Flags</option><option value="available">Available</option><option value="unavailable">Unavailable</option></select>
+        </label>
+        <span class="rooms-showing" id="room-showing-count" data-total="{{ total_rooms }}">Showing {{ total_rooms }} of {{ total_rooms }}</span>
+        <button class="rooms-reset-button" type="button" id="reset-room-filters" aria-label="Reset room filters"><i data-lucide="rotate-ccw"></i></button>
+      </div>
+      <div class="rooms-table-wrap">
+        <table class="rooms-table">
+          <thead>
+            <tr><th><input type="checkbox" id="select-visible-rooms" aria-label="Select visible rooms"> Room no. &amp; floor</th><th>Room category &amp; details</th><th>Nightly rate</th><th>Reservations</th><th>Attributed revenue</th><th>Stored availability</th><th>Actions</th></tr>
+          </thead>
+          <tbody id="rooms-table-body">
+            {% for room in rooms %}
+              <tr class="room-data-row"
+                  data-search="{{ room.room_number }} {{ room.room_type|lower }}"
+                  data-room-type="{{ room.room_type|lower }}"
+                  data-available="{{ room.is_available|yesno:'available,unavailable' }}">
+                <td><span class="room-number-cell"><input type="checkbox" class="room-select" value="{{ room.pk }}" aria-label="Select room {{ room.room_number }}"><span><strong>Room {{ room.room_number }}</strong><small>Inventory record</small></span></span></td>
+                <td><strong>{{ room.room_type }}</strong><small>Room {{ room.room_number }} · Hotel room</small></td>
+                <td><strong>KES {{ room.price|floatformat:0 }}</strong><small>per night</small></td>
+                <td><span class="room-stay-count"><i data-lucide="bed-double"></i>{{ room.reservation_count }} stay{{ room.reservation_count|pluralize }}</span></td>
+                <td><strong>KES {{ room.room_revenue|default_if_none:"0.00"|floatformat:0 }}</strong><small>Linked room payments</small></td>
+                <td>{% if room.is_available %}<span class="room-availability is-available"><i></i> Available</span>{% else %}<span class="room-availability is-unavailable"><i></i> Unavailable</span>{% endif %}</td>
+                <td>
+                  <div class="rooms-row-actions">
+                    <button class="room-icon-button" type="button" data-edit-room
+                      data-id="{{ room.pk }}" data-number="{{ room.room_number }}"
+                      data-type="{{ room.room_type }}" data-price="{{ room.price }}"
+                      data-available="{{ room.is_available|yesno:'true,false' }}"
+                      aria-label="Edit room {{ room.room_number }}"><i data-lucide="pencil"></i></button>
+                    <button class="room-icon-button delete" type="button" data-delete-room
+                      data-id="{{ room.pk }}" data-number="{{ room.room_number }}"
+                      aria-label="Remove room {{ room.room_number }}"><i data-lucide="trash-2"></i></button>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+            <tr id="rooms-empty-row" hidden><td colspan="7">No rooms match these filters.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <footer class="rooms-table-footer">
+        <span id="rooms-page-summary">Showing 0 of {{ total_rooms }} rooms</span>
+        <nav class="rooms-pagination" id="rooms-pagination" aria-label="Room inventory pages"></nav>
+      </footer>
+    </section>
+
+    <div class="rooms-bottom-grid">
+      <section class="rooms-breakdown">
+        <header><span><small>CATEGORY BREAKDOWN</small><strong>Inventory by room type</strong></span><i data-lucide="chart-pie"></i></header>
+        <div class="rooms-breakdown-content">
+          <div class="rooms-donut" style="background: {{ category_gradient }}"><span><strong>{{ total_rooms }}</strong><small>rooms</small></span></div>
+          <ul>
+            {% for category in room_categories %}
+              <li><i style="background: {{ category.color }}"></i><span>{{ category.room_type }}</span><strong>{{ category.room_count }}</strong></li>
+            {% empty %}
+              <li class="rooms-no-category">No room categories yet.</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </section>
+
+      <section class="rooms-availability-board">
+        <header>
+          <span><small>FRONT-DESK AVAILABILITY BOARD</small><strong>Room release overview</strong><em>Current stored status for quick reference</em></span>
+          <span class="rooms-board-legend"><i></i> Available <i></i> Unavailable</span>
+        </header>
+        <div class="rooms-board-cards">
+          {% for room in availability_board %}
+            <article class="{% if room.is_available %}is-available{% else %}is-unavailable{% endif %}">
+              <i></i><strong>{{ room.room_number }}</strong><small>{{ room.room_type }}</small>
+              <span>{% if room.is_available %}Available{% else %}Unavailable{% endif %}</span>
+              <b>KES {{ room.price|floatformat:0 }}</b>
+            </article>
           {% empty %}
-            <tr><td class="empty-table" colspan="7">No rooms have been added yet.</td></tr>
+            <p class="rooms-no-category">Add a room to start the availability board.</p>
           {% endfor %}
-        </tbody>
-      </table>
+        </div>
+        <a href="#rooms-table-body">Manage room inventory <i data-lucide="arrow-right"></i></a>
+      </section>
     </div>
-  </section>
+  </div>
 
   <dialog class="portal-dialog" id="room-modal" aria-labelledby="room-modal-title">
     <form class="modal-form" method="post">
@@ -96,6 +169,29 @@
       <footer class="modal-actions">
         <button class="dashboard-button secondary" type="button" data-modal-close>Cancel</button>
         <button class="dashboard-button" type="submit">Save room</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <dialog class="portal-dialog" id="bulk-availability-modal" aria-labelledby="bulk-availability-title">
+    <form class="modal-form" method="post" id="bulk-availability-form">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="bulk_availability">
+      <header class="modal-header">
+        <div><h2 id="bulk-availability-title">Update selected rooms</h2><p id="bulk-room-selection-count">Apply one stored availability status to the selected rooms.</p></div>
+        <button class="icon-button" type="button" aria-label="Close dialog" data-modal-close><i data-lucide="x"></i></button>
+      </header>
+      <div class="modal-body">
+        <label class="modal-field">Set availability
+          <select name="bulk_availability" required>
+            <option value="available">Available</option>
+            <option value="unavailable">Unavailable</option>
+          </select>
+        </label>
+      </div>
+      <footer class="modal-actions">
+        <button class="dashboard-button secondary" type="button" data-modal-close>Cancel</button>
+        <button class="dashboard-button" type="submit">Update selected rooms</button>
       </footer>
     </form>
   </dialog>
@@ -156,5 +252,120 @@
         document.getElementById('delete-room-modal').showModal();
       });
     });
+
+    const roomRows = Array.from(document.querySelectorAll('.room-data-row'));
+    const roomSearch = document.getElementById('room-search');
+    const categoryFilter = document.getElementById('room-category-filter');
+    const availabilityFilter = document.getElementById('room-availability-filter');
+    const pageSummary = document.getElementById('rooms-page-summary');
+    const showingCount = document.getElementById('room-showing-count');
+    const roomPagination = document.getElementById('rooms-pagination');
+    const emptyRoomRow = document.getElementById('rooms-empty-row');
+    const selectVisibleRooms = document.getElementById('select-visible-rooms');
+    const pageSize = 8;
+    let roomPage = 1;
+
+    function filterRooms() {
+      const searchTerm = roomSearch.value.trim().toLowerCase();
+      const category = categoryFilter.value;
+      const availability = availabilityFilter.value;
+      const filteredRooms = roomRows.filter((row) => {
+        return (!searchTerm || row.dataset.search.includes(searchTerm))
+          && (!category || row.dataset.roomType === category)
+          && (!availability || row.dataset.available === availability);
+      });
+
+      const pageCount = Math.max(1, Math.ceil(filteredRooms.length / pageSize));
+      roomPage = Math.min(roomPage, pageCount);
+      const firstIndex = (roomPage - 1) * pageSize;
+      const visibleRooms = new Set(filteredRooms.slice(firstIndex, firstIndex + pageSize));
+      roomRows.forEach((row) => {
+        row.hidden = !visibleRooms.has(row);
+      });
+      emptyRoomRow.hidden = filteredRooms.length !== 0;
+      pageSummary.textContent = filteredRooms.length
+        ? `Showing ${firstIndex + 1}–${Math.min(firstIndex + pageSize, filteredRooms.length)} of ${filteredRooms.length} rooms`
+        : 'Showing 0 of 0 rooms';
+      showingCount.textContent = `Showing: ${filteredRooms.length} of ${roomRows.length}`;
+      selectVisibleRooms.checked = false;
+      renderRoomPagination(pageCount);
+    }
+
+    function renderRoomPagination(pageCount) {
+      roomPagination.replaceChildren();
+      const addButton = (label, page, disabled = false) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = label;
+        button.disabled = disabled;
+        if (page === roomPage) button.classList.add('active');
+        button.addEventListener('click', () => {
+          roomPage = page;
+          filterRooms();
+        });
+        roomPagination.append(button);
+      };
+      addButton('Previous', Math.max(1, roomPage - 1), roomPage === 1);
+      const pages = pageCount <= 4
+        ? Array.from({ length: pageCount }, (_, index) => index + 1)
+        : [...new Set([1, roomPage, pageCount])].sort((a, b) => a - b);
+      let previousPage = 0;
+      pages.forEach((page) => {
+        if (page - previousPage > 1) {
+          const ellipsis = document.createElement('span');
+          ellipsis.textContent = '…';
+          roomPagination.append(ellipsis);
+        }
+        addButton(String(page), page);
+        previousPage = page;
+      });
+      addButton('Next', Math.min(pageCount, roomPage + 1), roomPage === pageCount);
+    }
+
+    [roomSearch, categoryFilter, availabilityFilter].forEach((control) => {
+      control.addEventListener(control === roomSearch ? 'input' : 'change', () => {
+        roomPage = 1;
+        filterRooms();
+      });
+    });
+    document.getElementById('reset-room-filters').addEventListener('click', () => {
+      roomSearch.value = '';
+      categoryFilter.value = '';
+      availabilityFilter.value = '';
+      roomPage = 1;
+      filterRooms();
+    });
+    selectVisibleRooms.addEventListener('change', () => {
+      roomRows.filter((row) => !row.hidden).forEach((row) => {
+        row.querySelector('.room-select').checked = selectVisibleRooms.checked;
+      });
+    });
+
+    const bulkAvailabilityDialog = document.getElementById('bulk-availability-modal');
+    const bulkAvailabilityForm = document.getElementById('bulk-availability-form');
+    document.getElementById('bulk-availability-trigger').addEventListener('click', () => {
+      const selectedRooms = roomRows
+        .map((row) => row.querySelector('.room-select'))
+        .filter((checkbox) => checkbox.checked);
+      if (!selectedRooms.length) {
+        window.alert('Select at least one room first.');
+        return;
+      }
+
+      bulkAvailabilityForm.querySelectorAll('[data-selected-room]').forEach((input) => input.remove());
+      selectedRooms.forEach((checkbox) => {
+        const roomIdInput = document.createElement('input');
+        roomIdInput.type = 'hidden';
+        roomIdInput.name = 'room_ids';
+        roomIdInput.value = checkbox.value;
+        roomIdInput.dataset.selectedRoom = '';
+        bulkAvailabilityForm.append(roomIdInput);
+      });
+      document.getElementById('bulk-room-selection-count').textContent =
+        `Update availability for ${selectedRooms.length} selected room${selectedRooms.length === 1 ? '' : 's'}.`;
+      bulkAvailabilityDialog.showModal();
+    });
+
+    filterRooms();
   </script>
 {% endblock %}
