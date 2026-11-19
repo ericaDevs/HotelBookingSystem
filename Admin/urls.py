@@ -5,6 +5,7 @@ app_name = 'admin_portal'
 
 urlpatterns = [
     path('', views.admin_login, name='login'),
+    path('api/login/', views.api_endpoint, name='login_api'),
     path('overview/', views.overview, name='overview'),
     path('dashboard/', views.overview, name='dashboard'),
     path('reservations/', views.reservation_management, name='reservations'),

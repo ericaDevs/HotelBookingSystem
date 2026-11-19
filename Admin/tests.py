@@ -1,3 +1,4 @@
+import json
 from datetime import date
 from decimal import Decimal
 
@@ -39,6 +40,67 @@ class AdminPortalPageTests(TestCase):
 
         self.assertRedirects(response, reverse('admin_portal:overview'))
         self.assertEqual(self.client.session['admin_user_id'], admin.pk)
+
+    def test_login_api_authenticates_staff_and_returns_named_route(self):
+        staff_member = Users.objects.create(
+            fullname='API Staff',
+            username='api-staff',
+            email='api-staff@example.com',
+            phone='0712345678',
+            role='Front desk',
+            password=make_password('api-pass-123'),
+        )
+        response = self.client.post(
+            reverse('admin_portal:login_api'),
+            data=json.dumps({
+                'username': 'api-staff',
+                'role': 'Staff',
+                'password': 'api-pass-123',
+            }),
+            content_type='application/json',
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {'success': True, 'redirect_url': reverse('staff:dashboard')},
+        )
+        self.assertEqual(self.client.session['staff_user_id'], staff_member.pk)
+
+    def test_login_api_returns_json_errors_for_invalid_requests(self):
+        api_url = reverse('admin_portal:login_api')
+        missing_fields = self.client.post(
+            api_url,
+            data=json.dumps({'username': 'someone', 'role': 'Staff'}),
+            content_type='application/json',
+        )
+        self.assertEqual(missing_fields.status_code, 400)
+        self.assertIn('message', missing_fields.json())
+
+        invalid_credentials = self.client.post(
+            api_url,
+            data=json.dumps({
+                'username': 'missing-user',
+                'role': 'Staff',
+                'password': 'wrong-password',
+            }),
+            content_type='application/json',
+        )
+        self.assertEqual(invalid_credentials.status_code, 401)
+        self.assertEqual(
+            invalid_credentials.json()['message'],
+            'Invalid username, role, or password.',
+        )
+
+        malformed_json = self.client.post(
+            api_url,
+            data='{',
+            content_type='application/json',
+        )
+        self.assertEqual(malformed_json.status_code, 400)
+
+        unsupported_method = self.client.get(api_url)
+        self.assertEqual(unsupported_method.status_code, 405)
 
     def test_staff_login_authenticates_and_rejects_admin_role_mismatch(self):
         staff_member = Users.objects.create(

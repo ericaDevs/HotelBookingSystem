@@ -4,7 +4,7 @@
 {% block form_content %}
   <span class="login-kicker">Team portal</span>
   <h2>Welcome back</h2>
-  <p class="login-intro">Admins and agents can sign in to their workspace here.</p>
+  <p class="login-intro">Admins and staff can sign in to their workspace here.</p>
 
   {% if messages %}
     <div class="portal-messages" aria-live="polite">
@@ -14,8 +14,9 @@
     </div>
   {% endif %}
 
-  <form class="login-fields" action="{% url 'admin_portal:login' %}" method="post">
+  <form class="login-fields" action="{% url 'admin_portal:login' %}" data-api-url="{% url 'admin_portal:login_api' %}" method="post">
     {% csrf_token %}
+    <p class="portal-message error" id="login-error" role="alert" hidden></p>
     <div>
       <label class="field-label" for="login-username">Username</label>
       <div class="field-wrap">
@@ -46,4 +47,49 @@
     <button class="login-submit" type="submit">Sign in <i data-lucide="arrow-right"></i></button>
   </form>
   <p class="login-security"><i data-lucide="shield-check"></i> Secure access for authorized hotel team members</p>
+
+  <script>
+    const loginForm = document.querySelector('.login-fields');
+    const loginError = document.getElementById('login-error');
+    const loginButton = loginForm.querySelector('button[type="submit"]');
+
+    async function submitLogin(event) {
+      event.preventDefault();
+      loginError.hidden = true;
+      loginButton.disabled = true;
+
+      try {
+        const response = await fetch(loginForm.dataset.apiUrl, {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRFToken': loginForm.elements.csrfmiddlewaretoken.value,
+          },
+          body: JSON.stringify({
+            username: loginForm.elements.username.value,
+            role: loginForm.elements.role.value,
+            password: loginForm.elements.password.value,
+          }),
+        });
+        const result = await response.json();
+
+        if (!response.ok) {
+          loginError.textContent = result.message || 'Unable to sign in.';
+          loginError.hidden = false;
+          return;
+        }
+
+        window.location.assign(result.redirect_url);
+      } catch {
+        loginError.textContent = 'Could not reach the sign-in service. Please try again.';
+        loginError.hidden = false;
+      } finally {
+        loginButton.disabled = false;
+      }
+    }
+
+    loginForm.addEventListener('submit', submitLogin);
+  </script>
 {% endblock %}

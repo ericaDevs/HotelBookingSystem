@@ -1,3 +1,4 @@
+import json
 from decimal import Decimal, InvalidOperation
 
 from django.contrib import messages
@@ -5,17 +6,16 @@ from django.contrib.auth.hashers import check_password, make_password
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.db.models import Count, Q, Sum
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.utils.dateparse import parse_date
+from django.urls import reverse
 
 from Billing.models import Payments
 from Properties.models import Rooms
 from Reservations.models import Guests
 from Staff.models import Users
-
-import JsonResponse
-
 
 # LOGIN VALIDATION VIEW
 def admin_login(request):
@@ -55,41 +55,80 @@ def admin_login(request):
 
 # API END-POINT VIEW
 def api_endpoint(request):
-    if request.method == "POST":
-        username = request.POST.get("username", "").strip()
-        role = request.POST.get("role", "").strip().casefold()
-        password = request.POST.get("password", "")
-        
-        
-        if not username or not role or not password:
-            messages.error(request, "Enter your username, role, and password.")
-        else:
-            user = Users.objects.filter(username__iexact=username).first()
-            admin_roles = {"admin", "administrator"}
-            is_admin_user = bool(
-                user and user.role.strip().casefold() in admin_roles
-            )
-        
-        # API RESPONSE
-        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            if (
-                user
-                and check_password(password, user.password)
-                and ((role == "admin") == is_admin_user)
-            ):
-                response_data = {
-                    'success': True,
-                    'message': f"Welcome back, {user.fullname}!",
-                    'redirect_url': '/admin/overview/' if role == "admin" else '/staff/dashboard/',
-                }
-            else:
-                response_data = {
-                    'success': False,
-                    'message': "Invalid credentials!",
-                }
-            return JsonResponse(response_data)
+    if request.method != "POST":
+        response = JsonResponse(
+            {"success": False, "message": "Only POST requests are allowed."},
+            status=405,
+        )
+        response["Allow"] = "POST"
+        return response
 
-    return render(request, 'auth/login.html')
+    try:
+        payload = json.loads(request.body)
+    except (json.JSONDecodeError, UnicodeDecodeError):
+        return JsonResponse(
+            {"success": False, "message": "Request body must contain valid JSON."},
+            status=400,
+        )
+
+    if not isinstance(payload, dict):
+        return JsonResponse(
+            {"success": False, "message": "Request body must be a JSON object."},
+            status=400,
+        )
+
+    username = payload.get("username")
+    role = payload.get("role")
+    password = payload.get("password")
+    if not all(isinstance(value, str) for value in (username, role, password)):
+        return JsonResponse(
+            {
+                "success": False,
+                "message": "Username, role, and password are required.",
+            },
+            status=400,
+        )
+
+    username = username.strip()
+    role = role.strip().casefold()
+    if not username or role not in {"admin", "staff"} or not password:
+        return JsonResponse(
+            {
+                "success": False,
+                "message": "Enter your username, role, and password.",
+            },
+            status=400,
+        )
+
+    user = Users.objects.filter(username__iexact=username).first()
+    admin_roles = {"admin", "administrator"}
+    is_admin_user = bool(user and user.role.strip().casefold() in admin_roles)
+    if (
+        not user
+        or not check_password(password, user.password)
+        or ((role == "admin") != is_admin_user)
+    ):
+        return JsonResponse(
+            {"success": False, "message": "Invalid username, role, or password."},
+            status=401,
+        )
+
+    request.session.pop("admin_user_id", None)
+    request.session.pop("staff_user_id", None)
+    request.session.cycle_key()
+    if role == "admin":
+        request.session["admin_user_id"] = user.id
+        destination = "admin_portal:overview"
+    else:
+        request.session["staff_user_id"] = user.id
+        destination = "staff:dashboard"
+
+    return JsonResponse(
+        {
+            "success": True,
+            "redirect_url": reverse(destination),
+        }
+    )
 
 
 
