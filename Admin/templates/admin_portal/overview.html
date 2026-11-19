@@ -1,77 +1,144 @@
 {% extends "admin_portal/layout.html" %}
+{% load static %}
 
-{% block title %}Admin dashboard{% endblock %}
+{% block title %}Operational overview{% endblock %}
 {% block dashboard_content %}
-  <section class="page-heading">
-    <div>
-      <h1>Good morning, Admin <span aria-hidden="true">✦</span></h1>
-      <p>Here is what is happening at your hotel today.</p>
-    </div>
-    <span class="date-pill"><i data-lucide="calendar-days"></i> Friday, 14 November 2026</span>
-  </section>
-
-  <section class="metrics-grid" aria-label="Hotel performance summary">
-    <article class="metric-card">
-      <div class="metric-top"><span class="metric-label">Total reservations</span><span class="metric-icon"><i data-lucide="calendar-check"></i></span></div>
-      <p class="metric-value">248</p><span class="metric-change"><i data-lucide="trending-up"></i> 12.8% <span class="metric-change neutral">vs last month</span></span>
-    </article>
-    <article class="metric-card">
-      <div class="metric-top"><span class="metric-label">Room occupancy</span><span class="metric-icon"><i data-lucide="bed-double"></i></span></div>
-      <p class="metric-value">78%</p><span class="metric-change"><i data-lucide="trending-up"></i> 5.2% <span class="metric-change neutral">vs last month</span></span>
-    </article>
-    <article class="metric-card">
-      <div class="metric-top"><span class="metric-label">Revenue this month</span><span class="metric-icon"><i data-lucide="banknote"></i></span></div>
-      <p class="metric-value">KES 1.24M</p><span class="metric-change"><i data-lucide="trending-up"></i> 8.4% <span class="metric-change neutral">vs last month</span></span>
-    </article>
-    <article class="metric-card">
-      <div class="metric-top"><span class="metric-label">Guest satisfaction</span><span class="metric-icon"><i data-lucide="heart"></i></span></div>
-      <p class="metric-value">4.8 <span style="font-size:15px;color:#dda848">★</span></p><span class="metric-change neutral">Based on recent guest feedback</span>
-    </article>
-  </section>
-
-  <div class="dashboard-grid">
-    <section class="panel" id="reservations">
-      <header class="panel-header">
-        <div><h2>Recent reservations</h2><p>Keep an eye on the latest guest bookings.</p></div>
-        <a class="panel-link" href="#reservations">View all <i data-lucide="arrow-up-right"></i></a>
-      </header>
-      <div class="table-wrap">
-        <table class="data-table">
-          <thead><tr><th>Guest</th><th>Booking ID</th><th>Check-in</th><th>Room</th><th>Status</th></tr></thead>
-          <tbody>
-            <tr><td><span class="guest-cell"><span class="mini-avatar">AM</span><strong>Amara Mwende</strong></span></td><td>#IC-2048</td><td>Nov 16, 2026</td><td>Deluxe Suite</td><td><span class="status">Confirmed</span></td></tr>
-            <tr><td><span class="guest-cell"><span class="mini-avatar">DK</span><strong>David Kamau</strong></span></td><td>#IC-2047</td><td>Nov 16, 2026</td><td>Garden Room</td><td><span class="status pending">Pending</span></td></tr>
-            <tr><td><span class="guest-cell"><span class="mini-avatar">GN</span><strong>Grace Njeri</strong></span></td><td>#IC-2046</td><td>Nov 17, 2026</td><td>Family Suite</td><td><span class="status">Confirmed</span></td></tr>
-            <tr><td><span class="guest-cell"><span class="mini-avatar">JO</span><strong>James Otieno</strong></span></td><td>#IC-2045</td><td>Nov 18, 2026</td><td>Garden Room</td><td><span class="status pending">Pending</span></td></tr>
-          </tbody>
-        </table>
+  <div class="admin-overview">
+    <div class="overview-eyebrow"><span></span> INTERCOUNTY GARDENS · OPERATIONS DESK</div>
+    <section class="overview-heading">
+      <div>
+        <h1>Operational Overview</h1>
+        <p>Live snapshot of in-house guests, upcoming arrivals, and room inventory</p>
       </div>
+      <a class="overview-export" href="{% url 'admin_portal:revenue' %}"><i data-lucide="download"></i> View Revenue</a>
     </section>
 
-    <div>
-      <section class="panel" id="rooms">
-        <header class="panel-header"><div><h2>Room availability</h2><p>Today's occupancy overview</p></div><i data-lucide="ellipsis" style="color:#918a96"></i></header>
-        <div class="occupancy">
-          <div class="occupancy-row"><strong>Rooms occupied</strong><strong>31 / 40</strong></div>
-          <div class="progress-track"><div class="progress-value" style="width:78%"></div></div>
-          <div class="occupancy-row" style="margin:12px 0 0"><span>9 rooms available</span><a class="panel-link" href="#rooms">Manage rooms</a></div>
-        </div>
-      </section>
-      
-      <section class="panel" id="revenue">
-        <header class="panel-header"><div><h2>Recent activity</h2><p>Updates from across your hotel</p></div></header>
-        <div class="activity-list">
-          <div class="activity-item"><span class="activity-icon"><i data-lucide="calendar-plus"></i></span><div class="activity-text"><strong>New reservation</strong> from Amara Mwende.<span class="activity-time">12 minutes ago</span></div></div>
-          <div class="activity-item"><span class="activity-icon"><i data-lucide="user-round-check"></i></span><div class="activity-text"><strong>Guest checked in</strong> to Garden Room 08.<span class="activity-time">48 minutes ago</span></div></div>
-          <div class="activity-item"><span class="activity-icon"><i data-lucide="badge-check"></i></span><div class="activity-text"><strong>Room 12 marked ready</strong> by housekeeping.<span class="activity-time">1 hour ago</span></div></div>
-        </div>
-      </section>
+    <section class="overview-metrics" aria-label="Hotel performance summary">
+      <article class="overview-metric">
+        <div class="overview-metric-label">In-house guests <i data-lucide="users-round"></i></div>
+        <strong>{{ in_house_guests }}</strong>
+        <span class="overview-metric-note"><i data-lucide="circle-check"></i> Active registered stays</span>
+      </article>
+      <article class="overview-metric">
+        <div class="overview-metric-label">Today's arrivals <i data-lucide="log-in"></i></div>
+        <strong>{{ today_arrivals }}</strong>
+        <span class="overview-metric-note accent-purple">{{ today_arrivals }} scheduled check-in{{ today_arrivals|pluralize }}</span>
+      </article>
+      <article class="overview-metric">
+        <div class="overview-metric-label">Today's departures <i data-lucide="log-out"></i></div>
+        <strong>{{ today_departures }}</strong>
+        <span class="overview-metric-note accent-purple">{{ today_departures }} scheduled check-out{{ today_departures|pluralize }}</span>
+      </article>
+      <article class="overview-metric">
+        <div class="overview-metric-label">Room occupancy <i data-lucide="bed-double"></i></div>
+        <strong>{{ occupancy_percent }}<small>%</small></strong>
+        <span class="overview-metric-note">{{ occupied_rooms }} / {{ room_count }} rooms occupied</span>
+        <div class="overview-progress"><span style="width: {{ occupancy_percent }}%"></span></div>
+      </article>
+      <article class="overview-metric">
+        <div class="overview-metric-label">Today's revenue <i data-lucide="banknote"></i></div>
+        <strong class="overview-revenue">KES {{ today_revenue|floatformat:0 }}</strong>
+        <span class="overview-metric-note">Room &amp; dining total</span>
+      </article>
+    </section>
+
+    <div class="overview-columns">
+      <div class="overview-primary">
+        <section class="overview-panel reservations-panel" id="reservations">
+          <header class="overview-panel-header">
+            <div><h2>Recent reservations &amp; in-house stays</h2><p>Real-time status tracking for current shift dispatch</p></div>
+            <a class="overview-filter" href="{% url 'admin_portal:reservations' %}"><i data-lucide="list-filter"></i> All records <i data-lucide="chevron-down"></i></a>
+          </header>
+          <div class="overview-table-wrap">
+            <table class="overview-table">
+              <thead><tr><th>Record ID</th><th>Guest name &amp; contact</th><th>Dates (in - out)</th><th>Room</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody>
+                {% for reservation in recent_reservations %}
+                  <tr>
+                    <td class="record-id">#RES-{{ reservation.pk }}</td>
+                    <td><strong>{{ reservation.full_name }}</strong><small>{{ reservation.phone_number }}</small></td>
+                    <td>{{ reservation.check_in_date|date:"M d, Y" }}<small>{{ reservation.check_out_date|date:"M d, Y" }}</small></td>
+                    <td>{% if reservation.room %}Room {{ reservation.room.room_number }}<small>{{ reservation.room.room_type }}</small>{% else %}Unassigned{% endif %}</td>
+                    <td>
+                      {% if reservation.check_out_date <= today %}
+                        <span class="overview-status checked-out">Checked out</span>
+                      {% elif reservation.check_in_date <= today %}
+                        <span class="overview-status in-house">In house</span>
+                      {% else %}
+                        <span class="overview-status upcoming">Upcoming</span>
+                      {% endif %}
+                    </td>
+                    <td><a class="row-action" href="{% url 'admin_portal:reservations' %}" aria-label="Manage reservation {{ reservation.pk }}"><i data-lucide="ellipsis-vertical"></i></a></td>
+                  </tr>
+                {% empty %}
+                  <tr><td class="overview-empty" colspan="6">No reservations have been recorded yet.</td></tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <footer class="overview-panel-footer"><span>Showing {{ recent_reservations|length }} recent record{{ recent_reservations|length|pluralize }}</span><a href="{% url 'admin_portal:reservations' %}">View all reservations <i data-lucide="arrow-right"></i></a></footer>
+        </section>
+
+        <section class="overview-feature">
+          <img src="{% static 'images/hero one.webp' %}" alt="Hotel grounds at Intercounty Gardens">
+          <div>
+            <span class="feature-eyebrow"><i data-lucide="sparkles"></i> INTERCOUNTY GARDENS</span>
+            <h2>Hospitality rooted in Kitui</h2>
+            <p>A welcoming stay, thoughtful service, and a peaceful garden setting for every guest.</p>
+            <a href="{% url 'home' %}">Explore the hotel <i data-lucide="arrow-up-right"></i></a>
+          </div>
+        </section>
+      </div>
+
+      <aside class="overview-secondary">
+        <section class="overview-panel inventory-panel" id="rooms">
+          <header class="overview-panel-header"><div><h2>Room Inventory</h2><p>{{ room_count }} rooms total</p></div><a href="{% url 'admin_portal:rooms' %}" class="mini-panel-link">Manage</a></header>
+          <div class="inventory-summary">
+            <div><span>Available</span><strong>{{ available_rooms }}</strong><small>Ready for guests</small></div>
+            <div><span>Occupied</span><strong>{{ occupied_rooms }}</strong><small>Current in-house stays</small></div>
+          </div>
+          <div class="inventory-categories">
+            {% for category in room_categories %}
+              <div class="inventory-category">
+                <div><strong>{{ category.room_type }}</strong><span>{{ category.occupied }} / {{ category.total }} occupied</span></div>
+                <div class="inventory-track"><span style="width: {{ category.occupancy_percent }}%"></span></div>
+              </div>
+            {% empty %}
+              <p class="overview-empty">No rooms have been added.</p>
+            {% endfor %}
+          </div>
+          <a class="inventory-link" href="{% url 'admin_portal:rooms' %}">Manage room inventory <i data-lucide="arrow-right"></i></a>
+        </section>
+
+        <section class="overview-panel payments-panel">
+          <header class="overview-panel-header"><div><h2>Recent Payments</h2><p>Latest guest transactions</p></div><span class="panel-date">Today</span></header>
+          <div class="payments-list">
+            {% for payment in recent_payments %}
+              <article class="payment-row">
+                <div><strong>{{ payment.guest.full_name }}</strong><span>{{ payment.payment_method }} · {{ payment.get_category_display }}</span></div>
+                <div><strong>KES {{ payment.amount|floatformat:0 }}</strong><span>{{ payment.payment_date|date:"h:i A" }}</span></div>
+              </article>
+            {% empty %}
+              <p class="overview-empty">No payments have been recorded.</p>
+            {% endfor %}
+          </div>
+          <a class="inventory-link" href="{% url 'admin_portal:revenue' %}">View revenue records <i data-lucide="arrow-right"></i></a>
+        </section>
+
+        <section class="overview-panel team-panel" id="team">
+          <header class="overview-panel-header"><div><h2>Team Directory</h2><p>{{ staff_members|length }} staff profiles</p></div><a href="{% url 'admin_portal:staff' %}" class="mini-panel-link">View all</a></header>
+          <div class="team-list">
+            {% for member in staff_members %}
+              <div class="team-row">
+                <span class="team-avatar">{{ member.fullname|slice:":1"|upper }}</span>
+                <span><strong>{{ member.fullname }}</strong><small>{{ member.role }}</small></span>
+              </div>
+            {% empty %}
+              <p class="overview-empty">No staff profiles have been added.</p>
+            {% endfor %}
+          </div>
+        </section>
+      </aside>
     </div>
   </div>
-
-  <section class="quick-actions" id="team" aria-label="Quick actions">
-    <a class="quick-action" href="#reservations"><span class="metric-icon"><i data-lucide="plus"></i></span> Review reservations</a>
-    <a class="quick-action" href="#rooms"><span class="metric-icon"><i data-lucide="bed-double"></i></span> Manage room availability</a>
-    <a class="quick-action" href="#team"><span class="metric-icon"><i data-lucide="users-round"></i></span> View your team</a>
-  </section>
 {% endblock %}

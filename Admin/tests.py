@@ -1,10 +1,11 @@
 import json
-from datetime import date
+from datetime import date, timedelta
 from decimal import Decimal
 
 from django.contrib.auth.hashers import check_password, make_password
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import timezone
 
 from Billing.models import Payments
 from Properties.models import Rooms
@@ -140,6 +141,35 @@ class AdminPortalPageTests(TestCase):
         self.assertContains(response, 'Recent reservations')
         self.assertContains(response, 'Hotel performance summary')
 
+    def test_admin_overview_uses_live_reservation_and_room_metrics(self):
+        room = Rooms.objects.create(
+            room_number=41,
+            room_type='Garden suite',
+            price=Decimal('12000.00'),
+        )
+        today = timezone.localdate()
+        Guests.objects.create(
+            full_name='Current Guest',
+            Id_no='ID41',
+            email='current.guest@example.com',
+            phone_number='0712345678',
+            county_of_origin='Kitui',
+            country='Kenya',
+            check_in_date=today,
+            check_out_date=today + timedelta(days=2),
+            room=room,
+        )
+
+        response = self.client.get(reverse('admin_portal:overview'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['in_house_guests'], 1)
+        self.assertEqual(response.context['today_arrivals'], 1)
+        self.assertEqual(response.context['occupied_rooms'], 1)
+        self.assertEqual(response.context['occupancy_percent'], 100)
+        self.assertContains(response, 'Current Guest')
+        self.assertContains(response, 'In house')
+
     def test_management_pages_render(self):
         for page in ('reservations', 'rooms', 'staff', 'revenue'):
             with self.subTest(page=page):
@@ -204,6 +234,33 @@ class AdminPortalPageTests(TestCase):
         })
         self.client.post(url, payload)
         self.assertFalse(Guests.objects.filter(email='other@example.com').exists())
+
+    def test_reservations_page_renders_filterable_guest_rows(self):
+        room = Rooms.objects.create(
+            room_number=55,
+            room_type='Garden suite',
+            price=Decimal('12000.00'),
+        )
+        today = timezone.localdate()
+        Guests.objects.create(
+            full_name='Reservation Test Guest',
+            Id_no='ID55',
+            email='reservation.test@example.com',
+            phone_number='0712345678',
+            county_of_origin='Kitui',
+            country='Kenya',
+            check_in_date=today,
+            check_out_date=today + timedelta(days=2),
+            room=room,
+        )
+
+        response = self.client.get(reverse('admin_portal:reservations'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Reservation Test Guest')
+        self.assertContains(response, 'data-status="in-house"')
+        self.assertContains(response, 'Filter reservations by stay status')
+        self.assertContains(response, 'Download Roster')
 
     def test_staff_crud_hashes_password(self):
         url = reverse('admin_portal:staff')

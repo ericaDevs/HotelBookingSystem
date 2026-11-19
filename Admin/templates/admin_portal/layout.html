@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'style/portal.css' %}">
 </head>
-<body class="dashboard-page">
+<body class="dashboard-page admin-dashboard-page">
   <div class="dashboard-shell" id="dashboard-shell">
     <aside class="dashboard-sidebar" id="dashboard-sidebar" aria-label="Admin navigation">
       <a class="portal-brand" href="{% url 'home' %}">
@@ -21,7 +21,11 @@
           <span class="portal-brand-caption">ADMIN CONSOLE</span>
         </span>
       </a>
-      <span class="sidebar-label">Workspace</span>
+      <div class="admin-shift-switch" aria-label="Workspace">
+        <span class="selected">Admin</span>
+        <a href="{% url 'staff:dashboard' %}">Staff Shift</a>
+      </div>
+      <span class="sidebar-label"><span>Admin workspace</span><span class="sidebar-tag">Lead</span></span>
       <nav class="sidebar-nav">
         <a class="sidebar-link{% if request.resolver_match.url_name == 'overview' %} active{% endif %}" href="{% url 'admin_portal:overview' %}"><i data-lucide="layout-dashboard"></i> Overview</a>
         <a class="sidebar-link{% if request.resolver_match.url_name == 'reservations' %} active{% endif %}" href="{% url 'admin_portal:reservations' %}"><i data-lucide="calendar-check"></i> Reservations</a>
@@ -30,21 +34,21 @@
         <a class="sidebar-link{% if request.resolver_match.url_name == 'revenue' %} active{% endif %}" href="{% url 'admin_portal:revenue' %}"><i data-lucide="chart-no-axes-combined"></i> Revenue</a>
       </nav>
 
-      <span class="sidebar-label">Account</span>
+      <span class="sidebar-label"><span>Staff workspace</span><span class="sidebar-tag">Desk</span></span>
       <nav class="sidebar-nav">
-        <a class="sidebar-link cursor-no-drop" href="#settings"><i data-lucide="settings-2"></i> Settings</a>
+        <a class="sidebar-link" href="{% url 'staff:dashboard' %}"><i data-lucide="layout-dashboard"></i> Staff shift overview</a>
+        <a class="sidebar-link" href="{% url 'admin_portal:rooms' %}"><i data-lucide="bed-double"></i> Room availability</a>
+        <a class="sidebar-link" href="{% url 'admin_portal:reservations' %}"><i data-lucide="contact-round"></i> Guest contacts</a>
+      </nav>
+      <span class="sidebar-label"><span>Account</span></span>
+      <nav class="sidebar-nav">
         <a class="sidebar-link" href="{% url 'admin_portal:login' %}"><i data-lucide="log-out"></i> Sign out</a>
       </nav>
       <div class="sidebar-spacer"></div>
-      <div class="sidebar-help">
-        <i data-lucide="circle-help"></i>
-        <strong>Need a hand?</strong>
-        <p>Our support team is ready to help with your workspace.</p>
-      </div>
-      <div class="sidebar-user">
-        <span class="user-avatar">AD</span>
-        <span class="user-meta"><strong>Hotel Administrator</strong><span>Administrator</span></span>
-        <i data-lucide="chevron-down"></i>
+      <div class="sidebar-station">
+        <span class="station-dot"></span>
+        <span><strong>Front Desk Station 01</strong><small>Shift Live · Active</small></span>
+        <i data-lucide="radio"></i>
       </div>
     </aside>
     <main class="dashboard-main">
@@ -56,9 +60,10 @@
           <div class="topbar-heading"><strong>Admin console</strong><span>Intercounty Gardens Hotel &amp; Kitui</span></div>
         </div>
         <div class="topbar-actions">
-          <label class="topbar-search"><i data-lucide="search"></i><input aria-label="Search dashboard" placeholder="Search anything..."></label>
+          <label class="topbar-search"><i data-lucide="search"></i><input aria-label="Search dashboard" placeholder="Search guest name, room, phone, or reservation record..."></label>
+          <span class="topbar-date"><i data-lucide="calendar-days"></i> Today, {% now "d M Y" %}</span>
           <button class="icon-button notification-dot" type="button" aria-label="Notifications"><i data-lucide="bell"></i></button>
-          <span class="user-avatar">AD</span>
+          <span class="topbar-profile"><span class="user-avatar">GK</span><span><strong>Grace Kalekye</strong><small>Hotel Administrator / Shift Lead</small></span></span>
         </div>
       </header>
       <div class="dashboard-content">

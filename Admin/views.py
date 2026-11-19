@@ -134,7 +134,65 @@ def api_endpoint(request):
 
 
 def overview(request):
-    return render(request, 'admin_portal/overview.html')
+    today = timezone.localdate()
+    in_house = Guests.objects.filter(
+        check_in_date__lte=today,
+        check_out_date__gt=today,
+    )
+    room_count = Rooms.objects.count()
+    occupied_rooms = Rooms.objects.filter(
+        reservations__check_in_date__lte=today,
+        reservations__check_out_date__gt=today,
+    ).distinct().count()
+    room_categories = Rooms.objects.values('room_type').annotate(
+        total=Count('pk'),
+        occupied=Count(
+            'reservations',
+            filter=Q(
+                reservations__check_in_date__lte=today,
+                reservations__check_out_date__gt=today,
+            ),
+            distinct=True,
+        ),
+    ).order_by('room_type')
+    room_categories = [
+        {
+            **category,
+            'available': category['total'] - category['occupied'],
+            'occupancy_percent': round(
+                category['occupied'] / category['total'] * 100
+            ) if category['total'] else 0,
+        }
+        for category in room_categories
+    ]
+    recent_reservations = Guests.objects.select_related('room').order_by('-pk')[:5]
+    recent_payments = Payments.objects.filter(
+        payment_date__date=today
+    ).select_related('guest').order_by('-payment_date')[:5]
+    staff_members = Users.objects.exclude(
+        role__iexact='admin'
+    ).exclude(
+        role__iexact='administrator'
+    ).order_by('fullname')[:3]
+    today_revenue = Payments.objects.filter(
+        payment_date__date=today
+    ).aggregate(total=Sum('amount'))['total'] or Decimal('0.00')
+
+    return render(request, 'admin_portal/overview.html', {
+        'today': today,
+        'in_house_guests': in_house.count(),
+        'today_arrivals': Guests.objects.filter(check_in_date=today).count(),
+        'today_departures': Guests.objects.filter(check_out_date=today).count(),
+        'room_count': room_count,
+        'occupied_rooms': occupied_rooms,
+        'available_rooms': room_count - occupied_rooms,
+        'occupancy_percent': round(occupied_rooms / room_count * 100) if room_count else 0,
+        'today_revenue': today_revenue,
+        'recent_reservations': recent_reservations,
+        'recent_payments': recent_payments,
+        'room_categories': room_categories,
+        'staff_members': staff_members,
+    })
 
 
 
@@ -204,19 +262,26 @@ def reservation_management(request):
     for reservation in reservations:
         if reservation.check_out_date <= today:
             status, status_class = 'Checked out', 'neutral'
+            filter_status = 'checked-out'
         elif reservation.check_in_date <= today:
             status, status_class = 'In house', ''
+            filter_status = 'in-house'
         else:
             status, status_class = 'Upcoming', 'pending'
+            filter_status = 'upcoming'
         reservation_rows.append({
             'reservation': reservation,
             'status': status,
             'status_class': status_class,
+            'filter_status': filter_status,
         })
 
     return render(request, 'admin_portal/reservations.html', {
         'reservations': reservation_rows,
         'rooms': Rooms.objects.order_by('room_number'),
+        'room_types': Rooms.objects.order_by().values_list(
+            'room_type', flat=True
+        ).distinct(),
         'today': today,
         'total_reservations': Guests.objects.count(),
         'arrivals_today': Guests.objects.filter(check_in_date=today).count(),
@@ -225,6 +290,7 @@ def reservation_management(request):
             check_out_date__gt=today,
         ).count(),
         'upcoming': Guests.objects.filter(check_in_date__gt=today).count(),
+        'checked_out': Guests.objects.filter(check_out_date__lte=today).count(),
     })
 
 

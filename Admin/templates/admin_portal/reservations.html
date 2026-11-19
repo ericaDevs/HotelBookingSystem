@@ -1,83 +1,134 @@
 {% extends "admin_portal/layout.html" %}
 
-{% block title %}Reservations{% endblock %}
+{% block title %}Reservations Management{% endblock %}
 {% block dashboard_content %}
-  <section class="page-heading">
-    <div>
-      <h1>Reservations</h1>
-      <p>Track guest stays, arrivals and room assignments.</p>
-    </div>
-    <div class="page-actions">
-      <span class="date-pill"><i data-lucide="calendar-days"></i> {% now "D, d M Y" %}</span>
-      <button class="dashboard-button" type="button" data-modal-open="reservation-modal">
-        <i data-lucide="plus"></i> Add reservation
-      </button>
-    </div>
-  </section>
+  <div class="reservations-management">
+    <div class="reservation-eyebrow"><span></span> FRONT DESK OPERATIONS <b>·</b> Live stay view</div>
+    <section class="reservation-heading">
+      <div>
+        <h1>Reservations Management</h1>
+        <p>Track guest stays, arrival schedules, room assignments, and guest identity details for Intercounty Gardens Hotel &amp; Kitui.</p>
+      </div>
+      <div class="reservation-heading-actions">
+        <details class="reservation-date-control">
+          <summary><i data-lucide="calendar-days"></i> Filter Dates</summary>
+          <div class="reservation-date-popover">
+            <label>From<input type="date" id="reservation-date-start"></label>
+            <label>To<input type="date" id="reservation-date-end"></label>
+            <button type="button" class="reservation-filter-clear" data-clear-dates>Clear dates</button>
+          </div>
+        </details>
+        <button class="reservation-toolbar-button" type="button" id="download-roster"><i data-lucide="download"></i> Download Roster</button>
+        <button class="reservation-new-button" type="button" data-modal-open="reservation-modal"><i data-lucide="plus"></i> New Reservation</button>
+      </div>
+    </section>
 
-  <section class="metrics-grid" aria-label="Reservation metrics">
-    <article class="metric-card">
-      <div class="metric-top"><span class="metric-label">All reservations</span><span class="metric-icon"><i data-lucide="calendar-check"></i></span></div>
-      <p class="metric-value">{{ total_reservations }}</p><span class="metric-change neutral">Guest stays on record</span>
-    </article>
-    <article class="metric-card">
-      <div class="metric-top"><span class="metric-label">Arriving today</span><span class="metric-icon"><i data-lucide="log-in"></i></span></div>
-      <p class="metric-value">{{ arrivals_today }}</p><span class="metric-change neutral">Scheduled check-ins</span>
-    </article>
-    <article class="metric-card">
-      <div class="metric-top"><span class="metric-label">Currently in house</span><span class="metric-icon"><i data-lucide="hotel"></i></span></div>
-      <p class="metric-value">{{ in_house }}</p><span class="metric-change neutral">Based on stay dates</span>
-    </article>
-    <article class="metric-card">
-      <div class="metric-top"><span class="metric-label">Upcoming</span><span class="metric-icon"><i data-lucide="calendar-clock"></i></span></div>
-      <p class="metric-value">{{ upcoming }}</p><span class="metric-change neutral">Future check-ins</span>
-    </article>
-  </section>
+    <section class="reservation-metrics" aria-label="Reservation metrics">
+      <article class="reservation-metric metric-purple">
+        <div><span>All stays</span><i data-lucide="clipboard-list"></i></div>
+        <strong>{{ total_reservations }}</strong>
+        <small><i data-lucide="database"></i> Total guest records</small>
+      </article>
+      <article class="reservation-metric metric-red">
+        <div><span>Arrivals today</span><i data-lucide="log-in"></i></div>
+        <strong>{{ arrivals_today }}</strong>
+        <small><i data-lucide="clock-3"></i> Scheduled check-ins</small>
+      </article>
+      <article class="reservation-metric metric-green">
+        <div><span>In-house guests</span><i data-lucide="hotel"></i></div>
+        <strong>{{ in_house }}</strong>
+        <small><i data-lucide="circle-check"></i> Guests on active stays</small>
+      </article>
+      <article class="reservation-metric metric-pink">
+        <div><span>Upcoming stays</span><i data-lucide="calendar-clock"></i></div>
+        <strong>{{ upcoming }}</strong>
+        <small><i data-lucide="calendar-days"></i> Future check-ins</small>
+      </article>
+    </section>
 
-  <section class="panel">
-    <header class="panel-header">
-      <div><h2>Guest stays</h2><p>Room assignments and reservation dates.</p></div>
-      <span class="metric-label">{{ total_reservations }} records</span>
-    </header>
-    <div class="table-wrap">
-      <table class="data-table">
-        <thead>
-          <tr><th>Guest</th><th>Room</th><th>Check-in</th><th>Check-out</th><th>Contact</th><th>Status</th><th>Action</th></tr>
-        </thead>
-        <tbody>
-          {% for row in reservations %}
-            {% with reservation=row.reservation %}
-              <tr>
-                <td><span class="guest-cell"><span class="mini-avatar">{{ reservation.full_name|slice:":1"|upper }}</span><strong>{{ reservation.full_name }}</strong></span></td>
-                <td>{% if reservation.room %}{{ reservation.room.room_number }} · {{ reservation.room.room_type }}{% else %}<span class="metric-label">Not assigned</span>{% endif %}</td>
-                <td>{{ reservation.check_in_date|date:"d M Y" }}</td>
-                <td>{{ reservation.check_out_date|date:"d M Y" }}</td>
-                <td>{{ reservation.email }}</td>
-                <td><span class="status {{ row.status_class }}">{{ row.status }}</span></td>
-                <td>
-                  <button class="table-action" type="button" data-edit-reservation
-                    data-id="{{ reservation.pk }}"
-                    data-full-name="{{ reservation.full_name }}"
-                    data-email="{{ reservation.email }}"
-                    data-phone="{{ reservation.phone_number }}"
-                    data-id-no="{{ reservation.Id_no }}"
-                    data-county="{{ reservation.county_of_origin }}"
-                    data-country="{{ reservation.country }}"
+    <section class="reservation-directory">
+      <div class="reservation-filter-panel">
+        <div class="reservation-filter-controls">
+          <label class="reservation-search"><i data-lucide="search"></i><input id="reservation-search" type="search" placeholder="Search by guest name, phone, email, or National ID..."></label>
+          <label class="reservation-category"><span class="sr-only">Filter by room category</span>
+            <select id="reservation-room-filter">
+              <option value="">All Categories</option>
+              {% for room_type in room_types %}<option value="{{ room_type|lower }}">{{ room_type }}</option>{% endfor %}
+              <option value="unassigned">Unassigned rooms</option>
+            </select>
+          </label>
+        </div>
+        <nav class="reservation-status-tabs" aria-label="Filter reservations by stay status">
+          <button type="button" class="active" data-status-filter="all">All Stays ({{ total_reservations }})</button>
+          <button type="button" data-status-filter="in-house">In house ({{ in_house }})</button>
+          <button type="button" data-status-filter="upcoming">Upcoming ({{ upcoming }})</button>
+          <button type="button" data-status-filter="checked-out">Checked out ({{ checked_out }})</button>
+          <span class="reservation-sync"><i></i> Live reservation records</span>
+        </nav>
+      </div>
+
+      <div class="reservation-table-wrap">
+        <table class="reservation-table">
+          <thead>
+            <tr><th>ID &amp; Guest Name</th><th>Contact</th><th>Identity / Doc</th><th>Stay Dates</th><th>Assigned Room</th><th>Derived Status</th><th>Actions</th></tr>
+          </thead>
+          <tbody id="reservation-table-body">
+            {% for row in reservations %}
+              {% with reservation=row.reservation %}
+                <tr class="reservation-data-row"
+                    data-status="{{ row.filter_status }}"
+                    data-search="{{ reservation.full_name|lower }} {{ reservation.phone_number|lower }} {{ reservation.email|lower }} {{ reservation.Id_no|lower }} {{ reservation.room.room_type|default:''|lower }} {{ reservation.room.room_number|default:'' }}"
+                    data-room-type="{% if reservation.room %}{{ reservation.room.room_type|lower }}{% else %}unassigned{% endif %}"
                     data-check-in="{{ reservation.check_in_date|date:'Y-m-d' }}"
                     data-check-out="{{ reservation.check_out_date|date:'Y-m-d' }}"
-                    data-room="{% if reservation.room %}{{ reservation.room_id }}{% endif %}">
-                    <i data-lucide="pencil"></i> Edit
-                  </button>
-                </td>
-              </tr>
-            {% endwith %}
-          {% empty %}
-            <tr><td class="empty-table" colspan="7">No reservations yet. Add a guest stay to get started.</td></tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </section>
+                    data-id="{{ reservation.pk }}"
+                    data-name="{{ reservation.full_name }}"
+                    data-phone="{{ reservation.phone_number }}"
+                    data-email="{{ reservation.email }}"
+                    data-identity="{{ reservation.Id_no }}"
+                    data-room="{% if reservation.room %}{{ reservation.room.room_number }} · {{ reservation.room.room_type }}{% else %}Unassigned{% endif %}"
+                    data-status-label="{{ row.status }}">
+                  <td>
+                    <span class="reservation-guest">
+                      <span class="reservation-avatar">{{ reservation.full_name|slice:":1"|upper }}</span>
+                      <span><strong>{{ reservation.full_name }}</strong><small>#RES-{{ reservation.pk }}</small></span>
+                    </span>
+                  </td>
+                  <td><strong>{{ reservation.phone_number }}</strong><small>{{ reservation.email }}</small></td>
+                  <td><span class="identity-chip">ID: {{ reservation.Id_no }}</span></td>
+                  <td><strong>{{ reservation.check_in_date|date:"M d" }} – {{ reservation.check_out_date|date:"M d" }}</strong><small><i data-lucide="moon"></i> {{ reservation.check_out_date|timeuntil:reservation.check_in_date }}</small></td>
+                  <td>{% if reservation.room %}<strong>Room {{ reservation.room.room_number }}</strong><small>{{ reservation.room.room_type }}</small>{% else %}<span class="unassigned-chip"><i data-lucide="triangle-alert"></i> Not assigned</span>{% endif %}</td>
+                  <td><span class="reservation-status {{ row.filter_status }}"><i></i>{{ row.status }}</span></td>
+                  <td>
+                    <button class="reservation-edit-button" type="button" data-edit-reservation
+                      data-id="{{ reservation.pk }}"
+                      data-full-name="{{ reservation.full_name }}"
+                      data-email="{{ reservation.email }}"
+                      data-phone="{{ reservation.phone_number }}"
+                      data-id-no="{{ reservation.Id_no }}"
+                      data-county="{{ reservation.county_of_origin }}"
+                      data-country="{{ reservation.country }}"
+                      data-check-in="{{ reservation.check_in_date|date:'Y-m-d' }}"
+                      data-check-out="{{ reservation.check_out_date|date:'Y-m-d' }}"
+                      data-room="{% if reservation.room %}{{ reservation.room_id }}{% endif %}"
+                      aria-label="{% if reservation.room %}Edit{% else %}Assign room to{% endif %} reservation for {{ reservation.full_name }}"
+                      title="{% if reservation.room %}Edit reservation{% else %}Assign room{% endif %}">
+                      {% if reservation.room %}<i data-lucide="pencil"></i>{% else %}Assign{% endif %}
+                    </button>
+                  </td>
+                </tr>
+              {% endwith %}
+            {% endfor %}
+            <tr id="reservation-empty-row" hidden><td colspan="7">No reservations match these filters.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <footer class="reservation-table-footer">
+        <span id="reservation-result-count" data-total="{{ total_reservations }}">Showing 0 stay records</span>
+        <nav class="reservation-pagination" id="reservation-pagination" aria-label="Reservation pages"></nav>
+      </footer>
+    </section>
+  </div>
 
   <dialog class="portal-dialog" id="reservation-modal" aria-labelledby="reservation-modal-title">
     <form class="modal-form" method="post">
@@ -99,8 +150,8 @@
           <label class="modal-field">Check-in<input type="date" name="check_in_date" required></label>
           <label class="modal-field">Check-out<input type="date" name="check_out_date" required></label>
           <label class="modal-field full">Room
-            <select name="room" required>
-              <option value="">Select a room</option>
+            <select name="room">
+              <option value="">Select a room (optional)</option>
               {% for room in rooms %}<option value="{{ room.pk }}">Room {{ room.room_number }} · {{ room.room_type }} · KES {{ room.price|floatformat:2 }}</option>{% endfor %}
             </select>
           </label>
@@ -131,8 +182,8 @@
         reservationForm.elements.email.value = data.email;
         reservationForm.elements.phone_number.value = data.phone;
         reservationForm.elements.id_no.value = data.idNo;
-        reservationForm.elements.county_of_origin.value = data.county;
-        reservationForm.elements.country.value = data.country;
+        reservationForm.elements.county_of_origin.value = button.dataset.county || '';
+        reservationForm.elements.country.value = button.dataset.country || '';
         reservationForm.elements.check_in_date.value = data.checkIn;
         reservationForm.elements.check_out_date.value = data.checkOut;
         reservationForm.elements.room.value = data.room;
@@ -149,5 +200,146 @@
       reservationTitle.textContent = 'Add reservation';
       reservationSubmit.textContent = 'Save reservation';
     });
+
+    const reservationRows = Array.from(document.querySelectorAll('.reservation-data-row'));
+    const statusButtons = Array.from(document.querySelectorAll('[data-status-filter]'));
+    const reservationSearch = document.getElementById('reservation-search');
+    const roomFilter = document.getElementById('reservation-room-filter');
+    const dateStart = document.getElementById('reservation-date-start');
+    const dateEnd = document.getElementById('reservation-date-end');
+    const resultCount = document.getElementById('reservation-result-count');
+    const pagination = document.getElementById('reservation-pagination');
+    const emptyRow = document.getElementById('reservation-empty-row');
+    const pageSize = 6;
+    let activeStatus = 'all';
+    let currentPage = 1;
+
+    function filterReservations() {
+      const searchTerm = reservationSearch.value.trim().toLowerCase();
+      const roomType = roomFilter.value;
+      const startDate = dateStart.value;
+      const endDate = dateEnd.value;
+
+      const filteredRows = reservationRows.filter((row) => {
+        const matchesStatus = activeStatus === 'all' || row.dataset.status === activeStatus;
+        const matchesSearch = !searchTerm || row.dataset.search.includes(searchTerm);
+        const matchesRoom = !roomType || row.dataset.roomType === roomType;
+        const matchesStart = !startDate || row.dataset.checkIn >= startDate;
+        const matchesEnd = !endDate || row.dataset.checkIn <= endDate;
+        return matchesStatus && matchesSearch && matchesRoom && matchesStart && matchesEnd;
+      });
+
+      const pageCount = Math.max(1, Math.ceil(filteredRows.length / pageSize));
+      currentPage = Math.min(currentPage, pageCount);
+      const firstIndex = (currentPage - 1) * pageSize;
+      const visibleRows = new Set(filteredRows.slice(firstIndex, firstIndex + pageSize));
+
+      reservationRows.forEach((row) => {
+        row.hidden = !visibleRows.has(row);
+      });
+      emptyRow.hidden = filteredRows.length !== 0;
+      resultCount.textContent = filteredRows.length
+        ? `Showing ${firstIndex + 1} to ${Math.min(firstIndex + pageSize, filteredRows.length)} of ${filteredRows.length} stay records`
+        : 'Showing 0 stay records';
+      renderPagination(pageCount);
+    }
+
+    function renderPagination(pageCount) {
+      pagination.replaceChildren();
+      const addPageButton = (label, page, options = {}) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = label;
+        button.disabled = options.disabled || false;
+        if (page === currentPage) button.classList.add('active');
+        button.addEventListener('click', () => {
+          currentPage = page;
+          filterReservations();
+        });
+        pagination.append(button);
+      };
+
+      addPageButton('Previous', Math.max(1, currentPage - 1), { disabled: currentPage === 1 });
+      let pages = Array.from({ length: pageCount }, (_, index) => index + 1);
+      if (pageCount > 5) {
+        if (currentPage <= 3) {
+          pages = [1, 2, 3, 4, pageCount];
+        } else if (currentPage >= pageCount - 2) {
+          pages = [1, pageCount - 3, pageCount - 2, pageCount - 1, pageCount];
+        } else {
+          pages = [1, currentPage - 1, currentPage, currentPage + 1, pageCount];
+        }
+      }
+      let previousPage = 0;
+      for (const page of pages) {
+        if (page - previousPage > 1) {
+          const ellipsis = document.createElement('span');
+          ellipsis.className = 'pagination-ellipsis';
+          ellipsis.textContent = '…';
+          pagination.append(ellipsis);
+        }
+        addPageButton(String(page), page);
+        previousPage = page;
+      }
+      addPageButton('Next', Math.min(pageCount, currentPage + 1), { disabled: currentPage === pageCount });
+    }
+
+    statusButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        activeStatus = button.dataset.statusFilter;
+        currentPage = 1;
+        statusButtons.forEach((item) => item.classList.toggle('active', item === button));
+        filterReservations();
+      });
+    });
+    [reservationSearch, roomFilter, dateStart, dateEnd].forEach((control) => {
+      control.addEventListener(control === reservationSearch ? 'input' : 'change', () => {
+        currentPage = 1;
+        filterReservations();
+      });
+    });
+    document.querySelector('[data-clear-dates]').addEventListener('click', () => {
+      dateStart.value = '';
+      dateEnd.value = '';
+      currentPage = 1;
+      filterReservations();
+    });
+    document.getElementById('download-roster').addEventListener('click', () => {
+      const filteredRows = reservationRows.filter((row) => {
+        const matchesStatus = activeStatus === 'all' || row.dataset.status === activeStatus;
+        const matchesSearch = !reservationSearch.value.trim() || row.dataset.search.includes(reservationSearch.value.trim().toLowerCase());
+        const matchesRoom = !roomFilter.value || row.dataset.roomType === roomFilter.value;
+        const matchesStart = !dateStart.value || row.dataset.checkIn >= dateStart.value;
+        const matchesEnd = !dateEnd.value || row.dataset.checkIn <= dateEnd.value;
+        return matchesStatus && matchesSearch && matchesRoom && matchesStart && matchesEnd;
+      });
+      const csvCell = (value) => {
+        const text = String(value);
+        const safeText = /^[=+\-@]/.test(text) ? `'${text}` : text;
+        return `"${safeText.replace(/"/g, '""')}"`;
+      };
+      const csv = [
+        ['Record ID', 'Guest', 'Phone', 'Email', 'Identity', 'Check-in', 'Check-out', 'Room', 'Status'],
+        ...filteredRows.map((row) => [
+          `RES-${row.dataset.id}`,
+          row.dataset.name,
+          row.dataset.phone,
+          row.dataset.email,
+          row.dataset.identity,
+          row.dataset.checkIn,
+          row.dataset.checkOut,
+          row.dataset.room,
+          row.dataset.statusLabel,
+        ]),
+      ].map((line) => line.map(csvCell).join(',')).join('\r\n');
+      const downloadUrl = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+      const downloadLink = document.createElement('a');
+      downloadLink.href = downloadUrl;
+      downloadLink.download = 'reservation-roster.csv';
+      downloadLink.click();
+      window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+    });
+
+    filterReservations();
   </script>
 {% endblock %}
