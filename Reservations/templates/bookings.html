@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% load static %}
 
 {% block title %}Booking & Reservation | Intercounty Hotels{% endblock %}
 {% block body_class %}bg-surface font-body-md text-on-surface antialiased min-h-screen{% endblock %}
@@ -262,30 +263,22 @@
             </div>
           </div>
         </section>
+
+
+
+
         <!-- Main Booking Flow Content -->
         <section class="w-full py-space-xl px-margin-mobile lg:px-margin">
           <div
-            class="max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start"
+            class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start"
           >
             <!-- LEFT COLUMN: Guest Details & Payment (8 Cols) -->
             <div class="lg:col-span-7 xl:col-span-8 flex flex-col gap-space-lg">
-              <!-- Banner Alert: Room Reserved Timer -->
-              <div
-                class="flex items-center justify-between p-space-md rounded-xl bg-primary-fixed/40 text-on-primary-fixed shadow-sm"
-              >
-                <div class="flex items-center gap-space-sm">
-                  <i data-lucide="lock-keyhole" class="text-primary text-xl"></i>
-                  <p class="font-body-sm text-body-sm">
-                    We are holding your selected suite at guaranteed rate for:
-                  </p>
-                </div>
-                <span
-                  class="font-label-lg text-label-lg font-bold text-secondary bg-surface-container-lowest px-space-sm py-1 rounded-full shadow-sm"
-                  id="countdown-timer"
-                >
-                  14:38
-                </span>
-              </div>
+              <form id="booking-form" method="post" action="{% url 'bookings' %}" class="flex flex-col gap-space-lg">
+                {% csrf_token %}
+                <input type="hidden" name="room" value="{% if selected_room %}{{ selected_room.pk }}{% endif %}">
+                <input type="hidden" name="payment_method" id="payment-method" value="M-Pesa">
+                <p id="booking-feedback" class="hidden rounded-lg p-space-md" role="status" aria-live="polite"></p>
               <!-- Card: Primary Guest Information -->
               <div
                 class="bg-surface-container-lowest p-space-lg lg:p-space-xl rounded-xl shadow-sm flex flex-col gap-space-md"
@@ -315,22 +308,25 @@
                     >
                     <input
                       class="h-12 px-space-md rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
-                      placeholder="e.g. Grace Wambui"
+                      name="full_name"
+                      placeholder="e.g. Erica Devs"
                       type="text"
-                      value="Dr. Evans Musyoka"
+                      maxlength="50"
+                      required
                     />
                   </div>
                   <!-- Email Address -->
                   <div class="flex flex-col gap-1.5">
                     <label
                       class="font-label-sm text-label-sm text-on-surface-variant font-medium"
-                      >Email Address (for Instant Voucher) *</label
+                      >Email Address</label
                     >
                     <input
                       class="h-12 px-space-md rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
                       placeholder="you@domain.com"
                       type="email"
-                      value="evans.musyoka@kenyahospitality.co.ke"
+                      name="email"
+                      required
                     />
                   </div>
                   <!-- Kenyan Phone Number -->
@@ -352,7 +348,9 @@
                         id="guest-phone"
                         placeholder="7XX XXX XXX"
                         type="tel"
-                        value="722 458 912"
+                        name="phone_number"
+                        maxlength="15"
+                        required
                       />
                     </div>
                   </div>
@@ -366,159 +364,71 @@
                       class="h-12 px-space-md rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
                       placeholder="e.g. 29401822 or Passport No."
                       type="text"
-                      value="A28904712"
+                      name="Id_no"
+                      maxlength="12"
+                      required
                     />
                   </div>
-                  <!-- Country & City -->
-                  <div class="flex flex-col gap-1.5 md:col-span-2">
-                    <label
-                      class="font-label-sm text-label-sm text-on-surface-variant font-medium"
-                      >Residential City / Country of Origin</label
-                    >
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
-                      <input
-                        class="h-12 px-space-md rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
-                        placeholder="City of Residence"
-                        type="text"
-                        value="Nairobi / Kitui Resident"
-                      />
-                      <select
-                        class="h-12 px-space-md rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
-                      >
-                        <option selected="">Kenya (East Africa)</option>
-                        <option>Uganda</option>
-                        <option>Tanzania</option>
-                        <option>United Kingdom</option>
-                        <option>United States</option>
-                        <option>Germany</option>
-                        <option>Other International</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- Card: Special Requests & Arrival Details -->
-              <div
-                class="bg-surface-container-lowest p-space-lg lg:p-space-xl rounded-xl shadow-sm flex flex-col gap-space-md"
-              >
-                <div class="flex items-center gap-space-sm">
-                  <i data-lucide="clock" class="text-primary text-2xl"></i>
-                  <h2 class="font-headline-sm text-headline-sm text-on-surface">
-                    2. Arrival Preferences & Requests
-                  </h2>
-                </div>
-                <div
-                  class="grid grid-cols-1 md:grid-cols-3 gap-space-md mt-space-xs"
-                >
+
+                  <!-- County & Country -->
                   <div class="flex flex-col gap-1.5">
                     <label
                       class="font-label-sm text-label-sm text-on-surface-variant font-medium"
-                      >Estimated Arrival Time</label
+                      >County of Origin *</label
                     >
-                    <select
-                      class="h-12 px-space-md rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary/40"
-                    >
-                      <option>
-                        12:00 PM – 2:00 PM (Early Check-in request)
-                      </option>
-                      <option selected="">
-                        2:00 PM – 4:00 PM (Standard Check-in)
-                      </option>
-                      <option>4:00 PM – 6:00 PM (Afternoon Arrival)</option>
-                      <option>6:00 PM – 9:00 PM (Evening Arrival)</option>
-                      <option>Late Night (After 9:00 PM)</option>
-                    </select>
+                    <input
+                      class="h-12 px-space-md rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
+                      placeholder="e.g. Kitui"
+                      type="text"
+                      name="county_of_origin"
+                      maxlength="50"
+                      required
+                    />
                   </div>
-                  <div class="flex flex-col gap-1.5 md:col-span-2">
+                  <div class="flex flex-col gap-1.5">
                     <label
                       class="font-label-sm text-label-sm text-on-surface-variant font-medium"
-                      >Complimentary Pick-up or Transfer Service</label
+                      >Country *</label
                     >
-                    <select
-                      class="h-12 px-space-md rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary/40"
-                    >
-                      <option>
-                        No transfer needed (Self-drive / Local taxi)
-                      </option>
-                      <option selected="">
-                        Complimentary Kitui Airstrip Shuttle (10 Mins)
-                      </option>
-                      <option>
-                        Private Nairobi (JKIA) Executive Chauffeur (Extra KES
-                        9,500)
-                      </option>
-                    </select>
+                    <input
+                      class="h-12 px-space-md rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
+                      placeholder="e.g. Kenya"
+                      type="text"
+                      name="country"
+                      maxlength="50"
+                      required
+                    />
                   </div>
-                </div>
-                <!-- Special Preferences Pills -->
-                <div class="flex flex-col gap-1.5 mt-space-xs">
-                  <label
-                    class="font-label-sm text-label-sm text-on-surface-variant font-medium"
-                    >Add-on In-room Amenities (Free on Request)</label
-                  >
-                  <div class="flex flex-wrap gap-space-sm">
-                    <button
-                      class="px-space-md py-2 rounded-full font-label-sm text-label-sm bg-primary text-on-primary flex items-center gap-1.5 transition-all"
-                      onclick="
-                        this.classList.toggle('bg-primary');
-                        this.classList.toggle('text-on-primary');
-                        this.classList.toggle('bg-surface-container');
-                      "
-                      type="button"
+
+                  <!-- Stay Dates -->
+                  <div class="flex flex-col gap-1.5">
+                    <label
+                      class="font-label-sm text-label-sm text-on-surface-variant font-medium"
+                      >Check-in Date *</label
                     >
-                      <i data-lucide="bed" class="text-sm"></i>
-                      High Floor Quiet Wing
-                    </button>
-                    <button
-                      class="px-space-md py-2 rounded-full font-label-sm text-label-sm bg-surface-container text-on-surface flex items-center gap-1.5 transition-all"
-                      onclick="
-                        this.classList.toggle('bg-primary');
-                        this.classList.toggle('text-on-primary');
-                        this.classList.toggle('bg-surface-container');
-                      "
-                      type="button"
-                    >
-                      <i data-lucide="cake" class="text-sm"></i>
-                      Honeymoon / Anniversary Fruit Basket
-                    </button>
-                    <button
-                      class="px-space-md py-2 rounded-full font-label-sm text-label-sm bg-surface-container text-on-surface flex items-center gap-1.5 transition-all"
-                      onclick="
-                        this.classList.toggle('bg-primary');
-                        this.classList.toggle('text-on-primary');
-                        this.classList.toggle('bg-surface-container');
-                      "
-                      type="button"
-                    >
-                      <i data-lucide="utensils" class="text-sm"></i>
-                      Halal / Vegan Breakfast Note
-                    </button>
-                    <button
-                      class="px-space-md py-2 rounded-full font-label-sm text-label-sm bg-surface-container text-on-surface flex items-center gap-1.5 transition-all"
-                      onclick="
-                        this.classList.toggle('bg-primary');
-                        this.classList.toggle('text-on-primary');
-                        this.classList.toggle('bg-surface-container');
-                      "
-                      type="button"
-                    >
-                      <i data-lucide="laptop" class="text-sm"></i>
-                      Extra Executive Workstation Desk
-                    </button>
+                    <input
+                      class="h-12 px-space-md rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
+                      type="date"
+                      name="check_in_date"
+                      required
+                    />
                   </div>
-                </div>
-                <div class="flex flex-col gap-1.5 mt-space-xs">
-                  <label
-                    class="font-label-sm text-label-sm text-on-surface-variant font-medium"
-                    >Special Instructions / Dietary Restrictions</label
-                  >
-                  <textarea
-                    class="p-space-md rounded-lg bg-surface-container-low text-on-surface font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
-                    placeholder="Let us know if you require cribs, late meal service, or specific dietary preparations..."
-                    rows="2"
-                  ></textarea>
+                  <div class="flex flex-col gap-1.5">
+                    <label
+                      class="font-label-sm text-label-sm text-on-surface-variant font-medium"
+                      >Check-out Date *</label
+                    >
+                    <input
+                      class="h-12 px-space-md rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
+                      type="date"
+                      name="check_out_date"
+                      required
+                    />
+                  </div>
                 </div>
               </div>
+
+
               <!-- Card: Payment Method Selection -->
               <div
                 class="bg-surface-container-lowest p-space-lg lg:p-space-xl rounded-xl shadow-sm flex flex-col gap-space-lg"
@@ -541,13 +451,13 @@
                     <span>256-Bit SSL Encrypted Gateway</span>
                   </div>
                 </div>
+
                 <!-- Method Selection Tabs -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-space-sm">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm">
                   <!-- Option 1: M-Pesa (Active Default) -->
                   <button
                     class="p-space-md rounded-xl text-left transition-all flex flex-col justify-between gap-space-sm bg-tertiary-fixed/30 text-on-tertiary-fixed shadow-sm"
                     id="tab-mpesa"
-                    onclick="selectPaymentMethod('mpesa')"
                     type="button"
                   >
                     <div class="flex items-center justify-between">
@@ -571,39 +481,12 @@
                       </p>
                     </div>
                   </button>
-                  <!-- Option 2: Card -->
-                  <button
-                    class="p-space-md rounded-xl text-left transition-all flex flex-col justify-between gap-space-sm bg-surface-container-low text-on-surface hover:bg-surface-container shadow-sm"
-                    id="tab-card"
-                    onclick="selectPaymentMethod('card')"
-                    type="button"
-                  >
-                    <div class="flex items-center justify-between">
-                      <div
-                        class="w-8 h-8 rounded-full bg-surface-variant text-on-surface flex items-center justify-center font-bold text-xs"
-                      >
-                        <i data-lucide="credit-card" class="text-base"></i>
-                      </div>
-                      <i data-lucide="circle" class="text-outline text-xl"></i>
-                    </div>
-                    <div>
-                      <p
-                        class="font-label-lg text-label-lg font-bold text-on-surface"
-                      >
-                        Credit / Debit Card
-                      </p>
-                      <p
-                        class="font-body-sm text-body-sm text-on-surface-variant"
-                      >
-                        Visa, Mastercard, Amex
-                      </p>
-                    </div>
-                  </button>
-                  <!-- Option 3: Pay on Arrival -->
+
+
+                  <!-- Option 2: Pay on Arrival -->
                   <button
                     class="p-space-md rounded-xl text-left transition-all flex flex-col justify-between gap-space-sm bg-surface-container-low text-on-surface hover:bg-surface-container shadow-sm"
                     id="tab-arrival"
-                    onclick="selectPaymentMethod('arrival')"
                     type="button"
                   >
                     <div class="flex items-center justify-between">
@@ -628,6 +511,10 @@
                     </div>
                   </button>
                 </div>
+
+
+
+
                 <!-- Dynamic Panel: M-Pesa Form (Default Visible) -->
                 <div
                   class="flex flex-col gap-space-md p-space-lg rounded-xl bg-tertiary-fixed/15"
@@ -684,9 +571,11 @@
                         </span>
                         <input
                           class="w-full px-space-md bg-transparent text-on-surface font-body-md text-body-md focus:outline-none"
+                          id="mpesa-phone"
                           placeholder="7XXXXXXXX"
                           type="tel"
-                          value="722 458 912"
+                          value=""
+                          maxlength="15"
                         />
                       </div>
                       <p class="font-label-sm text-label-sm text-tertiary">
@@ -714,120 +603,59 @@
                       </p>
                     </div>
                   </div>
-                </div>
-                <!-- Dynamic Panel: Card Form (Hidden) -->
-                <div
-                  class="hidden flex-col gap-space-md p-space-lg rounded-xl bg-surface-container-low"
-                  id="panel-card"
-                >
-                  <div class="flex items-center justify-between">
-                    <h3
-                      class="font-headline-sm text-headline-sm text-on-surface"
-                    >
-                      Card Details
-                    </h3>
-                    <div
-                      class="flex items-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm"
-                    >
-                      <span
-                        class="px-2 py-0.5 rounded bg-surface-container-lowest font-bold"
-                        >VISA</span
-                      >
-                      <span
-                        class="px-2 py-0.5 rounded bg-surface-container-lowest font-bold"
-                        >Mastercard</span
-                      >
-                      <span
-                        class="px-2 py-0.5 rounded bg-surface-container-lowest font-bold"
-                        >AMEX</span
-                      >
-                    </div>
-                  </div>
-                  <div
-                    class="grid grid-cols-1 md:grid-cols-2 gap-space-md mt-space-xs"
+                  <button
+                    class="w-full min-h-12 rounded-full bg-tertiary text-on-tertiary px-space-md py-space-sm font-label-md text-label-md font-bold disabled:opacity-50"
+                    type="submit"
+                    name="booking_action"
+                    value="mpesa"
                   >
-                    <div class="flex flex-col gap-1.5 md:col-span-2">
-                      <label
-                        class="font-label-sm text-label-sm text-on-surface-variant font-medium"
-                        >Cardholder Full Name</label
-                      >
-                      <input
-                        class="h-12 px-space-md rounded-lg bg-surface-container-lowest text-on-surface font-body-md text-body-md focus:outline-none shadow-sm"
-                        placeholder="Dr Evans Musyoka"
-                        type="text"
-                      />
-                    </div>
-                    <div class="flex flex-col gap-1.5 md:col-span-2">
-                      <label
-                        class="font-label-sm text-label-sm text-on-surface-variant font-medium"
-                        >16-Digit Card Number</label
-                      >
-                      <div class="relative">
-                        <input
-                          class="h-12 w-full px-space-md rounded-lg bg-surface-container-lowest text-on-surface font-body-md text-body-md focus:outline-none shadow-sm"
-                          placeholder="4242 •••• •••• 1024"
-                          type="text"
-                        />
-                        <i data-lucide="credit-card" class="absolute right-3 top-3 text-outline"></i>
-                      </div>
-                    </div>
-                    <div class="flex flex-col gap-1.5">
-                      <label
-                        class="font-label-sm text-label-sm text-on-surface-variant font-medium"
-                        >Expiration Date</label
-                      >
-                      <input
-                        class="h-12 px-space-md rounded-lg bg-surface-container-lowest text-on-surface font-body-md text-body-md focus:outline-none shadow-sm"
-                        placeholder="MM / YY"
-                        type="text"
-                      />
-                    </div>
-                    <div class="flex flex-col gap-1.5">
-                      <label
-                        class="font-label-sm text-label-sm text-on-surface-variant font-medium"
-                        >CVV / Security Code</label
-                      >
-                      <input
-                        class="h-12 px-space-md rounded-lg bg-surface-container-lowest text-on-surface font-body-md text-body-md focus:outline-none shadow-sm"
-                        maxlength="4"
-                        placeholder="3 or 4 digits"
-                        type="password"
-                      />
-                    </div>
-                  </div>
+                    Save Booking with M-Pesa Selected
+                  </button>
                 </div>
-                <!-- Dynamic Panel: Pay on Arrival (Hidden) -->
+
+                <!-- Dynamic Panel: Pay on Arrival / LPO -->
                 <div
-                  class="hidden flex-col gap-space-md p-space-lg rounded-xl bg-surface-container-low"
+                  class="hidden flex-col gap-space-md p-space-lg rounded-xl bg-secondary-fixed/20"
                   id="panel-arrival"
                 >
-                  <div class="flex items-center gap-space-sm text-primary">
-                    <i data-lucide="landmark" class="text-2xl"></i>
-                    <h3
-                      class="font-headline-sm text-headline-sm text-on-surface"
-                    >
-                      Guaranteed Check-in Hold
-                    </h3>
+                  <div class="flex items-center gap-space-sm">
+                    <div class="p-2 rounded-lg bg-secondary text-on-secondary">
+                      <i data-lucide="building" class="text-xl"></i>
+                    </div>
+                    <div>
+                      <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">
+                        Pay on Arrival / LPO
+                      </h3>
+                      <p class="font-body-sm text-body-sm text-on-surface-variant">
+                        Save the reservation now and settle the balance at the hotel.
+                      </p>
+                    </div>
                   </div>
-                  <p class="font-body-md text-body-md text-on-surface-variant">
-                    Pay upon physical check-in at the Intercounty Hotel
-                    reception via Cash, Card, or Corporate LPO. A holding
-                    authorization or employer identification badge must be
-                    presented at the desk.
-                  </p>
-                  <div class="flex flex-col gap-1.5">
-                    <label
-                      class="font-label-sm text-label-sm text-on-surface-variant font-medium"
-                      >Company Name / Organization (For corporate
-                      billing)</label
-                    >
-                    <input
-                      class="h-12 px-space-md rounded-lg bg-surface-container-lowest text-on-surface font-body-md text-body-md focus:outline-none shadow-sm"
-                      placeholder="e.g. County Government of Kitui, NGO, or Self-sponsored"
-                      type="text"
-                    />
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
+                    <div class="p-space-md rounded-lg bg-surface-container-lowest border border-outline-variant/30">
+                      <strong class="font-label-md text-label-md text-on-surface">Individual guest</strong>
+                      <p class="mt-1 font-body-sm text-body-sm text-on-surface-variant">
+                        The room will be held for your confirmed stay dates.
+                      </p>
+                    </div>
+                    <div class="p-space-md rounded-lg bg-surface-container-lowest border border-outline-variant/30">
+                      <strong class="font-label-md text-label-md text-on-surface">Company / LPO</strong>
+                      <p class="mt-1 font-body-sm text-body-sm text-on-surface-variant">
+                        Your booking can be supported by a local purchase order at check-in.
+                      </p>
+                    </div>
                   </div>
+                  <button
+                    class="w-full min-h-12 rounded-full bg-secondary text-on-secondary px-space-md py-space-sm font-label-md text-label-md font-bold"
+                    type="submit"
+                    name="booking_action"
+                    value="arrival"
+                  >
+                    Save Booking for Pay on Arrival
+                  </button>
                 </div>
+
+
                 <!-- Security and Reassurance Badges -->
                 <div
                   class="grid grid-cols-1 sm:grid-cols-3 gap-space-md pt-space-sm"
@@ -872,8 +700,13 @@
                     </div>
                   </div>
                 </div>
+                </form>
               </div>
             </div>
+
+
+
+            
             <!-- RIGHT COLUMN: Sticky Reservation Summary Card (4-5 Cols) -->
             <div
               class="lg:col-span-5 xl:col-span-4 sticky top-24 flex flex-col gap-space-md"
@@ -887,7 +720,7 @@
                   <select class="w-full h-12 px-space-md bg-surface-container-low rounded-lg font-body-sm text-body-sm text-on-surface" id="selected-room" name="room">
                     <option value="" disabled {% if not selected_room %}selected{% endif %}>Choose a room</option>
                     {% for room in rooms %}
-                    <option value="{{ room.pk }}" {% if selected_room and selected_room.pk == room.pk %}selected{% endif %}>Room {{ room.room_number }} - {{ room.room_type }}</option>
+                    <option value="{{ room.pk }}" data-price="{{ room.price }}" {% if selected_room and selected_room.pk == room.pk %}selected{% endif %}>Room {{ room.room_number }} - {{ room.room_type }}</option>
                     {% endfor %}
                   </select>
                   <button class="w-full py-space-sm px-space-md rounded-full bg-secondary text-on-secondary font-label-md text-label-md font-semibold" type="submit">Select Room</button>
@@ -1020,90 +853,7 @@
             </button>
           </div>
         </div>
-        <!-- Interactive Script for Payment Selection and Countdown -->
-        <script>
-          function selectPaymentMethod(method) {
-            const panelMpesa = document.getElementById("panel-mpesa");
-            const panelCard = document.getElementById("panel-card");
-            const panelArrival = document.getElementById("panel-arrival");
-
-            const tabMpesa = document.getElementById("tab-mpesa");
-            const tabCard = document.getElementById("tab-card");
-            const tabArrival = document.getElementById("tab-arrival");
-
-            // Reset all tabs
-            [tabMpesa, tabCard, tabArrival].forEach((tab) => {
-              tab.className =
-                "p-space-md rounded-xl text-left transition-all flex flex-col justify-between gap-space-sm bg-surface-container-low text-on-surface hover:bg-surface-container shadow-sm";
-              const radioContainer = tab.firstElementChild;
-              const lastChild = radioContainer ? radioContainer.lastElementChild : null;
-              if (lastChild) {
-                const newIcon = document.createElement("i");
-                newIcon.setAttribute("data-lucide", "circle");
-                newIcon.className = "text-outline text-xl";
-                lastChild.replaceWith(newIcon);
-              }
-            });
-
-            // Hide all panels
-            panelMpesa.classList.add("hidden");
-            panelCard.classList.add("hidden");
-            panelArrival.classList.add("hidden");
-
-            function setActiveRadio(tab, colorClass) {
-              const radioContainer = tab.firstElementChild;
-              const lastChild = radioContainer ? radioContainer.lastElementChild : null;
-              if (lastChild) {
-                const newIcon = document.createElement("i");
-                newIcon.setAttribute("data-lucide", "disc");
-                newIcon.className = colorClass + " text-xl";
-                lastChild.replaceWith(newIcon);
-              }
-            }
-
-            if (method === "mpesa") {
-              panelMpesa.classList.remove("hidden");
-              tabMpesa.className =
-                "p-space-md rounded-xl text-left transition-all flex flex-col justify-between gap-space-sm bg-tertiary-fixed/30 text-on-tertiary-fixed shadow-sm";
-              setActiveRadio(tabMpesa, "text-tertiary");
-            } else if (method === "card") {
-              panelCard.classList.remove("hidden");
-              panelCard.classList.add("flex");
-              tabCard.className =
-                "p-space-md rounded-xl text-left transition-all flex flex-col justify-between gap-space-sm bg-primary/10 text-primary shadow-sm";
-              setActiveRadio(tabCard, "text-primary");
-            } else if (method === "arrival") {
-              panelArrival.classList.remove("hidden");
-              panelArrival.classList.add("flex");
-              tabArrival.className =
-                "p-space-md rounded-xl text-left transition-all flex flex-col justify-between gap-space-sm bg-secondary/10 text-secondary shadow-sm";
-              setActiveRadio(tabArrival, "text-secondary");
-            }
-            if (window.lucide) {
-              window.lucide.createIcons();
-            }
-          }
-
-          function triggerPaymentSimulation() {
-            const modal = document.getElementById("payment-modal");
-            modal.classList.remove("hidden");
-            modal.classList.add("flex");
-          }
-
-          // Reservation Countdown Timer Simulation
-          (function initTimer() {
-            let seconds = 878;
-            const el = document.getElementById("countdown-timer");
-            setInterval(() => {
-              if (seconds > 0) {
-                seconds--;
-                const mins = Math.floor(seconds / 60);
-                const secs = seconds % 60;
-                el.textContent = `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
-              }
-            }, 1000);
-          })();
-        </script>
+        <script src="{% static 'js/bookings.js' %}" defer></script>
       </div>
     </main>
 {% endblock %}

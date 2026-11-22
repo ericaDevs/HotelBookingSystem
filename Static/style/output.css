@@ -6,6 +6,10 @@
     --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
+    --color-red-50: oklch(97.1% 0.013 17.38);
+    --color-red-800: oklch(44.4% 0.177 26.899);
+    --color-green-50: oklch(98.2% 0.018 155.826);
+    --color-green-800: oklch(44.8% 0.119 151.328);
     --color-slate-800: oklch(27.9% 0.041 260.031);
     --color-black: #000;
     --color-white: #fff;
@@ -513,6 +517,9 @@
   .max-h-\[716px\] {
     max-height: 716px;
   }
+  .min-h-12 {
+    min-height: calc(var(--spacing) * 12);
+  }
   .min-h-\[300px\] {
     min-height: 300px;
   }
@@ -822,6 +829,12 @@
       background-color: color-mix(in oklab, var(--color-black) 60%, transparent);
     }
   }
+  .bg-green-50 {
+    background-color: var(--color-green-50);
+  }
+  .bg-red-50 {
+    background-color: var(--color-red-50);
+  }
   .bg-transparent {
     background-color: transparent;
   }
@@ -1083,6 +1096,9 @@
   .text-\[\#F6D1FF\] {
     color: #F6D1FF;
   }
+  .text-green-800 {
+    color: var(--color-green-800);
+  }
   .text-ink {
     color: var(--color-ink);
   }
@@ -1091,6 +1107,9 @@
   }
   .text-plum {
     color: var(--color-plum);
+  }
+  .text-red-800 {
+    color: var(--color-red-800);
   }
   .text-slate-800 {
     color: var(--color-slate-800);
@@ -1340,6 +1359,9 @@
   .active\:translate-y-0:active {
     --tw-translate-y: 0px;
     translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
+  .disabled\:opacity-50:disabled {
+    opacity: 50%;
   }
   @media (width >= 40rem) {
     .sm\:bottom-8 {
