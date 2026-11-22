@@ -875,3 +875,97 @@ button, input { font: inherit; }
   .staff-rate-card small:last-child { display: none; }
   .staff-room-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* Staff dashboard typography: use the public site's primary font and readable
+   text sizes instead of scaling down every dashboard component. */
+.staff-dashboard-page,
+.staff-dashboard-page * {
+  font-family: "Figtree", ui-sans-serif, system-ui, sans-serif;
+}
+
+.staff-dashboard-page { font-size: 16px; }
+.staff-dashboard-page .dashboard-sidebar .portal-brand-name { font-size: 11px; }
+.staff-dashboard-page .dashboard-sidebar .portal-brand-caption,
+.staff-dashboard-page .sidebar-label { font-size: 9px; }
+.staff-dashboard-page .sidebar-link { min-height: 42px; font-size: 13px; }
+.staff-dashboard-page .sidebar-help strong,
+.staff-dashboard-page .user-meta strong { font-size: 12px; }
+.staff-dashboard-page .sidebar-help p,
+.staff-dashboard-page .user-meta span { font-size: 11px; }
+.staff-dashboard-page .topbar-search input,
+.staff-topbar-date { font-size: 12px; }
+
+.staff-dashboard-page .staff-module-heading h1,
+.staff-dashboard-page .staff-property-note h2,
+.staff-dashboard-page .staff-room-feature h2,
+.staff-dashboard-page .staff-panel-header h2,
+.staff-dashboard-page .staff-metric > strong {
+  font-family: "Figtree", ui-sans-serif, system-ui, sans-serif;
+}
+.staff-dashboard-page .staff-module-heading h1 { font-size: clamp(24px, 2.4vw, 30px); }
+.staff-dashboard-page .staff-module-heading p { font-size: 13px; }
+.staff-dashboard-page .staff-eyebrow,
+.staff-dashboard-page .staff-shift-pill,
+.staff-dashboard-page .staff-outline-button,
+.staff-dashboard-page .staff-date-filter summary { font-size: 11px; }
+.staff-dashboard-page .staff-date-popover label,
+.staff-dashboard-page .staff-date-popover input,
+.staff-dashboard-page .staff-date-popover button { font-size: 12px; }
+
+.staff-dashboard-page .staff-metrics { gap: 12px; }
+.staff-dashboard-page .staff-metric { min-height: 96px; padding: 12px 13px; }
+.staff-dashboard-page .staff-metric > div { font-size: 11px; }
+.staff-dashboard-page .staff-metric > strong { margin-top: 7px; font-size: 26px; }
+.staff-dashboard-page .staff-metric > small { font-size: 11px; }
+
+.staff-dashboard-page .staff-panel-header { padding: 14px 16px; }
+.staff-dashboard-page .staff-panel-header > div > span { font-size: 10px; }
+.staff-dashboard-page .staff-panel-header h2 { font-size: 16px; }
+.staff-dashboard-page .staff-panel-header p,
+.staff-dashboard-page .staff-text-link,
+.staff-dashboard-page .staff-panel-footer a,
+.staff-dashboard-page .staff-panel-footer,
+.staff-dashboard-page .staff-table-footer { font-size: 12px; }
+.staff-dashboard-page .staff-table th { font-size: 10px; }
+.staff-dashboard-page .staff-table td { padding: 11px 8px; font-size: 12px; }
+.staff-dashboard-page .staff-table td strong { font-size: 12px; }
+.staff-dashboard-page .staff-table td small { font-size: 11px; }
+.staff-dashboard-page .staff-avatar { width: 30px; height: 30px; font-size: 11px; }
+.staff-dashboard-page .staff-movement,
+.staff-dashboard-page .staff-status,
+.staff-dashboard-page .staff-identity-chip,
+.staff-dashboard-page .staff-flag { font-size: 10px; }
+.staff-dashboard-page .staff-unassigned,
+.staff-dashboard-page .staff-no-guest,
+.staff-dashboard-page .staff-empty-cell { font-size: 12px !important; }
+
+.staff-dashboard-page .staff-status-summary > div,
+.staff-dashboard-page .staff-category-list > span,
+.staff-dashboard-page .staff-category-row,
+.staff-dashboard-page .staff-category-list p,
+.staff-dashboard-page .staff-room-cards > p { font-size: 12px; }
+.staff-dashboard-page .staff-status-summary strong,
+.staff-dashboard-page .staff-category-list > span strong,
+.staff-dashboard-page .staff-category-row > strong { font-size: 13px; }
+.staff-dashboard-page .staff-quick-links strong { font-size: 12px; }
+.staff-dashboard-page .staff-quick-links small { font-size: 11px; }
+.staff-dashboard-page .staff-property-note > div > span,
+.staff-dashboard-page .staff-room-feature > div:nth-child(2) > span { font-size: 10px; }
+.staff-dashboard-page .staff-property-note p,
+.staff-dashboard-page .staff-room-feature p { font-size: 12px; }
+.staff-dashboard-page .staff-property-note > a { font-size: 11px; }
+
+.staff-dashboard-page .staff-search { height: 38px; }
+.staff-dashboard-page .staff-search input,
+.staff-dashboard-page .staff-select select,
+.staff-dashboard-page .staff-live-indicator,
+.staff-dashboard-page .staff-status-tabs button { font-size: 12px; }
+.staff-dashboard-page .staff-live-indicator { font-size: 11px; }
+.staff-dashboard-page .staff-status-tabs button { padding: 7px 10px; }
+.staff-dashboard-page .staff-contact-link { font-size: 12px; }
+.staff-dashboard-page .staff-pagination button { min-width: 28px; height: 28px; font-size: 11px; }
+.staff-dashboard-page .staff-rate-card small { font-size: 11px; }
+.staff-dashboard-page .staff-rate-card strong { font-size: 16px; }
+.staff-dashboard-page .staff-room-cards article > strong { font-size: 13px; }
+.staff-dashboard-page .staff-room-cards article > small,
+.staff-dashboard-page .staff-room-cards article > span { font-size: 11px; }

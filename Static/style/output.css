@@ -655,9 +655,6 @@
   .animate-spin {
     animation: var(--animate-spin);
   }
-  .cursor-no-drop {
-    cursor: no-drop;
-  }
   .cursor-pointer {
     cursor: pointer;
   }
