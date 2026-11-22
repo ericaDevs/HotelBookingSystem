@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% load static %}
 
 {% block title %}Contact Us | Intercounty Hotels{% endblock %}
 {% block body_class %}bg-surface font-body-md text-on-surface antialiased min-h-screen{% endblock %}
@@ -236,30 +237,7 @@
               <div
                 class="flex items-center gap-space-md bg-surface-container-lowest p-space-md rounded-xl shadow-sm shrink-0"
               >
-                <div
-                  class="w-12 h-12 rounded-full bg-tertiary-container/20 flex items-center justify-center text-tertiary"
-                >
-                  <i data-lucide="clock" class="text-2xl"></i>
-                </div>
-                <div>
-                  <div class="flex items-center gap-2">
-                    <span class="relative flex h-2.5 w-2.5">
-                      <span
-                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75"
-                      ></span>
-                      <span
-                        class="relative inline-flex rounded-full h-2.5 w-2.5 bg-tertiary"
-                      ></span>
-                    </span>
-                    <span class="font-label-md text-label-md text-on-surface"
-                      >Concierge Online</span
-                    >
-                  </div>
-                  <span
-                    class="font-body-sm text-body-sm text-on-surface-variant"
-                    >Front desk responding in real-time</span
-                  >
-                </div>
+                
               </div>
             </div>
           </div>
@@ -267,7 +245,7 @@
         <!-- Split Screen Contact & Location Section -->
         <section class="w-full px-margin-mobile lg:px-margin pb-space-xl">
           <div
-            class="max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start"
+            class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start"
           >
             <!-- LEFT SIDE: Contact Form -->
             <div
@@ -297,11 +275,16 @@
               <form
                 class="flex flex-col gap-space-md"
                 id="contactForm"
-                onsubmit="
-                  event.preventDefault();
-                  submitInquiry();
-                "
+                method="post"
+                action="{% url 'contact' %}"
               >
+                {% csrf_token %}
+                <p
+                  class="hidden rounded-lg p-space-md bg-error-container text-on-error-container"
+                  id="contactFormFeedback"
+                  role="alert"
+                  aria-live="polite"
+                ></p>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
                   <!-- Full Name -->
                   <div class="flex flex-col gap-1.5">
@@ -315,8 +298,10 @@
                       <input
                         class="w-full pl-11 pr-4 py-3 bg-surface-container-low text-on-surface placeholder:text-outline font-body-md text-body-md rounded-lg focus:outline-none focus:bg-surface-container-lowest transition-all shadow-inner"
                         id="fullName"
+                        name="full_name"
+                        maxlength="50"
                         placeholder="e.g. Samuel Mutua"
-                        required=""
+                        required
                         type="text"
                       />
                     </div>
@@ -333,8 +318,10 @@
                       <input
                         class="w-full pl-11 pr-4 py-3 bg-surface-container-low text-on-surface placeholder:text-outline font-body-md text-body-md rounded-lg focus:outline-none focus:bg-surface-container-lowest transition-all shadow-inner"
                         id="emailAddr"
+                        name="email"
+                        maxlength="254"
                         placeholder="mutua@example.co.ke"
-                        required=""
+                        required
                         type="email"
                       />
                     </div>
@@ -353,7 +340,10 @@
                       <input
                         class="w-full pl-11 pr-4 py-3 bg-surface-container-low text-on-surface placeholder:text-outline font-body-md text-body-md rounded-lg focus:outline-none focus:bg-surface-container-lowest transition-all shadow-inner"
                         id="phoneNumber"
+                        name="phone_number"
+                        maxlength="15"
                         placeholder="+254 712 345 678"
+                        required
                         type="tel"
                       />
                     </div>
@@ -370,6 +360,8 @@
                       <select
                         class="w-full pl-11 pr-8 py-3 bg-surface-container-low text-on-surface font-body-md text-body-md rounded-lg focus:outline-none focus:bg-surface-container-lowest transition-all appearance-none shadow-inner cursor-pointer"
                         id="inquiryType"
+                        name="inquery_type"
+                        required
                       >
                         <option value="rooms">Room Reservation</option>
                         <option value="conferences">
@@ -396,8 +388,10 @@
                     <input
                       class="w-full pl-11 pr-4 py-3 bg-surface-container-low text-on-surface placeholder:text-outline font-body-md text-body-md rounded-lg focus:outline-none focus:bg-surface-container-lowest transition-all shadow-inner"
                       id="inquirySubject"
+                      name="subject"
+                      maxlength="100"
                       placeholder="Executive Suite booking for weekend retreat"
-                      required=""
+                      required
                       type="text"
                     />
                   </div>
@@ -413,10 +407,13 @@
                     class="w-full p-4 bg-surface-container-low text-on-surface placeholder:text-outline font-body-md text-body-md rounded-lg focus:outline-none focus:bg-surface-container-lowest transition-all shadow-inner resize-y"
                     id="messageBody"
                     placeholder="Please outline your dates, guest count, or any custom culinary arrangements..."
-                    required=""
+                    required
                     rows="4"
+                    name="message"
                   ></textarea>
                 </div>
+
+
                 <!-- Submit Button & Note -->
                 <div
                   class="flex flex-col sm:flex-row items-center justify-between gap-space-md pt-space-xs"
@@ -430,7 +427,7 @@
                     >
                   </div>
                   <button
-                    class="w-full sm:w-auto inline-flex items-center justify-center gap-space-xs px-space-xl py-3.5 rounded-full bg-secondary hover:bg-on-secondary-container text-on-secondary font-label-lg text-label-lg shadow-md transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0 order-1 sm:order-2"
+                    class="w-full sm:w-auto inline-flex items-center justify-center gap-space-xs px-space-xl py-3.5 rounded-full bg-secondary hover:bg-on-secondary-container text-on-secondary font-label-lg text-label-lg shadow-md transition-all duration-200"
                     id="submitBtn"
                     type="submit"
                   >
@@ -456,6 +453,8 @@
                 </div>
               </div>
             </div>
+
+
             <!-- RIGHT SIDE: Contact Information & Interactive Map -->
             <div class="lg:col-span-5 flex flex-col gap-space-md">
               <!-- Info Cards Grid -->
@@ -490,7 +489,7 @@
                       class="inline-flex items-center gap-1 font-label-sm text-label-sm text-primary mt-1"
                     >
                       <i data-lucide="navigation" class="text-xs"></i>
-                      Near Kitui High School / Town Centre
+                      Near Kitui High School
                     </span>
                   </div>
                 </div>
@@ -936,7 +935,7 @@
                 href="tel:+254712345678"
               >
                 <i data-lucide="phone" class="text-base"></i>
-                Speak to Concierge
+                Speak to our Offices
               </a>
             </div>
           </div>
@@ -974,29 +973,7 @@
           });
         });
 
-        // Contact Form Submission Feedback
-        function submitInquiry() {
-          const btn = document.getElementById("submitBtn");
-          const toast = document.getElementById("formSuccessToast");
-          const form = document.getElementById("contactForm");
-
-          btn.disabled = true;
-          btn.innerHTML = `<i data-lucide="rotate-cw" class="text-lg animate-spin"></i><span>Sending...</span>`;
-          if (window.lucide) window.lucide.createIcons();
-
-          setTimeout(() => {
-            btn.innerHTML = `<i data-lucide="check" class="text-lg"></i><span>Sent</span>`;
-            if (window.lucide) window.lucide.createIcons();
-            toast.classList.remove("hidden");
-            form.reset();
-
-            setTimeout(() => {
-              btn.disabled = false;
-              btn.innerHTML = `<span>Send Message</span><i data-lucide="send" class="text-lg"></i>`;
-              if (window.lucide) window.lucide.createIcons();
-            }, 4000);
-          }, 800);
-        }
       </script>
+      <script src="{% static 'js/contacts.js' %}" defer></script>
     </main>
 {% endblock %}

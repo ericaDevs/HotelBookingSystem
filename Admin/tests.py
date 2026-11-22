@@ -8,6 +8,7 @@ from django.urls import reverse
 from django.utils import timezone
 
 from Billing.models import Payments
+from Admin.models import Contacts
 from Properties.models import Rooms
 from Reservations.models import Guests
 from Staff.models import Users
@@ -353,3 +354,58 @@ class AdminPortalPageTests(TestCase):
         rooms_response = self.client.get(reverse('admin_portal:rooms'))
         room_row = rooms_response.context['rooms'].get(pk=room.pk)
         self.assertEqual(room_row.room_revenue, Decimal('10000.00'))
+
+
+class ContactSubmissionTests(TestCase):
+    def setUp(self):
+        self.payload = {
+            'full_name': '  Alex   Guest ',
+            'email': 'ALEX@example.com',
+            'phone_number': '+254 712 345 678',
+            'inquery_type': 'rooms',
+            'subject': '  Room   reservation ',
+            'message': ' I would like to ask about availability. ',
+        }
+
+    def post_contact(self, payload):
+        return self.client.post(
+            reverse('contact'),
+            data=json.dumps(payload),
+            content_type='application/json',
+        )
+
+    def test_contact_page_renders_validation_script(self):
+        response = self.client.get(reverse('contact'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'js/contacts.js')
+
+    def test_valid_contact_json_is_cleaned_and_saved(self):
+        response = self.post_contact(self.payload)
+
+        self.assertEqual(response.status_code, 201)
+        contact = Contacts.objects.get(pk=response.json()['contact_id'])
+        self.assertEqual(contact.full_name, 'Alex Guest')
+        self.assertEqual(contact.email, 'alex@example.com')
+        self.assertEqual(contact.phone_number, '+254712345678')
+        self.assertEqual(contact.subject, 'Room reservation')
+        self.assertEqual(contact.message, 'I would like to ask about availability.')
+
+    def test_invalid_phone_and_duplicate_email_are_rejected(self):
+        invalid_phone = dict(self.payload, phone_number='call me')
+        response = self.post_contact(invalid_phone)
+        self.assertEqual(response.status_code, 400)
+        self.assertIn('phone_number', response.json()['errors'])
+
+        Contacts.objects.create(
+            full_name='Existing Contact',
+            email='alex@example.com',
+            phone_number='0712345678',
+            inquery_type='rooms',
+            subject='Existing request',
+            message='Already sent',
+        )
+        response = self.post_contact(self.payload)
+        self.assertEqual(response.status_code, 400)
+        self.assertIn('email', response.json()['errors'])
+        self.assertEqual(Contacts.objects.count(), 1)

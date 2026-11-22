@@ -1,4 +1,5 @@
 import json
+import re
 from decimal import Decimal, InvalidOperation
 
 from django.contrib import messages
@@ -6,7 +7,7 @@ from django.contrib.auth.hashers import check_password, make_password
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.db.models import Avg, Count, Q, Sum
-from django.http import JsonResponse
+from django.http import HttpResponseNotAllowed, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.utils.dateparse import parse_date
@@ -16,6 +17,9 @@ from Billing.models import Payments
 from Properties.models import Rooms
 from Reservations.models import Guests
 from Staff.models import Users
+from Admin.models import Contacts
+
+
 
 # LOGIN VALIDATION VIEW
 def admin_login(request):
@@ -132,7 +136,7 @@ def api_endpoint(request):
 
 
 
-
+# DASHBOARD OVERVIEW VIEW
 def overview(request):
     today = timezone.localdate()
     in_house = Guests.objects.filter(
@@ -531,3 +535,111 @@ def revenue_management(request):
         'start_date_value': start_text,
         'end_date_value': end_text,
     })
+
+
+
+
+# CONTACTS VIEWS
+def contacts(request):
+    if request.method == "POST":
+        if request.content_type != "application/json":
+            return JsonResponse(
+                {
+                    "success": False,
+                    "errors": {"form": ["Send contact details as JSON."]},
+                },
+                status=415,
+            )
+
+        try:
+            payload = json.loads(request.body)
+        except (json.JSONDecodeError, UnicodeDecodeError):
+            return JsonResponse(
+                {
+                    "success": False,
+                    "errors": {"form": ["The contact details are not valid JSON."]},
+                },
+                status=400,
+            )
+
+        if not isinstance(payload, dict):
+            return JsonResponse(
+                {
+                    "success": False,
+                    "errors": {"form": ["The contact details must be a JSON object."]},
+                },
+                status=400,
+            )
+
+        fields = (
+            "full_name",
+            "email",
+            "phone_number",
+            "inquery_type",
+            "subject",
+            "message",
+        )
+        values = {}
+        errors = {}
+        for field in fields:
+            value = payload.get(field)
+            if not isinstance(value, str):
+                errors[field] = ["This field is required."]
+                continue
+            value = value.strip()
+            if field in {"full_name", "subject"}:
+                value = " ".join(value.split())
+            elif field == "email":
+                value = value.lower()
+            elif field == "phone_number":
+                value = re.sub(r"[\s().-]", "", value)
+            values[field] = value
+            if not value:
+                errors[field] = ["This field is required."]
+
+        phone_number = values.get("phone_number", "")
+        if phone_number and (
+            len(phone_number) > 15
+            or not re.fullmatch(r"\+?[0-9]{7,15}", phone_number)
+        ):
+            errors["phone_number"] = ["Enter a valid phone number."]
+
+        if errors:
+            return JsonResponse({"success": False, "errors": errors}, status=400)
+
+        if Contacts.objects.filter(email__iexact=values["email"]).exists():
+            return JsonResponse(
+                {
+                    "success": False,
+                    "errors": {"email": ["A message already uses this email address."]},
+                },
+                status=400,
+            )
+
+        contact = Contacts(**values)
+        try:
+            contact.full_clean()
+        except ValidationError as exc:
+            if hasattr(exc, "message_dict"):
+                errors = {
+                    field: [str(message) for message in field_messages]
+                    for field, field_messages in exc.message_dict.items()
+                }
+            else:
+                errors = {"form": [str(message) for message in exc.messages]}
+            return JsonResponse({"success": False, "errors": errors}, status=400)
+
+        contact.save()
+        return JsonResponse(
+            {
+                "success": True,
+                "message": "Your message has been received.",
+                "contact_id": contact.pk,
+            },
+            status=201,
+        )
+
+    if request.method != "GET":
+        return HttpResponseNotAllowed(["GET", "POST"])
+
+    return render(request, "contacts.html")
