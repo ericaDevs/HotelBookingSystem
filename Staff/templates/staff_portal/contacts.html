@@ -77,6 +77,47 @@
         <nav class="staff-pagination" id="staff-contact-pagination" aria-label="Guest contact pages"></nav>
       </footer>
     </section>
+
+    <section class="staff-directory" aria-labelledby="customer-inquiries-heading">
+      <header class="staff-panel-header">
+        <div>
+          <span>WEBSITE CONTACT FORM</span>
+          <h2 id="customer-inquiries-heading">Customer inquiries</h2>
+          <p>Messages submitted through the public contact form.</p>
+        </div>
+        <span class="staff-shift-pill">{{ total_messages }} message{{ total_messages|pluralize }}</span>
+      </header>
+      <div class="staff-table-wrap">
+        <table class="staff-table staff-inquiry-table">
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Inquiry type</th>
+              <th>Subject</th>
+              <th>Message</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for contact in contact_messages %}
+              <tr>
+                <td><strong>{{ contact.full_name }}</strong></td>
+                <td><a class="staff-contact-link" href="tel:{{ contact.phone_number }}">{{ contact.phone_number }}</a></td>
+                <td><a class="staff-contact-link" href="mailto:{{ contact.email }}">{{ contact.email }}</a></td>
+                <td>{{ contact.inquery_type|title }}</td>
+                <td><strong>{{ contact.subject }}</strong></td>
+                <td class="staff-inquiry-message">{{ contact.message|linebreaksbr }}</td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td class="staff-empty-cell" colspan="6">No customer inquiries have been submitted yet.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
   </div>
 {% endblock %}
 

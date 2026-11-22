@@ -801,6 +801,9 @@ button, input { font: inherit; }
 .staff-contact-table th:nth-child(4), .staff-contact-table td:nth-child(4) { width: 13%; }
 .staff-contact-table th:nth-child(5), .staff-contact-table td:nth-child(5) { width: 16%; }
 .staff-contact-table th:nth-child(6), .staff-contact-table td:nth-child(6) { width: 11%; }
+.staff-inquiry-table { min-width: 900px; table-layout: auto; }
+.staff-inquiry-table td { vertical-align: top; }
+.staff-inquiry-message { min-width: 240px; max-width: 440px; line-height: 1.5; overflow-wrap: anywhere; }
 .staff-contact-link { display: block; overflow: hidden; color: #6c5475; font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
 .staff-contact-link:hover { color: #a73549; text-decoration: underline; }
 .staff-table-footer { min-height: 36px; }

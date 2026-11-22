@@ -2,6 +2,7 @@ from django.db.models import Avg
 from django.shortcuts import redirect, render
 from django.utils import timezone
 
+from HotelSystem.views import get_contact_submissions
 from Properties.models import Rooms
 from Reservations.models import Guests
 from Staff.models import Users
@@ -183,8 +184,12 @@ def staff_rooms(request):
     return render(request, "staff_portal/rooms.html", context)
 
 
+
+
+
 def staff_contacts(request):
     today = timezone.localdate()
+    contact_messages = get_contact_submissions()
     contacts = Guests.objects.select_related("room").order_by("full_name", "pk")
     contact_rows = []
     for guest in contacts:
@@ -203,6 +208,8 @@ def staff_contacts(request):
     context = _dashboard_context(request, "contacts")
     context.update({
         "contacts": contact_rows,
+        "contact_messages": contact_messages,
+        "total_messages": contact_messages.count(),
         "total_contacts": len(contact_rows),
         "in_house": Guests.objects.filter(
             check_in_date__lte=today,

@@ -5,6 +5,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 
+from Admin.models import Contacts
 from Properties.models import Rooms
 from Reservations.models import Guests
 
@@ -97,6 +98,26 @@ class StaffPortalPageTests(TestCase):
                 self.assertEqual(response.status_code, 200)
                 self.assertContains(response, heading)
                 self.assertContains(response, record)
+
+    def test_staff_contacts_module_displays_saved_contact_form_submissions(self):
+        Contacts.objects.create(
+            full_name="Website Customer",
+            email="website.customer@example.com",
+            phone_number="+254712345678",
+            inquery_type="conferences",
+            subject="Wedding enquiry",
+            message="Please send the wedding package details.",
+        )
+
+        response = self.client.get(reverse("staff:contacts"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Customer inquiries")
+        self.assertContains(response, "Website Customer")
+        self.assertContains(response, "website.customer@example.com")
+        self.assertContains(response, "Wedding enquiry")
+        self.assertContains(response, "Please send the wedding package details.")
+        self.assertEqual(response.context["total_messages"], 1)
 
     def test_global_reservation_search_is_preserved_in_reservation_module(self):
         response = self.client.get(
