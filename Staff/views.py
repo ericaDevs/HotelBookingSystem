@@ -1,7 +1,11 @@
-from django.db.models import Avg
+import json
+
+from django.db.models import Avg, Count, Q
+from django.http import HttpResponseNotAllowed, JsonResponse
 from django.shortcuts import redirect, render
 from django.utils import timezone
 
+from Admin.models import Contacts
 from HotelSystem.views import get_contact_submissions
 from Properties.models import Rooms
 from Reservations.models import Guests
@@ -188,38 +192,82 @@ def staff_rooms(request):
 
 
 def staff_contacts(request):
-    today = timezone.localdate()
-    contact_messages = get_contact_submissions()
-    contacts = Guests.objects.select_related("room").order_by("full_name", "pk")
-    contact_rows = []
-    for guest in contacts:
-        if guest.check_out_date <= today:
-            status, status_key = "Checked out", "checked-out"
-        elif guest.check_in_date <= today:
-            status, status_key = "In house", "in-house"
-        else:
-            status, status_key = "Upcoming", "upcoming"
-        contact_rows.append({
-            "guest": guest,
-            "status": status,
-            "status_key": status_key,
-        })
+    staff_id = request.session.get("staff_user_id")
+    if not isinstance(staff_id, int) or isinstance(staff_id, bool):
+        if request.method == "POST":
+            return JsonResponse(
+                {"success": False, "message": "Staff sign-in is required."},
+                status=403,
+            )
+        return redirect("admin_portal:login")
 
+    if not Users.objects.filter(pk=staff_id).exists():
+        if request.method == "POST":
+            return JsonResponse(
+                {"success": False, "message": "Staff sign-in is required."},
+                status=403,
+            )
+        return redirect("admin_portal:login")
+
+    if request.method == "POST":
+        if request.content_type != "application/json":
+            return JsonResponse(
+                {"success": False, "message": "Send the contact action as JSON."},
+                status=415,
+            )
+        try:
+            payload = json.loads(request.body)
+        except (json.JSONDecodeError, UnicodeDecodeError):
+            return JsonResponse(
+                {"success": False, "message": "The request body is not valid JSON."},
+                status=400,
+            )
+        if not isinstance(payload, dict) or payload.get("action") != "delete":
+            return JsonResponse(
+                {"success": False, "message": "Unsupported contact action."},
+                status=400,
+            )
+
+        contact_id = payload.get("contact_id")
+        if (
+            not isinstance(contact_id, (str, int))
+            or not str(contact_id).isdecimal()
+            or len(str(contact_id)) > 19
+            or int(contact_id) > 9223372036854775807
+        ):
+            return JsonResponse(
+                {"success": False, "message": "Select a valid contact record."},
+                status=400,
+            )
+
+        contact = Contacts.objects.filter(pk=int(contact_id)).first()
+        if contact is None:
+            return JsonResponse(
+                {"success": False, "message": "This contact record no longer exists."},
+                status=404,
+            )
+
+        contact.delete()
+        return JsonResponse(
+            {"success": True, "message": "Contact record deleted."},
+        )
+
+    if request.method != "GET":
+        return HttpResponseNotAllowed(["GET", "POST"])
+
+    contact_messages = get_contact_submissions()
+    metrics = contact_messages.aggregate(
+        total=Count("pk"),
+        rooms=Count("pk", filter=Q(inquery_type="rooms")),
+        events=Count("pk", filter=Q(inquery_type="conferences")),
+        other=Count(
+            "pk",
+            filter=~Q(inquery_type__in=("rooms", "conferences")),
+        ),
+    )
     context = _dashboard_context(request, "contacts")
     context.update({
-        "contacts": contact_rows,
         "contact_messages": contact_messages,
-        "total_messages": contact_messages.count(),
-        "total_contacts": len(contact_rows),
-        "in_house": Guests.objects.filter(
-            check_in_date__lte=today,
-            check_out_date__gt=today,
-        ).count(),
-        "upcoming": Guests.objects.filter(check_in_date__gt=today).count(),
-        "checked_out": Guests.objects.filter(check_out_date__lte=today).count(),
-        "unassigned": Guests.objects.filter(
-            room__isnull=True,
-            check_out_date__gt=today,
-        ).count(),
+        "contact_metrics": metrics,
     })
     return render(request, "staff_portal/contacts.html", context)

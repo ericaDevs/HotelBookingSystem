@@ -1,13 +1,15 @@
+import json
 from datetime import timedelta
 from decimal import Decimal
 
-from django.test import TestCase
+from django.test import Client, TestCase
 from django.urls import reverse
 from django.utils import timezone
 
 from Admin.models import Contacts
 from Properties.models import Rooms
 from Reservations.models import Guests
+from Staff.models import Users
 
 
 class PortalLoginPageTests(TestCase):
@@ -19,6 +21,18 @@ class PortalLoginPageTests(TestCase):
 
 class StaffPortalPageTests(TestCase):
     def setUp(self):
+        self.staff_member = Users.objects.create(
+            fullname="Test Staff",
+            username="test-staff",
+            email="test-staff@example.com",
+            phone="0712345678",
+            role="Front desk",
+            password="not-used",
+        )
+        session = self.client.session
+        session["staff_user_id"] = self.staff_member.pk
+        session.save()
+
         today = timezone.localdate()
         self.room = Rooms.objects.create(
             room_number=123,
@@ -87,9 +101,17 @@ class StaffPortalPageTests(TestCase):
         self.assertEqual(response.context["unavailable_rooms"], 1)
 
     def test_staff_modules_render_database_backed_records(self):
+        Contacts.objects.create(
+            full_name="Website Customer",
+            email="website.customer@example.com",
+            phone_number="+254712345678",
+            inquery_type="rooms",
+            subject="Room inquiry",
+            message="Please share availability.",
+        )
         pages = (
             ("staff:reservations", "Guest Reservations", "Arrival Guest"),
-            ("staff:contacts", "Guest Contacts", "arrival@example.com"),
+            ("staff:contacts", "Customer Contacts", "website.customer@example.com"),
             ("staff:rooms", "Room Availability", "Room 123"),
         )
         for route, heading, record in pages:
@@ -112,12 +134,49 @@ class StaffPortalPageTests(TestCase):
         response = self.client.get(reverse("staff:contacts"))
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Customer inquiries")
+        self.assertContains(response, "Customer Contacts")
         self.assertContains(response, "Website Customer")
         self.assertContains(response, "website.customer@example.com")
         self.assertContains(response, "Wedding enquiry")
         self.assertContains(response, "Please send the wedding package details.")
-        self.assertEqual(response.context["total_messages"], 1)
+        self.assertNotContains(response, "arrival@example.com")
+        self.assertEqual(response.context["contact_metrics"]["total"], 1)
+        self.assertContains(response, 'data-contact-action="view"')
+        self.assertContains(response, 'data-contact-action="reply"')
+        self.assertContains(response, 'data-contact-action="delete"')
+
+    def test_staff_can_delete_a_contact_submission(self):
+        contact = Contacts.objects.create(
+            full_name="Delete Customer",
+            email="delete.customer@example.com",
+            phone_number="+254712345678",
+            inquery_type="feedback",
+            subject="Feedback",
+            message="Please remove this submission.",
+        )
+
+        response = self.client.post(
+            reverse("staff:contacts"),
+            data=json.dumps({"action": "delete", "contact_id": contact.pk}),
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()["success"])
+        self.assertFalse(Contacts.objects.filter(pk=contact.pk).exists())
+
+    def test_contacts_module_requires_staff_session(self):
+        anonymous_client = Client()
+
+        page_response = anonymous_client.get(reverse("staff:contacts"))
+        delete_response = anonymous_client.post(
+            reverse("staff:contacts"),
+            data=json.dumps({"action": "delete", "contact_id": 1}),
+            content_type="application/json",
+        )
+
+        self.assertRedirects(page_response, reverse("admin_portal:login"))
+        self.assertEqual(delete_response.status_code, 403)
 
     def test_global_reservation_search_is_preserved_in_reservation_module(self):
         response = self.client.get(

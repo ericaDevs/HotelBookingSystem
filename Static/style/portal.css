@@ -388,6 +388,8 @@ button, input { font: inherit; }
 .modal-field.full { grid-column: 1 / -1; }
 .modal-field input, .modal-field select { width: 100%; min-height: 41px; border: 1px solid var(--portal-line); border-radius: 8px; outline: 0; padding: 0 10px; color: var(--portal-ink); background: #fff; font-size: 12px; }
 .modal-field input:focus, .modal-field select:focus { border-color: var(--portal-plum); box-shadow: 0 0 0 3px rgb(140 81 154 / 11%); }
+.modal-field textarea { width: 100%; min-height: 110px; border: 1px solid var(--portal-line); border-radius: 8px; outline: 0; padding: 10px; color: var(--portal-ink); background: #fff; font: inherit; resize: vertical; }
+.modal-field textarea:focus { border-color: var(--portal-plum); box-shadow: 0 0 0 3px rgb(140 81 154 / 11%); }
 .modal-field input[type="checkbox"] { width: 16px; min-height: 16px; accent-color: var(--portal-plum); }
 .checkbox-field { display: flex; align-items: center; gap: 9px; color: #625b68; font-size: 11px; font-weight: 700; }
 .modal-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; border-top: 1px solid var(--portal-line); padding: 15px 22px 19px; }
@@ -801,7 +803,7 @@ button, input { font: inherit; }
 .staff-contact-table th:nth-child(4), .staff-contact-table td:nth-child(4) { width: 13%; }
 .staff-contact-table th:nth-child(5), .staff-contact-table td:nth-child(5) { width: 16%; }
 .staff-contact-table th:nth-child(6), .staff-contact-table td:nth-child(6) { width: 11%; }
-.staff-inquiry-table { min-width: 900px; table-layout: auto; }
+.staff-inquiry-table { min-width: 1180px; table-layout: auto; }
 .staff-inquiry-table td { vertical-align: top; }
 .staff-inquiry-message { min-width: 240px; max-width: 440px; line-height: 1.5; overflow-wrap: anywhere; }
 .staff-contact-link { display: block; overflow: hidden; color: #6c5475; font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
