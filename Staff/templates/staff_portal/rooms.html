@@ -65,7 +65,7 @@
                     data-status="{{ row.status_key }}"
                     data-category="{{ room.room_type|lower }}"
                     data-search="{{ room.room_number }} {{ room.room_type|lower }} {{ row.guest.full_name|default:''|lower }}">
-                  <td><strong>Room {{ room.room_number }}</strong><small>Inventory record</small></td>
+                  <td><a href="{% url 'per_room' room.pk %}"><strong>Room {{ room.room_number }}</strong></a><small>Inventory record</small></td>
                   <td><strong>{{ room.room_type }}</strong></td>
                   <td><strong>KES {{ room.price|floatformat:0 }}</strong><small>Per night</small></td>
                   <td>{% if row.guest %}<strong>{{ row.guest.full_name }}</strong><small>Checks out {{ row.guest.check_out_date|date:"M d" }}</small>{% else %}<span class="staff-no-guest">No active guest</span>{% endif %}</td>
@@ -102,7 +102,7 @@
         <div class="staff-room-cards">
           {% for row in rooms|slice:":8" %}
             <article class="{{ row.status_key }}">
-              <i></i><strong>{{ row.room.room_number }}</strong><small>{{ row.room.room_type }}</small>
+              <i></i><a href="{% url 'per_room' row.room.pk %}"><strong>{{ row.room.room_number }}</strong><small>{{ row.room.room_type }}</small></a>
               <span>{{ row.status }}</span>
             </article>
           {% empty %}

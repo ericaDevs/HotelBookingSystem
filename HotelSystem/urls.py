@@ -31,9 +31,14 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('contact/', contacts_view, name='contact'),
     path('rooms/', properties_views.rooms, name='rooms'),
+    path('rooms/<int:id>/', properties_views.room_details, name='per_room'),
     path('gallery/', properties_views.gallery, name='gallery'),
     path('gallery/rooms/', properties_views.rooms, name='legacy_rooms'),
     path('bookings/', include('Reservations.urls')),
 ] 
 
 urlpatterns += staticfiles_urlpatterns()
+if settings.DEBUG:
+    from django.conf.urls.static import static
+
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

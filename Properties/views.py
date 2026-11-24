@@ -6,7 +6,11 @@ def gallery(request):
     return render(request, 'gallery.html')
 
 def rooms(request):
-    available_rooms = Rooms.objects.filter(is_available=True).order_by('room_number')
+    available_rooms = (
+        Rooms.objects.filter(is_available=True)
+        .prefetch_related('images')
+        .order_by('room_number')
+    )
     room_types = available_rooms.order_by().values_list(
         'room_type', flat=True
     ).distinct().order_by('room_type')
@@ -17,9 +21,16 @@ def rooms(request):
     
     
 
-def room_details(id, request):
-    room = get_object_or_404(Rooms, id=id)
-    related_rooms = Rooms.objects.exclude(id=room.id).order_by('-id')[:3]
+def room_details(request, id):
+    room = get_object_or_404(
+        Rooms.objects.prefetch_related('images'),
+        pk=id,
+    )
+    related_rooms = (
+        Rooms.objects.exclude(id=room.id)
+        .prefetch_related('images')
+        .order_by('-id')[:3]
+    )
     return render(request, 'room_details.html', {
         'room': room,
         'related_rooms': related_rooms,

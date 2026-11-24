@@ -1,11 +1,15 @@
 import json
+from io import BytesIO
+from tempfile import TemporaryDirectory
 from datetime import date, timedelta
 from decimal import Decimal
 
 from django.contrib.auth.hashers import check_password, make_password
-from django.test import TestCase
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
+from PIL import Image
 
 from Billing.models import Payments
 from Admin.models import Contacts
@@ -203,6 +207,63 @@ class AdminPortalPageTests(TestCase):
 
         self.client.post(url, {'action': 'delete_room', 'room_id': room.pk})
         self.assertFalse(Rooms.objects.filter(pk=room.pk).exists())
+
+    def test_room_management_accepts_six_room_images(self):
+        room = Rooms.objects.create(
+            room_number=14,
+            room_type='Garden suite',
+            price=Decimal('12500.00'),
+        )
+        image_buffer = BytesIO()
+        Image.new('RGB', (1, 1)).save(image_buffer, format='PNG')
+        image_content = image_buffer.getvalue()
+        uploads = [
+            SimpleUploadedFile(
+                f'room-{index}.png',
+                image_content,
+                content_type='image/png',
+            )
+            for index in range(6)
+        ]
+
+        with TemporaryDirectory() as media_root, override_settings(MEDIA_ROOT=media_root):
+            response = self.client.post(reverse('admin_portal:rooms'), {
+                'action': 'update_room',
+                'room_id': room.pk,
+                'room_number': room.room_number,
+                'room_type': room.room_type,
+                'price': str(room.price),
+                'is_available': 'on',
+                'room_images': uploads,
+            })
+
+        self.assertRedirects(response, reverse('admin_portal:rooms'))
+        self.assertEqual(room.images.count(), 6)
+
+    def test_room_management_rejects_non_image_uploads(self):
+        room = Rooms.objects.create(
+            room_number=15,
+            room_type='Garden suite',
+            price=Decimal('12500.00'),
+        )
+
+        with TemporaryDirectory() as media_root, override_settings(MEDIA_ROOT=media_root):
+            response = self.client.post(reverse('admin_portal:rooms'), {
+                'action': 'update_room',
+                'room_id': room.pk,
+                'room_number': room.room_number,
+                'room_type': room.room_type,
+                'price': str(room.price),
+                'is_available': 'on',
+                'room_images': SimpleUploadedFile(
+                    'not-an-image.png',
+                    b'not an image',
+                    content_type='image/png',
+                ),
+            })
+
+        self.assertRedirects(response, reverse('admin_portal:rooms'))
+        self.assertEqual(room.images.count(), 0)
 
     def test_room_bulk_availability_updates_only_selected_rooms(self):
         selected = [

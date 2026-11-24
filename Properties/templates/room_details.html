@@ -1,0 +1,131 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}Room {{ room.room_number }} · {{ room.room_type }} | Intercounty Hotels{% endblock %}
+{% block body_class %}bg-surface font-body-md text-on-surface antialiased min-h-screen{% endblock %}
+{% block head %}
+  <style>
+    .room-details { max-width: 1180px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+    .room-crumbs { display: flex; gap: .55rem; align-items: center; color: #716575; font-size: .875rem; margin-bottom: 1.5rem; }
+    .room-crumbs a { color: #713980; text-decoration: none; }
+    .room-heading { display: flex; justify-content: space-between; align-items: end; gap: 1.5rem; margin-bottom: 1.5rem; }
+    .room-kicker { color: #713980; font-size: .75rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+    .room-heading h1 { margin: .4rem 0; font-size: clamp(2rem, 5vw, 3.3rem); line-height: 1.08; letter-spacing: -.04em; }
+    .room-heading p { margin: 0; color: #716575; }
+    .room-availability { display: inline-flex; align-items: center; gap: .5rem; padding: .55rem .85rem; border-radius: 999px; background: #e8f5ed; color: #215944; font-weight: 700; white-space: nowrap; }
+    .room-availability.unavailable { background: #fff0ef; color: #a13838; }
+    .room-availability i { width: .5rem; height: .5rem; border-radius: 50%; background: currentColor; }
+    .room-gallery { display: grid; grid-template-columns: 1.35fr 1fr 1fr; grid-template-rows: repeat(2, minmax(150px, 220px)); gap: .75rem; overflow: hidden; border-radius: 1.2rem; }
+    .room-gallery a { display: block; min-width: 0; min-height: 0; overflow: hidden; background: #e7e1e9; }
+    .room-gallery a:first-child { grid-row: span 2; }
+    .room-gallery img { width: 100%; height: 100%; display: block; object-fit: cover; transition: transform .35s ease; }
+    .room-gallery a:hover img { transform: scale(1.035); }
+    .room-content { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 3rem; margin-top: 2.5rem; align-items: start; }
+    .room-description h2, .room-related h2 { font-size: 1.5rem; margin: 0 0 .75rem; }
+    .room-description p { color: #625867; line-height: 1.8; margin: 0; }
+    .room-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; margin-top: 1.75rem; }
+    .room-fact { padding: 1rem; border: 1px solid #e8e1e9; border-radius: .9rem; background: #fff; }
+    .room-fact span { display: block; color: #716575; font-size: .8rem; margin-bottom: .35rem; }
+    .room-fact strong { font-size: 1.05rem; }
+    .room-booking-card { padding: 1.5rem; border: 1px solid #e8e1e9; border-radius: 1rem; background: #fff; box-shadow: 0 16px 40px rgb(46 25 52 / 8%); position: sticky; top: 1.5rem; }
+    .room-booking-card > span { color: #716575; font-size: .9rem; }
+    .room-price { display: block; margin: .2rem 0 1.1rem; font-size: 1.8rem; }
+    .room-price small { color: #716575; font-size: .85rem; font-weight: 400; }
+    .room-book-button { display: flex; justify-content: center; align-items: center; gap: .5rem; width: 100%; padding: .9rem 1rem; border-radius: 999px; background: #b2273d; color: white; text-decoration: none; font-weight: 700; }
+    .room-book-button:hover { background: #961f33; }
+    .room-book-button.disabled { background: #d7d1d8; color: #625867; pointer-events: none; }
+    .room-booking-note { margin: .85rem 0 0; color: #716575; font-size: .8rem; line-height: 1.5; text-align: center; }
+    .room-related { margin-top: 4rem; }
+    .room-related-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+    .room-related-card { overflow: hidden; border: 1px solid #e8e1e9; border-radius: .9rem; background: white; color: inherit; text-decoration: none; }
+    .room-related-card img { width: 100%; height: 160px; object-fit: cover; display: block; }
+    .room-related-copy { padding: 1rem; }
+    .room-related-copy small { color: #716575; }
+    .room-related-copy strong { display: block; margin-top: .25rem; }
+    @media (max-width: 760px) {
+      .room-heading { align-items: start; flex-direction: column; }
+      .room-gallery { grid-template-columns: 1fr 1fr; grid-auto-rows: 130px; }
+      .room-gallery a:first-child { grid-column: span 2; grid-row: auto; min-height: 240px; }
+      .room-content { grid-template-columns: 1fr; gap: 1.5rem; }
+      .room-booking-card { position: static; }
+      .room-facts { grid-template-columns: 1fr; }
+      .room-related-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="room-details">
+    <nav class="room-crumbs" aria-label="Breadcrumb">
+      <a href="{% url 'home' %}">Home</a><span aria-hidden="true">/</span>
+      <a href="{% url 'rooms' %}">Rooms &amp; Suites</a><span aria-hidden="true">/</span>
+      <span>Room {{ room.room_number }}</span>
+    </nav>
+
+    <header class="room-heading">
+      <div>
+        <span class="room-kicker">{{ room.room_type }}</span>
+        <h1>Room {{ room.room_number }}</h1>
+        <p>Discover the details of this Intercounty Gardens room.</p>
+      </div>
+      <span class="room-availability{% if not room.is_available %} unavailable{% endif %}">
+        <i aria-hidden="true"></i>{% if room.is_available %}Available to book{% else %}Currently unavailable{% endif %}
+      </span>
+    </header>
+
+    <section class="room-gallery" aria-label="Photos of Room {{ room.room_number }}">
+      {% for photo in room.images.all %}
+        <a href="{{ photo.image.url }}" target="_blank" rel="noopener" aria-label="Open room photo {{ forloop.counter }}">
+          <img src="{{ photo.image.url }}" alt="{{ photo.caption|default:room.room_type }}">
+        </a>
+      {% empty %}
+        <a href="{% static 'images/roomA.jpg' %}" target="_blank" rel="noopener"><img src="{% static 'images/roomA.jpg' %}" alt="{{ room.room_type }} room"></a>
+        <a href="{% static 'images/roomB.jpeg' %}" target="_blank" rel="noopener"><img src="{% static 'images/roomB.jpeg' %}" alt="Room interior"></a>
+        <a href="{% static 'images/roomC.jpg' %}" target="_blank" rel="noopener"><img src="{% static 'images/roomC.jpg' %}" alt="Room details"></a>
+      {% endfor %}
+    </section>
+
+    <section class="room-content">
+      <div>
+        <div class="room-description">
+          <h2>About this room</h2>
+          <p>Explore Room {{ room.room_number }}, a {{ room.room_type|lower }} at Intercounty Gardens. Check the current nightly rate and availability, then continue to booking to choose your stay dates.</p>
+        </div>
+        <div class="room-facts" aria-label="Room information">
+          <div class="room-fact"><span>Room number</span><strong>{{ room.room_number }}</strong></div>
+          <div class="room-fact"><span>Room type</span><strong>{{ room.room_type }}</strong></div>
+          <div class="room-fact"><span>Availability</span><strong>{% if room.is_available %}Available{% else %}Unavailable{% endif %}</strong></div>
+        </div>
+      </div>
+
+      <aside class="room-booking-card" aria-label="Room booking">
+        <span>Nightly rate</span>
+        <strong class="room-price">KES {{ room.price|floatformat:2 }} <small>/ night</small></strong>
+        {% if room.is_available %}
+          <a class="room-book-button" href="{% url 'bookings' %}?room={{ room.pk }}">Book this room <span aria-hidden="true">→</span></a>
+          <p class="room-booking-note">Your room selection will be pre-filled on the booking page.</p>
+        {% else %}
+          <a class="room-book-button disabled" aria-disabled="true">Not available to book</a>
+          <p class="room-booking-note">Browse other rooms or contact us about availability.</p>
+        {% endif %}
+      </aside>
+    </section>
+
+    {% if related_rooms %}
+      <section class="room-related" aria-labelledby="related-room-heading">
+        <h2 id="related-room-heading">Explore other rooms</h2>
+        <div class="room-related-grid">
+          {% for related_room in related_rooms %}
+            <a class="room-related-card" href="{% url 'per_room' related_room.pk %}">
+              {% with cover=related_room.images.first %}
+                {% if cover %}<img src="{{ cover.image.url }}" alt="{{ cover.caption|default:related_room.room_type }}">
+                {% else %}<img src="{% static 'images/roomA.jpg' %}" alt="{{ related_room.room_type }} room">{% endif %}
+              {% endwith %}
+              <div class="room-related-copy"><small>Room {{ related_room.room_number }}</small><strong>{{ related_room.room_type }} · KES {{ related_room.price|floatformat:0 }} / night</strong></div>
+            </a>
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+  </div>
+{% endblock %}

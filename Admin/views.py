@@ -2,6 +2,7 @@ import json
 import re
 from decimal import Decimal, InvalidOperation
 
+from django import forms
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password, make_password
 from django.core.exceptions import ValidationError
@@ -14,7 +15,7 @@ from django.utils.dateparse import parse_date
 from django.urls import reverse
 
 from Billing.models import Payments
-from Properties.models import Rooms
+from Properties.models import RoomImage, Rooms
 from Reservations.models import Guests
 from Staff.models import Users
 from Admin.models import Contacts
@@ -363,13 +364,31 @@ def room_management(request):
                 elif price <= 0:
                     messages.error(request, 'The nightly rate must be greater than zero.')
                 else:
-                    room.room_number = parsed_number
-                    room.room_type = room_type
-                    room.price = price
-                    room.is_available = request.POST.get('is_available') == 'on'
-                    room.save()
-                    messages.success(request, 'Room saved.')
-                    return redirect('admin_portal:rooms')
+                    uploaded_images = request.FILES.getlist('room_images')
+                    try:
+                        uploaded_images = [
+                            forms.ImageField().clean(image)
+                            for image in uploaded_images
+                        ]
+                    except ValidationError:
+                        messages.error(request, 'Upload valid image files only.')
+                    else:
+                        room.room_number = parsed_number
+                        room.room_type = room_type
+                        room.price = price
+                        room.is_available = request.POST.get('is_available') == 'on'
+                        room.save()
+                        for position, uploaded_image in enumerate(
+                            uploaded_images,
+                            start=room.images.count(),
+                        ):
+                            RoomImage.objects.create(
+                                room=room,
+                                image=uploaded_image,
+                                position=position,
+                            )
+                        messages.success(request, 'Room saved.')
+                        return redirect('admin_portal:rooms')
 
             return redirect('admin_portal:rooms')
 

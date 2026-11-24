@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% load static %}
 
 {% block title %}Rooms & Suites | Intercounty Hotels{% endblock %}
 {% block body_class %}bg-surface font-body-md text-on-surface antialiased min-h-screen{% endblock %}
@@ -324,13 +325,16 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter" id="rooms-grid">
               {% for room in rooms %}
               <article class="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col" data-category="{{ room.room_type|slugify }}" data-price="{{ room.price }}" data-room="{{ room.room_number }}">
-                <div class="w-full aspect-[16/10] bg-surface-container flex items-center justify-center text-primary">
-                  <i data-lucide="bed-double" class="text-4xl"></i>
-                </div>
+                <a class="block w-full aspect-[16/10] bg-surface-container overflow-hidden" href="{% url 'per_room' room.pk %}" aria-label="View Room {{ room.room_number }} details">
+                  {% with cover=room.images.first %}
+                    {% if cover %}<img class="w-full h-full object-cover" src="{{ cover.image.url }}" alt="{{ cover.caption|default:room.room_type }}">
+                    {% else %}<img class="w-full h-full object-cover" src="{% static 'images/roomA.jpg' %}" alt="{{ room.room_type }} room">{% endif %}
+                  {% endwith %}
+                </a>
                 <div class="p-space-lg flex flex-col flex-1 justify-between gap-space-md">
                   <div class="flex flex-col gap-space-xs">
                     <span class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-bold">Room {{ room.room_number }}</span>
-                    <h2 class="font-headline-md text-headline-md text-on-surface font-bold group-hover:text-primary transition-colors">{{ room.room_type }}</h2>
+                    <h2 class="font-headline-md text-headline-md text-on-surface font-bold group-hover:text-primary transition-colors"><a href="{% url 'per_room' room.pk %}">{{ room.room_type }}</a></h2>
                     <p class="font-body-sm text-body-sm text-on-surface-variant">{{ room.is_available|yesno:"Available,Unavailable" }}</p>
                   </div>
                   <div class="pt-space-md border-t border-surface-container-high/60 flex items-end justify-between gap-space-sm">
@@ -338,6 +342,10 @@
                       <span class="font-label-sm text-label-sm text-on-surface-variant">Nightly Rate</span>
                       <span class="font-headline-lg text-headline-lg font-bold text-on-surface">KES {{ room.price|floatformat:2 }}</span>
                     </div>
+                    <a class="px-space-lg py-space-sm rounded-full bg-surface-container text-primary font-label-md text-label-md font-semibold hover:bg-surface-dim transition-all shadow-md shrink-0 flex items-center gap-1" href="{% url 'per_room' room.pk %}">
+                      <span>View Details</span>
+                      <i data-lucide="arrow-up-right" class="text-sm"></i>
+                    </a>
                     <a class="px-space-lg py-space-sm rounded-full bg-secondary text-on-secondary font-label-md text-label-md font-semibold hover:bg-secondary-container transition-all shadow-md shrink-0 flex items-center gap-1" href="{% url 'bookings' %}?room={{ room.pk }}">
                       <span>Book Room</span>
                       <i data-lucide="arrow-right" class="text-sm"></i>

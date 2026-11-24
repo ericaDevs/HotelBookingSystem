@@ -9,3 +9,20 @@ class Rooms(models.Model):
 
     def __str__(self):
         return f"Room {self.room_number}"
+
+
+class RoomImage(models.Model):
+    room = models.ForeignKey(
+        Rooms,
+        on_delete=models.CASCADE,
+        related_name='images',
+    )
+    image = models.ImageField(upload_to='room_images/')
+    caption = models.CharField(max_length=120, blank=True)
+    position = models.PositiveSmallIntegerField(default=0)
+
+    class Meta:
+        ordering = ('position', 'pk')
+
+    def __str__(self):
+        return f"Image for {self.room}"

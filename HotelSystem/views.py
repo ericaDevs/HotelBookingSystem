@@ -5,7 +5,11 @@ from Admin.models import Contacts
 
 # Create your views here.
 def home(request):
-    rooms = Rooms.objects.filter(is_available=True).order_by('room_number')
+    rooms = (
+        Rooms.objects.filter(is_available=True)
+        .prefetch_related('images')
+        .order_by('room_number')
+    )
     return render(request, 'index.html', {'rooms': rooms})
 
 
