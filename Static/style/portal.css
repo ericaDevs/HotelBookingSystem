@@ -974,3 +974,83 @@ button, input { font: inherit; }
 .staff-dashboard-page .staff-room-cards article > strong { font-size: 13px; }
 .staff-dashboard-page .staff-room-cards article > small,
 .staff-dashboard-page .staff-room-cards article > span { font-size: 11px; }
+
+.admin-dashboard-page { background: #f7f6f8; font-size: 16px; }
+.admin-dashboard-page .dashboard-sidebar {
+  width: 260px;
+  border-right: 1px solid #ece8ee;
+  padding: 22px 16px 18px;
+  color: #443746;
+  background: #fff;
+  box-shadow: 3px 0 16px rgb(41 35 51 / 3%);
+}
+.admin-dashboard-page .dashboard-sidebar .portal-brand { padding: 0 7px 28px; color: #443746; }
+.admin-dashboard-page .dashboard-sidebar .portal-brand-mark {
+  width: 40px;
+  height: 40px;
+  border-color: #f0e5f1;
+  border-radius: 11px;
+  color: #a93249;
+  background: #fff2f4;
+}
+.admin-dashboard-page .dashboard-sidebar .portal-brand-name { font-size: 12px; letter-spacing: .03em; }
+.admin-dashboard-page .dashboard-sidebar .portal-brand-caption { color: #817783; font-size: 10px; letter-spacing: .1em; }
+.admin-dashboard-page .sidebar-label { padding: 8px 10px 10px; color: #817783; font-size: 12px; letter-spacing: .08em; }
+.admin-dashboard-page .sidebar-nav { gap: 5px; }
+.admin-dashboard-page .sidebar-link {
+  min-height: 46px;
+  gap: 11px;
+  border-radius: 9px;
+  padding: 0 12px;
+  color: #625767;
+  font-size: 15px;
+  font-weight: 600;
+}
+.admin-dashboard-page .sidebar-link .lucide { width: 18px; height: 18px; }
+.admin-dashboard-page .sidebar-link:hover { color: #a62f43; background: #fff4f5; }
+.admin-dashboard-page .sidebar-link.active { color: #fff; background: #be3045; font-weight: 700; }
+.admin-dashboard-page .sidebar-spacer { min-height: 18px; }
+.sidebar-signout-form { margin-top: auto; }
+.admin-dashboard-page .sidebar-signout {
+  width: 100%;
+  border: 1px solid #f0e5e8;
+  color: #9e3446;
+  background: #fff8f8;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.admin-dashboard-page .sidebar-signout:hover { color: #fff; background: #a93249; }
+.admin-dashboard-page .dashboard-main { margin-left: 260px; }
+.admin-dashboard-page .dashboard-topbar { min-height: 72px; padding: 0 30px; }
+.admin-dashboard-page .topbar-heading { display: block; }
+.admin-dashboard-page .topbar-heading strong { color: #342b36; font-size: 16px; }
+.admin-dashboard-page .topbar-heading span { color: #817783; font-size: 13px; }
+.admin-dashboard-page .topbar-actions { width: auto; gap: 12px; }
+.admin-dashboard-page .topbar-date { border-radius: 8px; padding: 9px 12px; font-size: 13px; }
+.admin-dashboard-page .dashboard-content { padding: 30px 32px 48px; }
+.admin-dashboard-page .dashboard-content *:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) {
+  font-size: max(14px, 0.9em) !important;
+}
+.admin-dashboard-page .dashboard-content h1 { font-size: clamp(26px, 2.6vw, 34px) !important; }
+.admin-dashboard-page .dashboard-content h2 { font-size: 20px !important; }
+.admin-dashboard-page .dashboard-content h3 { font-size: 18px !important; }
+.admin-dashboard-page .dashboard-content .overview-metric > strong,
+.admin-dashboard-page .dashboard-content .metric-value,
+.admin-dashboard-page .dashboard-content .reservation-metric > strong,
+.admin-dashboard-page .dashboard-content .rooms-metric > strong,
+.admin-dashboard-page .dashboard-content .staff-metric > strong { font-size: 24px !important; }
+.admin-dashboard-page .dashboard-content .overview-metric > strong small { font-size: 14px !important; }
+
+@media (max-width: 1100px) and (min-width: 761px) {
+  .admin-dashboard-page .dashboard-sidebar { width: 220px; }
+  .admin-dashboard-page .dashboard-main { margin-left: 220px; }
+  .admin-dashboard-page .dashboard-content { padding-right: 20px; padding-left: 20px; }
+}
+@media (max-width: 760px) {
+  .admin-dashboard-page .dashboard-sidebar { width: min(300px, 88vw); }
+  .admin-dashboard-page .dashboard-main { margin-left: 0; }
+  .admin-dashboard-page .dashboard-topbar { min-height: 64px; padding: 0 14px; }
+  .admin-dashboard-page .dashboard-content { padding: 22px 16px 36px; }
+  .admin-dashboard-page .topbar-heading span { display: none; }
+}

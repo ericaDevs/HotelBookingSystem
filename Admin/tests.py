@@ -29,6 +29,32 @@ class AdminPortalPageTests(TestCase):
         self.assertContains(response, 'name="role"')
         self.assertContains(response, 'name="password"')
 
+    def test_admin_dashboard_has_admin_navigation_only(self):
+        response = self.client.get(reverse('admin_portal:overview'))
+
+        self.assertEqual(response.status_code, 200)
+        for label in ('Overview', 'Rooms', 'Staff', 'Revenue', 'Reservations', 'Sign out'):
+            with self.subTest(label=label):
+                self.assertContains(response, label)
+        self.assertNotContains(response, 'Staff Shift')
+        self.assertNotContains(response, reverse('staff:dashboard'))
+        self.assertContains(
+            response,
+            f'action="{reverse("admin_portal:logout")}"',
+        )
+
+    def test_admin_sign_out_clears_role_sessions(self):
+        session = self.client.session
+        session['admin_user_id'] = 7
+        session['staff_user_id'] = 8
+        session.save()
+
+        response = self.client.post(reverse('admin_portal:logout'))
+
+        self.assertRedirects(response, reverse('admin_portal:login'))
+        self.assertNotIn('admin_user_id', self.client.session)
+        self.assertNotIn('staff_user_id', self.client.session)
+
     def test_admin_login_authenticates_and_redirects_by_role(self):
         admin = Users.objects.create(
             fullname='Portal Admin',

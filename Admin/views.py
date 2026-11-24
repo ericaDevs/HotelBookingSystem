@@ -58,6 +58,16 @@ def admin_login(request):
     return render(request, 'auth/login.html')
 
 
+def admin_logout(request):
+    if request.method != "POST":
+        return HttpResponseNotAllowed(["POST"])
+
+    request.session.pop("admin_user_id", None)
+    request.session.pop("staff_user_id", None)
+    request.session.cycle_key()
+    return redirect("admin_portal:login")
+
+
 # API END-POINT VIEW
 def api_endpoint(request):
     if request.method != "POST":
