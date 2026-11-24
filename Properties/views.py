@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Rooms
 
 # Create your views here.
@@ -13,4 +13,14 @@ def rooms(request):
     return render(request, 'rooms.html', {
         'rooms': available_rooms,
         'room_types': room_types,
+    })
+    
+    
+
+def room_details(id, request):
+    room = get_object_or_404(Rooms, id=id)
+    related_rooms = Rooms.objects.exclude(id=room.id).order_by('-id')[:3]
+    return render(request, 'room_details.html', {
+        'room': room,
+        'related_rooms': related_rooms,
     })
