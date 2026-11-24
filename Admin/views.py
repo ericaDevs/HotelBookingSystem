@@ -349,16 +349,18 @@ def room_management(request):
             price_text = request.POST.get('price', '').strip()
 
             try:
-                parsed_number = int(room_number)
                 price = Decimal(price_text)
             except (ValueError, InvalidOperation):
                 messages.error(request, 'Enter a valid room number and nightly rate.')
             else:
                 duplicate_number = Rooms.objects.filter(
-                    room_number=parsed_number
+                    room_number=room_number
                 ).exclude(pk=room.pk).exists()
-                if parsed_number <= 0 or duplicate_number:
-                    messages.error(request, 'Room numbers must be positive and unique.')
+                if not room_number or len(room_number) > 12 or duplicate_number:
+                    messages.error(
+                        request,
+                        'Room numbers must be 1 to 12 characters and unique.',
+                    )
                 elif not room_type or len(room_type) > 50:
                     messages.error(request, 'Enter a room type of 1–50 characters.')
                 elif price <= 0:
@@ -373,7 +375,7 @@ def room_management(request):
                     except ValidationError:
                         messages.error(request, 'Upload valid image files only.')
                     else:
-                        room.room_number = parsed_number
+                        room.room_number = room_number
                         room.room_type = room_type
                         room.price = price
                         room.is_available = request.POST.get('is_available') == 'on'

@@ -149,6 +149,10 @@
     </div>
   </div>
 
+
+
+
+  <!-- ADD ROOM DIALOG FORM -->
   <dialog class="portal-dialog" id="room-modal" aria-labelledby="room-modal-title">
     <form class="modal-form" method="post" enctype="multipart/form-data">
       {% csrf_token %}
@@ -160,7 +164,7 @@
       </header>
       <div class="modal-body">
         <div class="modal-fields">
-          <label class="modal-field">Room number<input type="number" name="room_number" min="1" required></label>
+          <label class="modal-field">Room number or code<input type="text" name="room_number" maxlength="12" placeholder="e.g. 101 or A101" required></label>
           <label class="modal-field">Room category<input name="room_type" maxlength="50" required></label>
           <label class="modal-field full">Nightly rate (KES)<input type="number" name="price" min="0.01" step="0.01" required></label>
           <label class="checkbox-field modal-field full"><input type="checkbox" name="is_available" checked> Available for booking</label>

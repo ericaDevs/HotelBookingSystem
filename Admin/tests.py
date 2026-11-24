@@ -208,6 +208,19 @@ class AdminPortalPageTests(TestCase):
         self.client.post(url, {'action': 'delete_room', 'room_id': room.pk})
         self.assertFalse(Rooms.objects.filter(pk=room.pk).exists())
 
+    def test_room_crud_accepts_text_room_number_and_two_shilling_rate(self):
+        response = self.client.post(reverse('admin_portal:rooms'), {
+            'action': 'create_room',
+            'room_number': 'A101',
+            'room_type': 'Garden suite',
+            'price': '2',
+            'is_available': 'on',
+        })
+
+        self.assertRedirects(response, reverse('admin_portal:rooms'))
+        room = Rooms.objects.get(room_number='A101')
+        self.assertEqual(room.price, Decimal('2.00'))
+
     def test_room_management_accepts_six_room_images(self):
         room = Rooms.objects.create(
             room_number=14,
