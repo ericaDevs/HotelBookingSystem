@@ -166,23 +166,11 @@ button, input { font: inherit; }
 .quick-action .metric-icon { width: 31px; height: 31px; }
 .empty-note { padding: 22px; color: var(--portal-muted); font-size: 11px; text-align: center; }
 
-.admin-dashboard-page { background: #fff8ff; }
-.admin-dashboard-page .dashboard-sidebar { width: 224px; border-right: 1px solid #f1e7f2; padding: 17px 10px 12px; color: #433442; background: #fff; }
-.admin-dashboard-page .dashboard-sidebar .portal-brand { padding: 0 8px 17px; color: #433442; }
-.admin-dashboard-page .dashboard-sidebar .portal-brand-mark { width: 34px; height: 34px; border-color: #f0e5f1; border-radius: 10px; color: var(--portal-brand); background: #fff5f7; }
-.admin-dashboard-page .dashboard-sidebar .portal-brand-name { font-size: 10px; letter-spacing: 0; }
-.admin-dashboard-page .dashboard-sidebar .portal-brand-caption { color: var(--portal-muted); font-size: 8px; letter-spacing: .05em; }
 .admin-shift-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 12px; border-radius: 8px; padding: 3px; background: #f7eafd; font-size: 10px; font-weight: 700; text-align: center; }
 .admin-shift-switch > * { border-radius: 6px; padding: 6px 3px; }
 .admin-shift-switch .selected { color: var(--portal-brand); background: #fff; box-shadow: 0 1px 3px rgb(41 35 51 / 8%); }
 .admin-shift-switch a { color: #746575; }
-.admin-dashboard-page .sidebar-label { display: flex; align-items: center; justify-content: space-between; padding: 12px 8px 6px; color: #776a78; font-size: 9px; letter-spacing: .08em; }
 .sidebar-tag { border-radius: 10px; padding: 2px 6px; color: #76557d; background: #f4e8f7; font-size: 8px; letter-spacing: 0; }
-.admin-dashboard-page .sidebar-nav { gap: 2px; }
-.admin-dashboard-page .sidebar-link { min-height: 34px; gap: 9px; border-radius: 7px; padding: 0 9px; color: #5d4c58; font-size: 11px; font-weight: 600; }
-.admin-dashboard-page .sidebar-link .lucide { width: 14px; height: 14px; }
-.admin-dashboard-page .sidebar-link:hover, .admin-dashboard-page .sidebar-link.active { color: #fff; background: var(--portal-brand); }
-.admin-dashboard-page .sidebar-link.active { font-weight: 800; }
 .sidebar-station { display: flex; align-items: center; gap: 7px; border: 1px solid #f0e4f2; border-radius: 8px; padding: 8px 7px; background: #faf4fc; }
 .station-dot { width: 8px; height: 8px; flex: 0 0 auto; border-radius: 50%; background: #42a77a; }
 .sidebar-station > span:nth-child(2) { min-width: 0; flex: 1; }
@@ -190,10 +178,6 @@ button, input { font: inherit; }
 .sidebar-station strong { font-size: 9px; }
 .sidebar-station small { margin-top: 3px; color: var(--portal-muted); font-size: 8px; }
 .sidebar-station > .lucide { width: 13px; color: var(--portal-muted); }
-.admin-dashboard-page .dashboard-main { margin-left: 224px; }
-.admin-dashboard-page .dashboard-topbar { min-height: 54px; gap: 12px; padding: 0 20px; }
-.admin-dashboard-page .topbar-heading { display: none; }
-.admin-dashboard-page .topbar-actions { width: 100%; gap: 10px; }
 .admin-dashboard-page .topbar-search { width: auto; max-width: 560px; height: 34px; flex: 1; border-color: transparent; background: #f7edfc; }
 .admin-dashboard-page .topbar-search input { font-size: 10px; background: transparent; }
 .topbar-date { display: inline-flex; align-items: center; gap: 5px; border-radius: 6px; padding: 7px 8px; color: #64536a; background: #f8f2fa; font-size: 9px; white-space: nowrap; }
@@ -203,7 +187,6 @@ button, input { font: inherit; }
 .topbar-profile strong, .topbar-profile small { display: block; overflow: hidden; max-width: 145px; text-overflow: ellipsis; white-space: nowrap; }
 .topbar-profile strong { font-size: 9px; }
 .topbar-profile small { margin-top: 2px; color: var(--portal-muted); font-size: 8px; }
-.admin-dashboard-page .dashboard-content { max-width: none; padding: 21px 22px 30px; }
 .admin-overview { max-width: 1500px; margin: 0 auto; }
 .overview-eyebrow { display: flex; align-items: center; gap: 6px; color: #b94b5d; font-size: 9px; font-weight: 800; letter-spacing: .1em; }
 .overview-eyebrow > span { width: 7px; height: 7px; border-radius: 50%; background: var(--portal-brand); }
@@ -303,9 +286,6 @@ button, input { font: inherit; }
 @media (max-width: 1100px) {
   .metrics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .dashboard-grid { grid-template-columns: minmax(0, 1fr); }
-  .admin-dashboard-page .dashboard-sidebar { width: 174px; }
-  .admin-dashboard-page .dashboard-main { margin-left: 174px; }
-  .admin-dashboard-page .dashboard-content { padding-right: 14px; padding-left: 14px; }
   .overview-columns { grid-template-columns: minmax(0, 1.5fr) minmax(170px, .8fr); }
 }
 @media (max-width: 760px) {
@@ -326,9 +306,6 @@ button, input { font: inherit; }
   .dashboard-content { padding: 24px 17px 36px; }
   .page-heading { align-items: flex-start; }
   .date-pill { padding: 9px; font-size: 9px; }
-  .admin-dashboard-page .dashboard-sidebar { width: min(290px, 86vw); }
-  .admin-dashboard-page .dashboard-main { margin-left: 0; }
-  .admin-dashboard-page .dashboard-content { padding: 18px 14px 28px; }
   .overview-columns { grid-template-columns: minmax(0, 1fr); }
   .overview-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .admin-dashboard-page .topbar-date, .topbar-profile small { display: none; }
@@ -1031,24 +1008,313 @@ button, input { font: inherit; }
 .admin-dashboard-page .topbar-heading span { color: #817783; font-size: 13px; }
 .admin-dashboard-page .topbar-actions { width: auto; gap: 12px; }
 .admin-dashboard-page .topbar-date { border-radius: 8px; padding: 9px 12px; font-size: 13px; }
-.admin-dashboard-page .dashboard-content { padding: 30px 32px 48px; }
-.admin-dashboard-page .dashboard-content *:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) {
-  font-size: max(14px, 0.9em) !important;
+.admin-dashboard-page .dashboard-content {
+  width: 100%;
+  max-width: 1440px;
+  padding: 28px 32px 48px;
 }
-.admin-dashboard-page .dashboard-content h1 { font-size: clamp(26px, 2.6vw, 34px) !important; }
-.admin-dashboard-page .dashboard-content h2 { font-size: 20px !important; }
-.admin-dashboard-page .dashboard-content h3 { font-size: 18px !important; }
-.admin-dashboard-page .dashboard-content .overview-metric > strong,
-.admin-dashboard-page .dashboard-content .metric-value,
-.admin-dashboard-page .dashboard-content .reservation-metric > strong,
-.admin-dashboard-page .dashboard-content .rooms-metric > strong,
-.admin-dashboard-page .dashboard-content .staff-metric > strong { font-size: 24px !important; }
-.admin-dashboard-page .dashboard-content .overview-metric > strong small { font-size: 14px !important; }
+
+/* Keep admin typography and spacing on one readable, predictable scale. */
+.admin-dashboard-page,
+.admin-dashboard-page * {
+  font-family: "Figtree", ui-sans-serif, system-ui, sans-serif;
+}
+.admin-dashboard-page .dashboard-content h1,
+.admin-dashboard-page .overview-heading h1,
+.admin-dashboard-page .reservation-heading h1,
+.admin-dashboard-page .rooms-heading h1,
+.admin-dashboard-page .page-heading h1 {
+  margin: 0;
+  color: #302333;
+  font-family: var(--portal-font);
+  font-size: clamp(26px, 2.2vw, 32px);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  line-height: 1.15;
+  white-space: normal;
+}
+.admin-dashboard-page .dashboard-content h2,
+.admin-dashboard-page .overview-panel-header h2,
+.admin-dashboard-page .overview-feature h2,
+.admin-dashboard-page .rooms-feature-copy h2,
+.admin-dashboard-page .rooms-breakdown header strong,
+.admin-dashboard-page .rooms-availability-board header strong,
+.admin-dashboard-page .panel-header h2,
+.admin-dashboard-page .panel-toolbar h2 {
+  margin: 0;
+  color: #3b2e3c;
+  font-family: var(--portal-font);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.admin-dashboard-page .overview-heading p,
+.admin-dashboard-page .reservation-heading p,
+.admin-dashboard-page .rooms-heading p,
+.admin-dashboard-page .page-heading p,
+.admin-dashboard-page .overview-panel-header p,
+.admin-dashboard-page .panel-header p,
+.admin-dashboard-page .panel-toolbar p {
+  max-width: 640px;
+  margin: 6px 0 0;
+  color: #746878;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.admin-dashboard-page .overview-heading,
+.admin-dashboard-page .reservation-heading,
+.admin-dashboard-page .rooms-heading,
+.admin-dashboard-page .page-heading {
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.admin-dashboard-page .overview-eyebrow,
+.admin-dashboard-page .reservation-eyebrow,
+.admin-dashboard-page .rooms-eyebrow,
+.admin-dashboard-page .feature-eyebrow,
+.admin-dashboard-page .rooms-feature-copy > span {
+  font-size: 12px;
+  letter-spacing: .06em;
+}
+.admin-dashboard-page .overview-export,
+.admin-dashboard-page .reservation-date-control summary,
+.admin-dashboard-page .reservation-toolbar-button,
+.admin-dashboard-page .reservation-new-button,
+.admin-dashboard-page .rooms-primary-button,
+.admin-dashboard-page .rooms-secondary-button,
+.admin-dashboard-page .dashboard-button,
+.admin-dashboard-page .date-pill,
+.admin-dashboard-page .table-action {
+  min-height: 38px;
+  padding-inline: 12px;
+  font-size: 13px;
+}
+.admin-dashboard-page .overview-export .lucide,
+.admin-dashboard-page .reservation-date-control summary .lucide,
+.admin-dashboard-page .reservation-toolbar-button .lucide,
+.admin-dashboard-page .reservation-new-button .lucide,
+.admin-dashboard-page .rooms-primary-button .lucide,
+.admin-dashboard-page .rooms-secondary-button .lucide,
+.admin-dashboard-page .dashboard-button .lucide,
+.admin-dashboard-page .overview-filter .lucide,
+.admin-dashboard-page .inventory-link .lucide,
+.admin-dashboard-page .row-action .lucide,
+.admin-dashboard-page .reservation-edit-button .lucide,
+.admin-dashboard-page .room-icon-button .lucide {
+  width: 16px;
+  height: 16px;
+}
+
+.admin-dashboard-page .overview-metrics,
+.admin-dashboard-page .reservation-metrics,
+.admin-dashboard-page .rooms-metrics,
+.admin-dashboard-page .metrics-grid {
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.admin-dashboard-page .overview-metric,
+.admin-dashboard-page .reservation-metric,
+.admin-dashboard-page .rooms-metric,
+.admin-dashboard-page .metric-card {
+  min-height: 112px;
+  padding: 16px;
+}
+.admin-dashboard-page .overview-metric-label,
+.admin-dashboard-page .reservation-metric > div,
+.admin-dashboard-page .rooms-metric > div,
+.admin-dashboard-page .metric-label {
+  font-size: 12px;
+  letter-spacing: .04em;
+}
+.admin-dashboard-page .overview-metric > strong,
+.admin-dashboard-page .reservation-metric > strong,
+.admin-dashboard-page .rooms-metric > strong,
+.admin-dashboard-page .metric-value {
+  margin-top: 10px;
+  font-size: 26px;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+.admin-dashboard-page .overview-metric > strong small { font-size: 16px; }
+.admin-dashboard-page .overview-metric .overview-revenue,
+.admin-dashboard-page .rooms-metric .rooms-revenue-value {
+  font-size: clamp(18px, 1.4vw, 24px);
+}
+.admin-dashboard-page .overview-metric-note,
+.admin-dashboard-page .reservation-metric > small,
+.admin-dashboard-page .rooms-metric > small,
+.admin-dashboard-page .rooms-metric-foot,
+.admin-dashboard-page .metric-change,
+.admin-dashboard-page .metric-subtext {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.admin-dashboard-page .overview-metric-label .lucide,
+.admin-dashboard-page .reservation-metric > div .lucide,
+.admin-dashboard-page .rooms-metric > div .lucide {
+  width: 28px;
+  height: 28px;
+  padding: 6px;
+}
+.admin-dashboard-page .metric-icon { width: 36px; height: 36px; }
+.admin-dashboard-page .metric-icon .lucide { width: 18px; height: 18px; }
+
+.admin-dashboard-page .overview-columns { gap: 16px; }
+.admin-dashboard-page .overview-primary,
+.admin-dashboard-page .overview-secondary { gap: 16px; }
+.admin-dashboard-page .overview-panel-header,
+.admin-dashboard-page .panel-header,
+.admin-dashboard-page .panel-toolbar {
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 18px;
+}
+.admin-dashboard-page .overview-filter,
+.admin-dashboard-page .mini-panel-link,
+.admin-dashboard-page .panel-link,
+.admin-dashboard-page .inventory-link,
+.admin-dashboard-page .overview-panel-footer,
+.admin-dashboard-page .overview-panel-footer a,
+.admin-dashboard-page .panel-date {
+  font-size: 13px;
+}
+.admin-dashboard-page .overview-table th,
+.admin-dashboard-page .reservation-table th,
+.admin-dashboard-page .rooms-table th,
+.admin-dashboard-page .data-table th {
+  padding: 12px 10px;
+  font-size: 11px;
+  letter-spacing: .04em;
+}
+.admin-dashboard-page .overview-table td,
+.admin-dashboard-page .reservation-table td,
+.admin-dashboard-page .rooms-table td,
+.admin-dashboard-page .data-table td {
+  padding: 14px 10px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.admin-dashboard-page .overview-table td strong,
+.admin-dashboard-page .reservation-table td strong,
+.admin-dashboard-page .rooms-table td strong,
+.admin-dashboard-page .data-table td strong {
+  font-size: 14px;
+}
+.admin-dashboard-page .overview-table td small,
+.admin-dashboard-page .reservation-table td small,
+.admin-dashboard-page .rooms-table td small {
+  font-size: 12px;
+}
+.admin-dashboard-page .overview-status,
+.admin-dashboard-page .reservation-status,
+.admin-dashboard-page .status,
+.admin-dashboard-page .rooms-status-pill,
+.admin-dashboard-page .room-availability,
+.admin-dashboard-page .identity-chip,
+.admin-dashboard-page .unassigned-chip,
+.admin-dashboard-page .room-stay-count {
+  padding: 5px 8px;
+  font-size: 12px;
+}
+.admin-dashboard-page .reservation-table,
+.admin-dashboard-page .rooms-table { min-width: 880px; }
+.admin-dashboard-page .reservation-guest { gap: 10px; }
+.admin-dashboard-page .reservation-avatar,
+.admin-dashboard-page .team-avatar,
+.admin-dashboard-page .mini-avatar {
+  width: 32px;
+  height: 32px;
+  font-size: 13px;
+}
+.admin-dashboard-page .reservation-search,
+.admin-dashboard-page .rooms-search {
+  height: 40px;
+}
+.admin-dashboard-page .reservation-search input,
+.admin-dashboard-page .rooms-search input,
+.admin-dashboard-page .reservation-category select,
+.admin-dashboard-page .rooms-filter-panel select,
+.admin-dashboard-page .filter-field,
+.admin-dashboard-page .filter-field input {
+  font-size: 14px;
+}
+.admin-dashboard-page .reservation-status-tabs button {
+  padding: 7px 12px;
+  font-size: 13px;
+}
+.admin-dashboard-page .reservation-sync,
+.admin-dashboard-page .rooms-showing,
+.admin-dashboard-page .reservation-table-footer,
+.admin-dashboard-page .rooms-table-footer,
+.admin-dashboard-page .overview-empty,
+.admin-dashboard-page .empty-note,
+.admin-dashboard-page .empty-table,
+.admin-dashboard-page #reservation-empty-row td,
+.admin-dashboard-page #rooms-empty-row td {
+  font-size: 13px;
+}
+.admin-dashboard-page .reservation-edit-button,
+.admin-dashboard-page .reservation-pagination button,
+.admin-dashboard-page .rooms-pagination button {
+  min-height: 30px;
+  font-size: 13px;
+}
+.admin-dashboard-page .payment-row { padding: 12px 0; }
+.admin-dashboard-page .payment-row strong,
+.admin-dashboard-page .team-row strong,
+.admin-dashboard-page .inventory-category strong { font-size: 14px; }
+.admin-dashboard-page .payment-row span,
+.admin-dashboard-page .team-row small,
+.admin-dashboard-page .inventory-category span,
+.admin-dashboard-page .inventory-summary span,
+.admin-dashboard-page .inventory-summary small { font-size: 12px; }
+.admin-dashboard-page .inventory-summary strong { font-size: 22px; }
+.admin-dashboard-page .overview-feature { min-height: 140px; }
+.admin-dashboard-page .overview-feature > div,
+.admin-dashboard-page .rooms-feature-copy { padding: 16px 18px; }
+.admin-dashboard-page .overview-feature p,
+.admin-dashboard-page .rooms-feature-copy p,
+.admin-dashboard-page .overview-feature a,
+.admin-dashboard-page .info-note { font-size: 14px; line-height: 1.5; }
+.admin-dashboard-page .rooms-feature { min-height: 120px; }
+.admin-dashboard-page .rooms-feature > img { height: 120px; }
+.admin-dashboard-page .rooms-feature-stats small,
+.admin-dashboard-page .rooms-breakdown header small,
+.admin-dashboard-page .rooms-availability-board header small,
+.admin-dashboard-page .rooms-availability-board header em,
+.admin-dashboard-page .rooms-board-legend,
+.admin-dashboard-page .rooms-donut small,
+.admin-dashboard-page .rooms-breakdown-content li { font-size: 12px; }
+.admin-dashboard-page .rooms-feature-stats strong,
+.admin-dashboard-page .rooms-board-cards article > strong,
+.admin-dashboard-page .rooms-donut strong { font-size: 16px; }
+.admin-dashboard-page .rooms-board-cards article > small,
+.admin-dashboard-page .rooms-board-cards article > span,
+.admin-dashboard-page .rooms-board-cards article > b,
+.admin-dashboard-page .rooms-availability-board > a { font-size: 13px; }
+.admin-dashboard-page .rooms-bottom-grid { gap: 16px; margin-top: 16px; }
+.admin-dashboard-page .modal-header h2 { font-size: 20px; }
+.admin-dashboard-page .modal-header p,
+.admin-dashboard-page .modal-field,
+.admin-dashboard-page .modal-hint,
+.admin-dashboard-page .checkbox-field { font-size: 13px; }
+.admin-dashboard-page .modal-field input,
+.admin-dashboard-page .modal-field select,
+.admin-dashboard-page .modal-field textarea { font-size: 14px; }
+.admin-dashboard-page .portal-message { font-size: 14px; }
 
 @media (max-width: 1100px) and (min-width: 761px) {
   .admin-dashboard-page .dashboard-sidebar { width: 220px; }
   .admin-dashboard-page .dashboard-main { margin-left: 220px; }
   .admin-dashboard-page .dashboard-content { padding-right: 20px; padding-left: 20px; }
+}
+@media (max-width: 1200px) {
+  .admin-dashboard-page .overview-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .admin-dashboard-page .overview-columns,
+  .admin-dashboard-page .rooms-bottom-grid { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 760px) {
   .admin-dashboard-page .dashboard-sidebar { width: min(300px, 88vw); }
@@ -1056,4 +1322,16 @@ button, input { font: inherit; }
   .admin-dashboard-page .dashboard-topbar { min-height: 64px; padding: 0 14px; }
   .admin-dashboard-page .dashboard-content { padding: 22px 16px 36px; }
   .admin-dashboard-page .topbar-heading span { display: none; }
+  .admin-dashboard-page .overview-metrics,
+  .admin-dashboard-page .reservation-metrics,
+  .admin-dashboard-page .rooms-metrics,
+  .admin-dashboard-page .metrics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .admin-dashboard-page .reservation-heading-actions,
+  .admin-dashboard-page .rooms-heading-actions { justify-content: flex-start; }
+}
+@media (max-width: 480px) {
+  .admin-dashboard-page .overview-metrics,
+  .admin-dashboard-page .reservation-metrics,
+  .admin-dashboard-page .rooms-metrics,
+  .admin-dashboard-page .metrics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
