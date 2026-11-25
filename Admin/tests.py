@@ -365,6 +365,61 @@ class AdminPortalPageTests(TestCase):
         self.client.post(url, payload)
         self.assertFalse(Guests.objects.filter(email='other@example.com').exists())
 
+    def test_reservation_update_and_delete(self):
+        room = Rooms.objects.create(
+            room_number=4,
+            room_type='Garden room',
+            price=Decimal('8000.00'),
+        )
+        reservation = Guests.objects.create(
+            full_name='Original Guest',
+            Id_no='ID100',
+            email='original.guest@example.com',
+            phone_number='0712345678',
+            county_of_origin='Kitui',
+            country='Kenya',
+            check_in_date=date(2026, 12, 1),
+            check_out_date=date(2026, 12, 3),
+        )
+        payment = Payments.objects.create(
+            guest=reservation,
+            phone_number='0712345678',
+            amount=Decimal('8000.00'),
+            payment_method='Cash',
+            category='room',
+        )
+        url = reverse('admin_portal:reservations')
+
+        response = self.client.post(url, {
+            'action': 'update_reservation',
+            'reservation_id': reservation.pk,
+            'full_name': 'Updated Guest',
+            'email': 'updated.guest@example.com',
+            'phone_number': '0712345679',
+            'id_no': 'ID101',
+            'county_of_origin': 'Nairobi',
+            'country': 'Kenya',
+            'check_in_date': '2026-12-02',
+            'check_out_date': '2026-12-05',
+            'room': room.pk,
+        })
+
+        self.assertRedirects(response, url)
+        reservation.refresh_from_db()
+        self.assertEqual(reservation.full_name, 'Updated Guest')
+        self.assertEqual(reservation.room, room)
+        self.assertEqual(reservation.check_in_date, date(2026, 12, 2))
+        self.assertTrue(Payments.objects.filter(pk=payment.pk).exists())
+
+        response = self.client.post(url, {
+            'action': 'delete_reservation',
+            'reservation_id': reservation.pk,
+        })
+
+        self.assertRedirects(response, url)
+        self.assertFalse(Guests.objects.filter(pk=reservation.pk).exists())
+        self.assertFalse(Payments.objects.filter(pk=payment.pk).exists())
+
     def test_reservations_page_renders_filterable_guest_rows(self):
         room = Rooms.objects.create(
             room_number=55,
@@ -391,6 +446,8 @@ class AdminPortalPageTests(TestCase):
         self.assertContains(response, 'data-status="in-house"')
         self.assertContains(response, 'Filter reservations by stay status')
         self.assertContains(response, 'Download Roster')
+        self.assertContains(response, 'data-delete-reservation')
+        self.assertContains(response, 'payment records linked to this reservation')
 
     def test_staff_crud_hashes_password(self):
         url = reverse('admin_portal:staff')

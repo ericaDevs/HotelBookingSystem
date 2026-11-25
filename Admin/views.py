@@ -215,6 +215,18 @@ def overview(request):
 def reservation_management(request):
     if request.method == 'POST':
         action = request.POST.get('action')
+        if action == 'delete_reservation':
+            reservation = get_object_or_404(
+                Guests,
+                pk=request.POST.get('reservation_id'),
+            )
+            reservation.delete()
+            messages.success(
+                request,
+                'Reservation removed. Any linked payment records were also removed.',
+            )
+            return redirect('admin_portal:reservations')
+
         reservation_id = request.POST.get('reservation_id')
         reservation = (
             get_object_or_404(Guests, pk=reservation_id)

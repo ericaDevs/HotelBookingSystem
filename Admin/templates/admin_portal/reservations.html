@@ -100,21 +100,28 @@
                   <td>{% if reservation.room %}<strong>Room {{ reservation.room.room_number }}</strong><small>{{ reservation.room.room_type }}</small>{% else %}<span class="unassigned-chip"><i data-lucide="triangle-alert"></i> Not assigned</span>{% endif %}</td>
                   <td><span class="reservation-status {{ row.filter_status }}"><i></i>{{ row.status }}</span></td>
                   <td>
-                    <button class="reservation-edit-button" type="button" data-edit-reservation
-                      data-id="{{ reservation.pk }}"
-                      data-full-name="{{ reservation.full_name }}"
-                      data-email="{{ reservation.email }}"
-                      data-phone="{{ reservation.phone_number }}"
-                      data-id-no="{{ reservation.Id_no }}"
-                      data-county="{{ reservation.county_of_origin }}"
-                      data-country="{{ reservation.country }}"
-                      data-check-in="{{ reservation.check_in_date|date:'Y-m-d' }}"
-                      data-check-out="{{ reservation.check_out_date|date:'Y-m-d' }}"
-                      data-room="{% if reservation.room %}{{ reservation.room_id }}{% endif %}"
-                      aria-label="{% if reservation.room %}Edit{% else %}Assign room to{% endif %} reservation for {{ reservation.full_name }}"
-                      title="{% if reservation.room %}Edit reservation{% else %}Assign room{% endif %}">
-                      {% if reservation.room %}<i data-lucide="pencil"></i>{% else %}Assign{% endif %}
-                    </button>
+                    <div class="reservation-row-actions">
+                      <button class="reservation-edit-button" type="button" data-edit-reservation
+                        data-id="{{ reservation.pk }}"
+                        data-full-name="{{ reservation.full_name }}"
+                        data-email="{{ reservation.email }}"
+                        data-phone="{{ reservation.phone_number }}"
+                        data-id-no="{{ reservation.Id_no }}"
+                        data-county="{{ reservation.county_of_origin }}"
+                        data-country="{{ reservation.country }}"
+                        data-check-in="{{ reservation.check_in_date|date:'Y-m-d' }}"
+                        data-check-out="{{ reservation.check_out_date|date:'Y-m-d' }}"
+                        data-room="{% if reservation.room %}{{ reservation.room_id }}{% endif %}"
+                        aria-label="{% if reservation.room %}Edit{% else %}Assign room to{% endif %} reservation for {{ reservation.full_name }}"
+                        title="{% if reservation.room %}Edit reservation{% else %}Assign room{% endif %}">
+                        {% if reservation.room %}<i data-lucide="pencil"></i>{% else %}Assign{% endif %}
+                      </button>
+                      <button class="reservation-edit-button delete" type="button" data-delete-reservation
+                        data-id="{{ reservation.pk }}"
+                        data-name="{{ reservation.full_name }}"
+                        aria-label="Remove reservation for {{ reservation.full_name }}"
+                        title="Remove reservation"><i data-lucide="trash-2"></i></button>
+                    </div>
                   </td>
                 </tr>
               {% endwith %}
@@ -164,6 +171,25 @@
       </footer>
     </form>
   </dialog>
+
+  <dialog class="portal-dialog" id="delete-reservation-modal" aria-labelledby="delete-reservation-title">
+    <form class="modal-form" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="delete_reservation">
+      <input type="hidden" name="reservation_id">
+      <header class="modal-header">
+        <div><h2 id="delete-reservation-title">Remove reservation?</h2><p id="delete-reservation-copy">This cannot be undone.</p></div>
+        <button class="icon-button" type="button" aria-label="Close dialog" data-modal-close><i data-lucide="x"></i></button>
+      </header>
+      <div class="modal-body">
+        <p class="modal-hint">Any payment records linked to this reservation will also be removed.</p>
+      </div>
+      <footer class="modal-actions">
+        <button class="dashboard-button secondary" type="button" data-modal-close>Keep reservation</button>
+        <button class="dashboard-button danger" type="submit">Remove reservation</button>
+      </footer>
+    </form>
+  </dialog>
 {% endblock %}
 
 {% block page_scripts %}
@@ -199,6 +225,16 @@
       reservationForm.elements.reservation_id.value = '';
       reservationTitle.textContent = 'Add reservation';
       reservationSubmit.textContent = 'Save reservation';
+    });
+
+    const deleteReservationForm = document.querySelector('#delete-reservation-modal form');
+    const deleteReservationCopy = document.getElementById('delete-reservation-copy');
+    document.querySelectorAll('[data-delete-reservation]').forEach((button) => {
+      button.addEventListener('click', () => {
+        deleteReservationForm.elements.reservation_id.value = button.dataset.id;
+        deleteReservationCopy.textContent = `Remove the reservation for ${button.dataset.name}?`;
+        document.getElementById('delete-reservation-modal').showModal();
+      });
     });
 
     const reservationRows = Array.from(document.querySelectorAll('.reservation-data-row'));
