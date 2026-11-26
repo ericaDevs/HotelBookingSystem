@@ -72,12 +72,12 @@ def _room_rows(today):
     rows = []
     for room in Rooms.objects.order_by("room_number"):
         guest = occupied_by_room.get(room.pk)
-        if guest:
-            status, status_key = "Occupied", "occupied"
-        elif room.is_available:
-            status, status_key = "Available", "available"
-        else:
+        if not room.is_available:
             status, status_key = "Unavailable", "unavailable"
+        elif guest:
+            status, status_key = "Occupied", "occupied"
+        else:
+            status, status_key = "Available", "available"
         rows.append({
             "room": room,
             "guest": guest,

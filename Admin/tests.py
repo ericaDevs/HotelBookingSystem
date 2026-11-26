@@ -340,6 +340,7 @@ class AdminPortalPageTests(TestCase):
             price=Decimal('8000.00'),
         )
         url = reverse('admin_portal:reservations')
+        start = timezone.localdate() + timedelta(days=5)
         payload = {
             'action': 'create_reservation',
             'full_name': 'Test Guest',
@@ -348,8 +349,8 @@ class AdminPortalPageTests(TestCase):
             'id_no': 'A123456',
             'county_of_origin': 'Kitui',
             'country': 'Kenya',
-            'check_in_date': '2026-12-01',
-            'check_out_date': '2026-12-04',
+            'check_in_date': start.isoformat(),
+            'check_out_date': (start + timedelta(days=3)).isoformat(),
             'room': room.pk,
         }
         response = self.client.post(url, payload)
@@ -359,11 +360,19 @@ class AdminPortalPageTests(TestCase):
 
         payload.update({
             'email': 'other@example.com',
-            'check_in_date': '2026-12-02',
-            'check_out_date': '2026-12-05',
+            'check_in_date': (start + timedelta(days=1)).isoformat(),
+            'check_out_date': (start + timedelta(days=4)).isoformat(),
         })
         self.client.post(url, payload)
         self.assertFalse(Guests.objects.filter(email='other@example.com').exists())
+
+        payload.update({
+            'email': 'next.guest@example.com',
+            'check_in_date': (start + timedelta(days=3)).isoformat(),
+            'check_out_date': (start + timedelta(days=5)).isoformat(),
+        })
+        self.client.post(url, payload)
+        self.assertTrue(Guests.objects.filter(email='next.guest@example.com').exists())
 
     def test_reservation_update_and_delete(self):
         room = Rooms.objects.create(
@@ -371,6 +380,7 @@ class AdminPortalPageTests(TestCase):
             room_type='Garden room',
             price=Decimal('8000.00'),
         )
+        start = timezone.localdate() + timedelta(days=5)
         reservation = Guests.objects.create(
             full_name='Original Guest',
             Id_no='ID100',
@@ -378,8 +388,8 @@ class AdminPortalPageTests(TestCase):
             phone_number='0712345678',
             county_of_origin='Kitui',
             country='Kenya',
-            check_in_date=date(2026, 12, 1),
-            check_out_date=date(2026, 12, 3),
+            check_in_date=start,
+            check_out_date=start + timedelta(days=2),
         )
         payment = Payments.objects.create(
             guest=reservation,
@@ -399,8 +409,8 @@ class AdminPortalPageTests(TestCase):
             'id_no': 'ID101',
             'county_of_origin': 'Nairobi',
             'country': 'Kenya',
-            'check_in_date': '2026-12-02',
-            'check_out_date': '2026-12-05',
+            'check_in_date': (start + timedelta(days=1)).isoformat(),
+            'check_out_date': (start + timedelta(days=4)).isoformat(),
             'room': room.pk,
         })
 
@@ -408,7 +418,7 @@ class AdminPortalPageTests(TestCase):
         reservation.refresh_from_db()
         self.assertEqual(reservation.full_name, 'Updated Guest')
         self.assertEqual(reservation.room, room)
-        self.assertEqual(reservation.check_in_date, date(2026, 12, 2))
+        self.assertEqual(reservation.check_in_date, start + timedelta(days=1))
         self.assertTrue(Payments.objects.filter(pk=payment.pk).exists())
 
         response = self.client.post(url, {
@@ -419,6 +429,28 @@ class AdminPortalPageTests(TestCase):
         self.assertRedirects(response, url)
         self.assertFalse(Guests.objects.filter(pk=reservation.pk).exists())
         self.assertFalse(Payments.objects.filter(pk=payment.pk).exists())
+
+    def test_admin_cannot_create_reservation_with_past_check_in(self):
+        room = Rooms.objects.create(
+            room_number=5,
+            room_type='Garden room',
+            price=Decimal('8000.00'),
+        )
+        response = self.client.post(reverse('admin_portal:reservations'), {
+            'action': 'create_reservation',
+            'full_name': 'Past Stay Guest',
+            'email': 'past.stay@example.com',
+            'phone_number': '0712345678',
+            'id_no': 'A123456',
+            'county_of_origin': 'Kitui',
+            'country': 'Kenya',
+            'check_in_date': (timezone.localdate() - timedelta(days=1)).isoformat(),
+            'check_out_date': timezone.localdate().isoformat(),
+            'room': room.pk,
+        })
+
+        self.assertRedirects(response, reverse('admin_portal:reservations'))
+        self.assertFalse(Guests.objects.filter(email='past.stay@example.com').exists())
 
     def test_reservations_page_renders_filterable_guest_rows(self):
         room = Rooms.objects.create(

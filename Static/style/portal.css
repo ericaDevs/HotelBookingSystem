@@ -331,9 +331,11 @@ button, input { font: inherit; }
   .topbar-heading span { font-size: 9px; }
 }
 
-.portal-messages { display: grid; gap: 8px; margin-bottom: 16px; }
-.portal-message { margin: 0; border: 1px solid #d5ebdd; border-radius: 9px; padding: 11px 14px; color: #286744; background: #f0faf4; font-size: 12px; }
+.portal-messages { position: fixed; z-index: 1200; top: 18px; right: 18px; display: grid; gap: 8px; width: min(390px, calc(100vw - 36px)); pointer-events: none; }
+.portal-message { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin: 0; border: 1px solid #d5ebdd; border-radius: 9px; padding: 12px 14px; color: #286744; background: #f0faf4; box-shadow: 0 12px 32px rgb(28 18 32 / 18%); font-size: 12px; pointer-events: auto; }
 .portal-message.error { border-color: #f1d0d5; color: #a14152; background: #fff5f6; }
+.portal-toast-close { border: 0; padding: 0 2px; color: inherit; background: transparent; font-size: 18px; line-height: 1; cursor: pointer; }
+#login-error { position: fixed; z-index: 1200; top: 18px; right: 18px; width: min(390px, calc(100vw - 36px)); box-shadow: 0 12px 32px rgb(28 18 32 / 18%); }
 .page-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; }
 .dashboard-button.secondary { border: 1px solid var(--portal-line); color: var(--portal-ink); background: #fff; }
 .dashboard-button.danger { background: #a9273a; }

@@ -135,9 +135,9 @@
         </header>
         <div class="rooms-board-cards">
           {% for room in availability_board %}
-            <article class="{% if room.is_available %}is-available{% else %}is-unavailable{% endif %}">
+            <article class="{% if room.current_status_key == 'available' %}is-available{% else %}is-unavailable{% endif %}">
               <i></i><strong>{{ room.room_number }}</strong><small>{{ room.room_type }}</small>
-              <span>{% if room.is_available %}Available{% else %}Unavailable{% endif %}</span>
+              <span>{{ room.current_status }}</span>
               <b>KES {{ room.price|floatformat:0 }}</b>
             </article>
           {% empty %}

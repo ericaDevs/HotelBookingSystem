@@ -11,8 +11,16 @@
   const roomSelect = document.getElementById("selected-room");
   const guestPhone = form.elements.namedItem("phone_number");
   const mpesaPhone = document.getElementById("mpesa-phone");
+  const checkInDate = form.elements.namedItem("check_in_date");
+  const checkOutDate = form.elements.namedItem("check_out_date");
+  let feedbackTimer;
+
+  checkInDate.addEventListener("change", () => {
+    checkOutDate.min = checkInDate.value || checkInDate.min;
+  });
 
   function showFeedback(message, isError) {
+    window.clearTimeout(feedbackTimer);
     feedback.textContent = message;
     feedback.classList.remove(
       "hidden",
@@ -24,9 +32,11 @@
     feedback.classList.add(isError ? "bg-secondary-fixed" : "bg-tertiary-fixed");
     feedback.classList.add(isError ? "text-on-secondary-fixed" : "text-on-tertiary-fixed");
     feedback.setAttribute("role", isError ? "alert" : "status");
+    feedbackTimer = window.setTimeout(() => feedback.classList.add("hidden"), 6000);
   }
 
   function clearFeedback() {
+    window.clearTimeout(feedbackTimer);
     feedback.textContent = "";
     feedback.classList.add("hidden");
     feedback.classList.remove(
@@ -130,6 +140,9 @@
     }
     if (!data.check_in_date || !data.check_out_date) {
       return { field: !data.check_in_date ? "check_in_date" : "check_out_date", message: "Enter both stay dates." };
+    }
+    if (data.check_in_date < form.elements.namedItem("check_in_date").min) {
+      return { field: "check_in_date", message: "Check-in cannot be in the past." };
     }
     if (data.check_out_date <= data.check_in_date) {
       return { field: "check_out_date", message: "Check-out must be after check-in." };

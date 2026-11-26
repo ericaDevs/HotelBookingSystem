@@ -51,7 +51,7 @@
         {% if messages %}
           <div class="portal-messages" role="status" aria-live="polite">
             {% for message in messages %}
-              <p class="portal-message {{ message.tags }}">{{ message }}</p>
+              <p class="portal-message {{ message.tags }}" data-toast>{{ message }}<button class="portal-toast-close" type="button" aria-label="Dismiss notification">×</button></p>
             {% endfor %}
           </div>
         {% endif %}
@@ -60,6 +60,7 @@
     </main>
   </div>
   <script src="{% static 'js/lucide.min.js' %}"></script>
+  <script src="{% static 'js/notifications.js' %}"></script>
   <script>
     if (window.lucide) window.lucide.createIcons();
     const shell = document.getElementById('dashboard-shell');

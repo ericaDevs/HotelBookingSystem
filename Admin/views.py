@@ -17,6 +17,7 @@ from django.urls import reverse
 from Billing.models import Payments
 from Properties.models import RoomImage, Rooms
 from Reservations.models import Guests
+from Reservations.availability import add_current_availability, has_room_conflict
 from Staff.models import Users
 from Admin.models import Contacts
 
@@ -154,11 +155,10 @@ def overview(request):
         check_in_date__lte=today,
         check_out_date__gt=today,
     )
-    room_count = Rooms.objects.count()
-    occupied_rooms = Rooms.objects.filter(
-        reservations__check_in_date__lte=today,
-        reservations__check_out_date__gt=today,
-    ).distinct().count()
+    room_rows = add_current_availability(Rooms.objects.order_by('room_number'), today)
+    room_count = len(room_rows)
+    occupied_rooms = sum(room.current_status_key == 'occupied' for room in room_rows)
+    available_rooms = sum(room.current_status_key == 'available' for room in room_rows)
     room_categories = Rooms.objects.values('room_type').annotate(
         total=Count('pk'),
         occupied=Count(
@@ -200,7 +200,7 @@ def overview(request):
         'today_departures': Guests.objects.filter(check_out_date=today).count(),
         'room_count': room_count,
         'occupied_rooms': occupied_rooms,
-        'available_rooms': room_count - occupied_rooms,
+        'available_rooms': available_rooms,
         'occupancy_percent': round(occupied_rooms / room_count * 100) if room_count else 0,
         'today_revenue': today_revenue,
         'recent_reservations': recent_reservations,
@@ -243,6 +243,7 @@ def reservation_management(request):
         check_in_date = parse_date(request.POST.get('check_in_date', ''))
         check_out_date = parse_date(request.POST.get('check_out_date', ''))
         room_id = request.POST.get('room')
+        today = timezone.localdate()
 
         if not all((full_name, email, phone_number, id_no, county, country)):
             messages.error(request, 'Complete all guest and reservation fields.')
@@ -250,6 +251,10 @@ def reservation_management(request):
             messages.error(request, 'One or more guest details exceed the allowed length.')
         elif not check_in_date or not check_out_date or check_out_date <= check_in_date:
             messages.error(request, 'Choose valid dates and ensure check-out is after check-in.')
+        elif check_in_date < today and (
+            not reservation.pk or check_in_date != reservation.check_in_date
+        ):
+            messages.error(request, 'Check-in cannot be in the past.')
         else:
             try:
                 validate_email(email)
@@ -259,13 +264,17 @@ def reservation_management(request):
                 if Guests.objects.filter(email__iexact=email).exclude(pk=reservation.pk).exists():
                     messages.error(request, 'A reservation already exists for that email address.')
                 else:
-                    room = get_object_or_404(Rooms, pk=room_id) if room_id else None
-                    overlapping = Guests.objects.filter(
-                        room=room,
-                        check_in_date__lt=check_out_date,
-                        check_out_date__gt=check_in_date,
-                    ).exclude(pk=reservation.pk)
-                    if room and overlapping.exists():
+                    room = Rooms.objects.filter(pk=room_id).first() if room_id else None
+                    if room_id and room is None:
+                        messages.error(request, 'Select a valid room.')
+                    elif room and not room.is_available:
+                        messages.error(request, 'That room is currently unavailable for booking.')
+                    elif room and has_room_conflict(
+                        room,
+                        check_in_date,
+                        check_out_date,
+                        exclude_guest_id=reservation.pk,
+                    ):
                         messages.error(request, 'That room is already reserved for part of those dates.')
                     else:
                         reservation.full_name = full_name
@@ -452,6 +461,10 @@ def room_management(request):
         if gradient_segments else '#eeeaf0'
     )
 
+    room_rows = add_current_availability(
+        rooms.order_by('room_number'),
+        timezone.localdate(),
+    )
     return render(request, 'admin_portal/rooms.html', {
         'rooms': rooms,
         'total_rooms': Rooms.objects.count(),
@@ -465,7 +478,10 @@ def room_management(request):
         )['average'] or Decimal('0.00'),
         'room_categories': room_categories,
         'category_gradient': category_gradient,
-        'availability_board': rooms.order_by('is_available', 'room_number')[:4],
+        'availability_board': sorted(
+            room_rows,
+            key=lambda room: (room.current_status_key != 'available', room.room_number),
+        )[:4],
     })
 
 

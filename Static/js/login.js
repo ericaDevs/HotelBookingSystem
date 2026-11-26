@@ -2,9 +2,20 @@
 const loginForm = document.querySelector('.login-fields');
 const loginError = document.getElementById('login-error');
 const loginButton = loginForm.querySelector('button[type="submit"]');
+let loginErrorTimer;
+
+function showLoginError(message) {
+    window.clearTimeout(loginErrorTimer);
+    loginError.textContent = message;
+    loginError.hidden = false;
+    loginErrorTimer = window.setTimeout(() => {
+        loginError.hidden = true;
+    }, 6000);
+}
 
 async function submitLogin(event) {
     event.preventDefault();
+    window.clearTimeout(loginErrorTimer);
     loginError.hidden = true;
     loginButton.disabled = true;
 
@@ -26,15 +37,13 @@ async function submitLogin(event) {
         const result = await response.json();
 
         if (!response.ok) {
-            loginError.textContent = result.message || 'Unable to sign in.';
-            loginError.hidden = false;
+            showLoginError(result.message || 'Unable to sign in.');
             return;
         }
 
         window.location.assign(result.redirect_url);
     } catch {
-        loginError.textContent = 'Could not reach the sign-in service. Please try again.';
-        loginError.hidden = false;
+        showLoginError('Could not reach the sign-in service. Please try again.');
     } finally {
         loginButton.disabled = false;
     }

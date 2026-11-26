@@ -59,17 +59,17 @@
     <nav class="room-crumbs" aria-label="Breadcrumb">
       <a href="{% url 'home' %}">Home</a><span aria-hidden="true">/</span>
       <a href="{% url 'rooms' %}">Rooms &amp; Suites</a><span aria-hidden="true">/</span>
-      <span>Room {{ room.room_number }}</span>
+      <span>{{ room.room_type }}</span>
     </nav>
 
     <header class="room-heading">
       <div>
-        <span class="room-kicker">{{ room.room_type }}</span>
-        <h1>Room {{ room.room_number }}</h1>
+        <span class="room-kicker">Room {{ room.room_number }}</span>
+        <h1>{{ room.room_type }}</h1>
         <p>Discover the details of this Intercounty Gardens room.</p>
       </div>
-      <span class="room-availability{% if not room.is_available %} unavailable{% endif %}">
-        <i aria-hidden="true"></i>{% if room.is_available %}Available to book{% else %}Currently unavailable{% endif %}
+      <span class="room-availability{% if room.current_status_key != 'available' %} unavailable{% endif %}">
+        <i aria-hidden="true"></i>{{ room.current_status }} today
       </span>
     </header>
 
@@ -94,7 +94,7 @@
         <div class="room-facts" aria-label="Room information">
           <div class="room-fact"><span>Room number</span><strong>{{ room.room_number }}</strong></div>
           <div class="room-fact"><span>Room type</span><strong>{{ room.room_type }}</strong></div>
-          <div class="room-fact"><span>Availability</span><strong>{% if room.is_available %}Available{% else %}Unavailable{% endif %}</strong></div>
+          <div class="room-fact"><span>Current status</span><strong>{{ room.current_status }}</strong></div>
         </div>
       </div>
 
@@ -121,7 +121,7 @@
                 {% if cover %}<img src="{{ cover.image.url }}" alt="{{ cover.caption|default:related_room.room_type }}">
                 {% else %}<img src="{% static 'images/roomA.jpg' %}" alt="{{ related_room.room_type }} room">{% endif %}
               {% endwith %}
-              <div class="room-related-copy"><small>Room {{ related_room.room_number }}</small><strong>{{ related_room.room_type }} · KES {{ related_room.price|floatformat:0 }} / night</strong></div>
+              <div class="room-related-copy"><small>{{ related_room.room_type }} · Room {{ related_room.room_number }} · {{ related_room.current_status }}</small><strong>{{ related_room.room_type }} · KES {{ related_room.price|floatformat:0 }} / night</strong></div>
             </a>
           {% endfor %}
         </div>

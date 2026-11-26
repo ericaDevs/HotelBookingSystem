@@ -14,6 +14,14 @@
         body {
           overscroll-behavior: none;
         }
+        #booking-feedback {
+          position: fixed;
+          z-index: 1000;
+          top: 1rem;
+          right: 1rem;
+          width: min(28rem, calc(100vw - 2rem));
+          box-shadow: 0 12px 32px rgb(17 28 45 / 18%);
+        }
         main > :first-child {
           margin-top: 0 !important;
         }
@@ -405,6 +413,7 @@
                       class="h-12 px-space-md rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
                       type="date"
                       name="check_in_date"
+                      min="{{ today|date:'Y-m-d' }}"
                       required
                     />
                   </div>
@@ -417,6 +426,7 @@
                       class="h-12 px-space-md rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
                       type="date"
                       name="check_out_date"
+                      min="{{ today|date:'Y-m-d' }}"
                       required
                     />
                   </div>

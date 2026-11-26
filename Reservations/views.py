@@ -4,9 +4,11 @@ import re
 from django.core.exceptions import ValidationError
 from django.http import Http404, HttpResponseNotAllowed, JsonResponse
 from django.shortcuts import get_object_or_404, render
+from django.utils import timezone
 from django.utils.dateparse import parse_date
 
 from Properties.models import Rooms
+from .availability import has_room_conflict
 from .models import Guests
 
 
@@ -66,6 +68,8 @@ def bookings(request):
         ) else None
         if check_in is None:
             errors["check_in_date"] = ["Enter a valid check-in date."]
+        elif check_in < timezone.localdate():
+            errors["check_in_date"] = ["Check-in cannot be in the past."]
         if check_out is None:
             errors["check_out_date"] = ["Enter a valid check-out date."]
         if check_in and check_out and check_out <= check_in:
@@ -84,6 +88,12 @@ def bookings(request):
             room = Rooms.objects.filter(pk=int(room_id), is_available=True).first()
             if room is None:
                 errors["room"] = ["The selected room is not available."]
+            elif check_in and check_out and check_out > check_in and has_room_conflict(
+                room, check_in, check_out
+            ):
+                errors["room"] = [
+                    "The selected room is already reserved for part of those dates."
+                ]
 
         payment_method = payload.get("payment_method")
         if payment_method not in ("M-Pesa", "Pay on Arrival"):
@@ -144,5 +154,6 @@ def bookings(request):
         {
             "rooms": rooms,
             "selected_room": selected_room,
+            "today": timezone.localdate(),
         },
     )

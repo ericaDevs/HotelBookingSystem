@@ -154,8 +154,8 @@
           <label class="modal-field">ID / passport number<input name="id_no" maxlength="12" required></label>
           <label class="modal-field">County of origin<input name="county_of_origin" maxlength="50" required></label>
           <label class="modal-field">Country<input name="country" maxlength="50" required></label>
-          <label class="modal-field">Check-in<input type="date" name="check_in_date" required></label>
-          <label class="modal-field">Check-out<input type="date" name="check_out_date" required></label>
+          <label class="modal-field">Check-in<input type="date" name="check_in_date" min="{{ today|date:'Y-m-d' }}" required></label>
+          <label class="modal-field">Check-out<input type="date" name="check_out_date" min="{{ today|date:'Y-m-d' }}" required></label>
           <label class="modal-field full">Room
             <select name="room">
               <option value="">Select a room (optional)</option>
@@ -198,6 +198,11 @@
     const reservationForm = reservationDialog.querySelector('form');
     const reservationTitle = document.getElementById('reservation-modal-title');
     const reservationSubmit = reservationForm.querySelector('button[type="submit"]');
+    const checkInInput = reservationForm.elements.check_in_date;
+    const checkOutInput = reservationForm.elements.check_out_date;
+    checkInInput.addEventListener('change', () => {
+      checkOutInput.min = checkInInput.value || '{{ today|date:"Y-m-d" }}';
+    });
 
     document.querySelectorAll('[data-edit-reservation]').forEach((button) => {
       button.addEventListener('click', () => {

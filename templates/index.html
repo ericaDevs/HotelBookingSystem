@@ -77,7 +77,7 @@
           </label>
 <select class="w-full h-12 px-space-md bg-surface-container-low rounded-lg font-body-sm text-body-sm text-on-surface focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer appearance-none" id="room-type">
 {% for room in rooms %}
-<option value="{{ room.pk }}">Room {{ room.room_number }} - {{ room.room_type }}</option>
+<option value="{{ room.pk }}" {% if not room.is_available %}disabled{% endif %}>{{ room.room_type }} - Room {{ room.room_number }} ({{ room.current_status }})</option>
 {% empty %}
 <option value="" disabled>No rooms available</option>
 {% endfor %}
@@ -208,10 +208,14 @@
   </a>
   <div class="p-space-lg flex flex-col flex-1 gap-space-sm">
     <h3 class="font-headline-sm text-headline-sm text-on-surface"><a href="{% url 'per_room' room.pk %}">{{ room.room_type }}</a></h3>
-    <p class="font-body-sm text-body-sm text-on-surface-variant">Room {{ room.room_number }}</p>
+    <p class="font-body-sm text-body-sm text-on-surface-variant">Room {{ room.room_number }} · {{ room.current_status }}</p>
     <p class="font-headline-md text-headline-md text-on-surface font-bold">KES {{ room.price|floatformat:2 }} <span class="font-body-sm text-body-sm font-normal text-on-surface-variant">/ night</span></p>
     <a class="mt-auto inline-flex justify-center px-space-lg py-space-sm rounded-full bg-surface-container text-primary font-label-md text-label-md" href="{% url 'per_room' room.pk %}">View Details</a>
-    <a class="inline-flex justify-center px-space-lg py-space-sm rounded-full bg-secondary text-on-secondary font-label-md text-label-md" href="{% url 'bookings' %}?room={{ room.pk }}">Book Room</a>
+    {% if room.is_available %}
+      <a class="inline-flex justify-center px-space-lg py-space-sm rounded-full bg-secondary text-on-secondary font-label-md text-label-md" href="{% url 'bookings' %}?room={{ room.pk }}">Book Room</a>
+    {% else %}
+      <span class="inline-flex justify-center px-space-lg py-space-sm rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md">Unavailable</span>
+    {% endif %}
   </div>
 </article>
 {% empty %}

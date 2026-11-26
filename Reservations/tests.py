@@ -2,6 +2,7 @@ import json
 from datetime import date, timedelta
 
 from django.test import TestCase
+from django.utils import timezone
 
 from Properties.models import Rooms
 from .models import Guests
@@ -22,8 +23,8 @@ class BookingSubmissionTests(TestCase):
             "phone_number": "+254 712 345 678",
             "county_of_origin": " Kitui ",
             "country": " Kenya ",
-            "check_in_date": (date.today() + timedelta(days=1)).isoformat(),
-            "check_out_date": (date.today() + timedelta(days=3)).isoformat(),
+            "check_in_date": (timezone.localdate() + timedelta(days=1)).isoformat(),
+            "check_out_date": (timezone.localdate() + timedelta(days=3)).isoformat(),
             "room": str(self.room.pk),
             "payment_method": "M-Pesa",
         }
@@ -88,3 +89,58 @@ class BookingSubmissionTests(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertIn("room", response.json()["errors"])
         self.assertEqual(Guests.objects.count(), 0)
+
+    def test_room_can_be_booked_by_different_guests_for_non_overlapping_dates(self):
+        start = timezone.localdate() + timedelta(days=4)
+        Guests.objects.create(
+            full_name="First Guest",
+            Id_no="ID-001",
+            email="first@example.com",
+            phone_number="0712345678",
+            county_of_origin="Kitui",
+            country="Kenya",
+            check_in_date=start,
+            check_out_date=start + timedelta(days=2),
+            room=self.room,
+        )
+        self.payload.update({
+            "email": "second@example.com",
+            "check_in_date": (start + timedelta(days=2)).isoformat(),
+            "check_out_date": (start + timedelta(days=4)).isoformat(),
+        })
+
+        response = self.post_booking(self.payload)
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(Guests.objects.filter(room=self.room).count(), 2)
+
+    def test_overlapping_stay_and_past_check_in_are_rejected(self):
+        start = timezone.localdate() + timedelta(days=4)
+        Guests.objects.create(
+            full_name="Existing Guest",
+            Id_no="ID-001",
+            email="existing@example.com",
+            phone_number="0712345678",
+            county_of_origin="Kitui",
+            country="Kenya",
+            check_in_date=start,
+            check_out_date=start + timedelta(days=3),
+            room=self.room,
+        )
+        self.payload.update({
+            "check_in_date": (start + timedelta(days=1)).isoformat(),
+            "check_out_date": (start + timedelta(days=4)).isoformat(),
+        })
+
+        overlap_response = self.post_booking(self.payload)
+        self.assertEqual(overlap_response.status_code, 400)
+        self.assertIn("room", overlap_response.json()["errors"])
+
+        self.payload.update({
+            "email": "past@example.com",
+            "check_in_date": (timezone.localdate() - timedelta(days=1)).isoformat(),
+            "check_out_date": timezone.localdate().isoformat(),
+        })
+        past_response = self.post_booking(self.payload)
+        self.assertEqual(past_response.status_code, 400)
+        self.assertIn("check_in_date", past_response.json()["errors"])
